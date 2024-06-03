@@ -1,0 +1,23 @@
+// VS Code Extensions
+
+{
+	"recommendations": [
+		"bashmish.es6-string-css",
+		"britesnow.vscode-toggle-quotes",
+		"connor4312.esbuild-problem-matchers",
+		"dbaeumer.vscode-eslint",
+		"editorconfig.editorconfig",
+		"esbenp.prettier-vscode",
+		"mechatroner.rainbow-csv",
+		"ms-vscode.extension-test-runner",
+		"oderwat.indent-rainbow",
+		"prisma.prisma",
+		"sleistner.vscode-fileutils",
+		"tamasfe.even-better-toml",
+		"tobermory.es6-string-html",
+		"tyriar.sort-lines",
+		"wmaurer.change-case",
+		"yoavbls.pretty-ts-errors",
+		"zjcompt.es6-string-javascript"
+	]
+}

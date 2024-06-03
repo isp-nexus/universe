@@ -1,0 +1,27 @@
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"lib": ["ESNext", "WebWorker", "DOM", "DOM.Iterable"],
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"module": "ESNext",
+		"moduleResolution": "Bundler",
+		"baseUrl": "."
+	},
+	"exclude": [
+		// ---
+		"./out/**/*",
+		"./dist/**/*"
+	],
+	"references": [
+		// ---
+		{ "path": "../core" },
+		{ "path": "../sdk" },
+		{ "path": "../fcc" },
+		{ "path": "../mailwoman" },
+		{ "path": "../cartographer" },
+		{ "path": "../spatial" },
+		{ "path": "../schema" }
+	]
+}

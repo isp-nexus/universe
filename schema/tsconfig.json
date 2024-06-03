@@ -1,0 +1,16 @@
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"baseUrl": ".",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"resolveJsonModule": true
+	},
+	"exclude": ["./out/**/*"],
+	"references": [
+		{
+			"path": "../core"
+		}
+	]
+}

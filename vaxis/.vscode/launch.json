@@ -1,0 +1,32 @@
+{
+	"configurations": [
+		{
+			"name": "Run Web Extension in VS Code",
+			"type": "extensionHost",
+			// "debugWebWorkerHost": true,
+			"debugWebviews": true,
+			"request": "launch",
+			"args": [
+				// ---
+				"--extensionDevelopmentPath=${workspaceFolder}"
+			],
+			// "cwd": "${workspaceFolder}/data",
+			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+			"preLaunchTask": "${defaultBuildTask}"
+		},
+
+		{
+			"name": "Extension Tests",
+			"type": "extensionHost",
+			"debugWebWorkerHost": true,
+			"request": "launch",
+			"args": [
+				// ---
+				"--extensionDevelopmentPath=${workspaceFolder}",
+				"--extensionTestsPath=${workspaceFolder}/dist/test/suite/extensionTests"
+			],
+			"outFiles": ["${workspaceFolder}/dist/**/*.js"],
+			"preLaunchTask": "${defaultBuildTask}"
+		}
+	]
+}

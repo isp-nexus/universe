@@ -1,0 +1,27 @@
+.splash-screen {
+	background: var(--surface-1);
+	display: grid;
+	height: -webkit-fill-available;
+	place-content: center;
+	font-family: var(--font-family-monospace);
+
+	.content {
+		opacity: 0;
+		transition: opacity 0.5s;
+		font-size: var(--font-size-2);
+	}
+
+	&.visible .content {
+		opacity: 1;
+	}
+
+	.loading-pulsar {
+		animation: var(--animation-blink);
+		animation-duration: 750ms;
+	}
+}
+
+body > .splash-screen {
+	height: 100dvh;
+	width: 100%;
+}

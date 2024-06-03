@@ -1,0 +1,93 @@
+.map-container {
+	height: 100dvh;
+	display: grid;
+	grid-template-areas:
+		"site-header"
+		"map-content"
+		"map-footer";
+	grid-template-columns: 1fr;
+	grid-template-rows: auto 1fr auto;
+
+	& .maplibregl-map {
+		grid-area: map-content;
+	}
+
+	& .drawer {
+		grid-area: drawer;
+		outline: 1px dashed red;
+		outline-offset: -1px;
+		/* display: none; */
+	}
+}
+
+.feature-targets {
+	/* background-color: hsl(0, 0%, 10%, 0.5); */
+	pointer-events: none;
+	font-family: var(--font-family-monospace);
+	/* text-shadow: 0 1px hsl(0, 0%, 10%, 0.5); */
+	color: white;
+	-webkit-text-stroke-color: black;
+	-webkit-text-stroke-width: 3px;
+	paint-order: stroke fill;
+
+	& .feature-properties {
+		font-size: 0.5rem;
+	}
+
+	& .position-details,
+	& .coord-details {
+		display: flex;
+		gap: 1em;
+	}
+}
+
+.maplibregl-canvas {
+	cursor: crosshair !important;
+	background-color: hsl(0deg 10% 5%);
+}
+
+.maplibregl-ctrl-group:has(.maplibregl-ctrl-compass) {
+	background-color: transparent;
+	box-shadow: none;
+}
+
+.maplibregl-ctrl button.maplibregl-ctrl-compass .maplibregl-ctrl-icon {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='29' height='29' fill='%23ff0000' viewBox='0 0 29 29'%3E%3Cpath d='m10.5 14 4-8 4 8z'/%3E%3Cpath fill='%23ccc' d='m10.5 16 4 8 4-8z'/%3E%3C/svg%3E") !important;
+}
+
+.maplibregl-ctrl button.maplibregl-ctrl-compass {
+	background: var(--surface-3);
+	border-radius: 100%;
+	box-shadow: 0 0 1px 2px var(--surface-1);
+	overflow: hidden;
+}
+
+.drop-zone {
+	position: absolute;
+	inset: 0;
+	background-color: red;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.drop-zone[data-status="dragging"] {
+	background-color: blue;
+}
+
+/*
+div[mapboxgl-children] {
+	height: auto !important;
+	z-index: 1;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: black;
+	font-family: var(--font-family-monospace);
+	padding-inline: var(--spacing-unit);
+	padding-block: calc(var(--spacing-unit) / 2);
+} */
+
+.maplibregl-ctrl-attrib {
+	color: black;
+	background-color: hsl(0deg 0% 100% / 91%);
+}

@@ -1,0 +1,18 @@
+diff --git a/package.json b/package.json
+index 1395c39df41e0eca53bbd95e6da10142b41750ab..1920e864d541f74281a5161c92d40dced8de6800 100644
+--- a/package.json
++++ b/package.json
+@@ -8,8 +8,11 @@
+   "module": "dist/index.mjs",
+   "types": "dist/index.d.ts",
+   "exports": {
+-    "module": "./dist/index.mjs",
+-    "require": "./dist/index.cjs"
++		".": {
++			"import": "./dist/index.mjs",
++			"types": "./dist/index.d.ts",
++			"require": "./dist/index.cjs"
++    }
+   },
+   "scripts": {
+     "bench": "npm run build && node benchmark.js",

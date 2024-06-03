@@ -1,0 +1,22 @@
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"baseUrl": ".",
+		"paths": {
+			"@isp.nexus/mailwoman/sdk": ["./sdk/index"],
+			"@isp.nexus/mailwoman/sdk/*": ["./sdk/*"]
+		}
+	},
+	"exclude": ["./out/**/*"],
+	"references": [
+		// ---
+		{ "path": "../core" },
+		{ "path": "../spatial" },
+		{ "path": "../tiger" },
+		{ "path": "../fcc" },
+		{ "path": "../schema" }
+	]
+}

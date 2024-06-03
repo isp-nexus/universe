@@ -1,0 +1,18 @@
+# VS Code extension Ignorefile
+
+../**
+!../.vscode/**
+!../package.json
+.vscode/**
+.vscode-test-web/**
+out/**
+**/*.ts
+**/*.tsx
+**/*.tsx
+**/*.mts
+**/*.cts
+**/*.map
+node_modules/**
+dist/test/**
+**/tsconfig.json
+**/.vscode-test.*

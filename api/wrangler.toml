@@ -1,0 +1,15 @@
+# Cloudflare Wrangler Configuration
+
+name = "pmtiles-cloudflare"
+main = "./out/_worker.js"
+compatibility_date = "2024-06-03"
+minify = false
+
+[[r2_buckets]]
+binding = "NEXUS_ASSETS_BUCKET"
+bucket_name = "nexus-assets"
+
+[vars]
+PMTILES_PATH = "tiles"
+
+routes = [{ pattern = "tiles.isp.nexus", custom_domain = true }]

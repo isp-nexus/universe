@@ -1,0 +1,85 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+:root {
+	color-scheme: dark;
+	--font-family-sans-serif: "Helvetica Neue", helvetica, arial, sans-serif;
+	--font-family-serif: "Georgia", serif;
+	--font-family-monospace: "Fira Code", "Menlo", "Monaco", monospace;
+	--font-family-base: var(--font-family-sans-serif);
+	--font-family-heading: var(--font-family-serif);
+	--font-size-base: 16px;
+	--spacing-unit: 8px;
+}
+
+html {
+	scroll-behavior: smooth;
+	/* text-size-adjust: 100%; */
+	/* height: calc(100% + env(safe-area-inset-top)); */
+	background-color: black;
+}
+
+body {
+	min-height: 100dvh;
+	position: relative;
+	display: grid;
+	place-content: center;
+	filter: contrast(650%) brightness(800%);
+	background-size:
+		10em 10em,
+		4em 4em,
+		8em;
+	background-position:
+		center,
+		0 0,
+		center;
+	background-color: hsl(186.96deg 100% 21%);
+	background-image: radial-gradient(circle at center, transparent, transparent 33%, hsla(0deg 0% 0% / 43%) 100%),
+		radial-gradient(ellipse at 353% 100%, hsl(234.71deg 113% 57%), rgba(0, 0, 0, 0)),
+		url("data:image/svg+xml,%3Csvg viewBox='0 0 125 125' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+	animation: background-group 70s linear infinite alternate;
+}
+
+@keyframes background-group {
+	0% {
+		background-color: hsl(186.96deg 100% 21%);
+
+		background-size:
+			10em 10em,
+			4em 4em,
+			8em;
+
+		background-position:
+			top left,
+			-900vw -500vh,
+			center;
+	}
+
+	50% {
+		background-size:
+			10em 10em,
+			4em 4em,
+			8em;
+
+		background-position:
+			top left,
+			100vw 0vh,
+			center;
+	}
+	100% {
+		background-color: hsl(100.71deg 100% 21%);
+
+		background-size:
+			10em 10em,
+			4em 4em,
+			8em;
+
+		background-position:
+			top left,
+			900vw 500vh,
+			center;
+	}
+}

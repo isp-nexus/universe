@@ -1,0 +1,5274 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "SNO Net Ops Core Api (2.0.29.3)",
+		"description": "Core api for partners and Sifi.  **Strictly confidential** to SNONetOps and specific and contracted Internet Service Providers.  No other use or sharing is authorized.",
+		"contact": {
+			"name": "Mark Davies",
+			"email": "mark.davies@agilliance.net"
+		},
+		"version": "2"
+	},
+	"paths": {
+		"/api/v2/FiberCities": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Get address summaries that match the Fiber City ID, search string and filters",
+				"operationId": "GetFiberCitySummaryList",
+				"parameters": [
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Key",
+						"in": "query",
+						"description": "Filter Key 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Operation",
+						"in": "query",
+						"description": "Filter Operation 1",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value1",
+						"in": "query",
+						"description": "Filter Value 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value2",
+						"in": "query",
+						"description": "Filter Value 1 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Key",
+						"in": "query",
+						"description": "Filter Key 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Operation",
+						"in": "query",
+						"description": "Filter Operation 2",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value1",
+						"in": "query",
+						"description": "Filter Value 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value2",
+						"in": "query",
+						"description": "Filter Value 2 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Key",
+						"in": "query",
+						"description": "Filter Key 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Operation",
+						"in": "query",
+						"description": "Filter Operation 3",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value1",
+						"in": "query",
+						"description": "Filter Value 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value2",
+						"in": "query",
+						"description": "Filter Value 3 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FiberCitySummaryResponseDtoPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Returns the Fiber City details.",
+				"operationId": "GetFiberCityDetails",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns information about the Fiber City.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FiberCityResponseDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Fiber City was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Appointments": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Get a list of orders with search and filtering.",
+				"operationId": "GetCityAddressAppointments",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Key",
+						"in": "query",
+						"description": "Filter Key 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Operation",
+						"in": "query",
+						"description": "Filter Operation 1",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value1",
+						"in": "query",
+						"description": "Filter Value 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value2",
+						"in": "query",
+						"description": "Filter Value 1 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Key",
+						"in": "query",
+						"description": "Filter Key 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Operation",
+						"in": "query",
+						"description": "Filter Operation 2",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value1",
+						"in": "query",
+						"description": "Filter Value 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value2",
+						"in": "query",
+						"description": "Filter Value 2 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Key",
+						"in": "query",
+						"description": "Filter Key 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Operation",
+						"in": "query",
+						"description": "Filter Operation 3",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value1",
+						"in": "query",
+						"description": "Filter Value 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value2",
+						"in": "query",
+						"description": "Filter Value 3 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AppointmentResponseDTOPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Installation/{installServiceId}/AvailableAppointments": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Returns the available appointments for a 10 day window starting in 2 days time.",
+				"description": "This will be updated to accept data ranges that can be used when the default range does not satisfy a request.",
+				"operationId": "GetFiberCityAvailableAppointments",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "installServiceId",
+						"in": "path",
+						"description": "Install Service Id.  The id of an install service type.",
+						"required": true,
+						"schema": {
+							"pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "startDate",
+						"in": "query",
+						"description": "Starting date time of appointment",
+						"schema": {
+							"type": "string",
+							"format": "date-time"
+						}
+					},
+					{
+						"name": "leadDays",
+						"in": "query",
+						"description": "Limits the search to a number of days after the start date (less than 31).",
+						"schema": {
+							"type": "integer",
+							"format": "int32",
+							"default": 31
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of appointment records.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FiberCityAvailableAppointmentsDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "An appointment list is returned but no appointments are available.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Installation/Services": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Returns the types of installation appointments that can be booked.",
+				"operationId": "GetFiberCityInstallationServices",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns an appointment record.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/InstallServiceResponseDTO"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No appointment was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/ProvisionedServices": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Get Provisioned Service summaries that match the Fiber City ID, search string and filters",
+				"operationId": "GetFiberCityProvisionedServiceSummaryList",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Key",
+						"in": "query",
+						"description": "Filter Key 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Operation",
+						"in": "query",
+						"description": "Filter Operation 1",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value1",
+						"in": "query",
+						"description": "Filter Value 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value2",
+						"in": "query",
+						"description": "Filter Value 1 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Key",
+						"in": "query",
+						"description": "Filter Key 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Operation",
+						"in": "query",
+						"description": "Filter Operation 2",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value1",
+						"in": "query",
+						"description": "Filter Value 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value2",
+						"in": "query",
+						"description": "Filter Value 2 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Key",
+						"in": "query",
+						"description": "Filter Key 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Operation",
+						"in": "query",
+						"description": "Filter Operation 3",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value1",
+						"in": "query",
+						"description": "Filter Value 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value2",
+						"in": "query",
+						"description": "Filter Value 3 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FiberCitySummaryResponseDtoPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/ServiceRequests": {
+			"get": {
+				"tags": ["FiberCities"],
+				"summary": "Get a list of orders with search and filtering.",
+				"operationId": "GetCityServiceRequestSummaryList",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Key",
+						"in": "query",
+						"description": "Filter Key 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Operation",
+						"in": "query",
+						"description": "Filter Operation 1",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value1",
+						"in": "query",
+						"description": "Filter Value 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value2",
+						"in": "query",
+						"description": "Filter Value 1 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Key",
+						"in": "query",
+						"description": "Filter Key 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Operation",
+						"in": "query",
+						"description": "Filter Operation 2",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value1",
+						"in": "query",
+						"description": "Filter Value 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value2",
+						"in": "query",
+						"description": "Filter Value 2 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Key",
+						"in": "query",
+						"description": "Filter Key 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Operation",
+						"in": "query",
+						"description": "Filter Operation 3",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value1",
+						"in": "query",
+						"description": "Filter Value 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value2",
+						"in": "query",
+						"description": "Filter Value 3 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceRequestSummaryResponseDtoPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/Throw": {
+			"get": {
+				"tags": ["FiberCities"],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses": {
+			"get": {
+				"tags": ["Addresses"],
+				"summary": "Returns the address list summary for a city.",
+				"operationId": "GetFiberCityAddressList",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Key",
+						"in": "query",
+						"description": "Filter Key 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Operation",
+						"in": "query",
+						"description": "Filter Operation 1",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value1",
+						"in": "query",
+						"description": "Filter Value 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value2",
+						"in": "query",
+						"description": "Filter Value 1 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Key",
+						"in": "query",
+						"description": "Filter Key 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Operation",
+						"in": "query",
+						"description": "Filter Operation 2",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value1",
+						"in": "query",
+						"description": "Filter Value 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value2",
+						"in": "query",
+						"description": "Filter Value 2 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Key",
+						"in": "query",
+						"description": "Filter Key 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Operation",
+						"in": "query",
+						"description": "Filter Operation 3",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value1",
+						"in": "query",
+						"description": "Filter Value 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value2",
+						"in": "query",
+						"description": "Filter Value 3 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Details",
+						"in": "query",
+						"description": "RoofTop Lat/Long and EstimatedServicableDate included.",
+						"schema": {
+							"type": "boolean"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a Fiber City record.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressSummaryLocationResponseDTOPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Fiber City was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}": {
+			"get": {
+				"tags": ["Addresses"],
+				"summary": "Returns the details of an address in a city.",
+				"operationId": "GetFiberCityAddress",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Id e.g. PICA-AD-1",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a Fiber City record.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressResponseDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Fiber City was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/Appointments": {
+			"get": {
+				"tags": ["Addresses"],
+				"summary": "Returns a list of installation appointments for an address.",
+				"operationId": "GetAddressAppointments",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Id e.g. PICA-AD-1",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of appointment records.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AppointmentSummaryResponseDTOPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No appointment was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/CustomerInterest": {
+			"post": {
+				"tags": ["Addresses"],
+				"summary": "Registers ISP Customer interest in an address.",
+				"description": "Note: An address may not be registered twice by the same ISP.",
+				"operationId": "CustomerInterest",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "query",
+						"description": "Address Id e.g. PICA-AD-1",
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "The registration was successful.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AddressResponseDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The address was not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "The address was already registered by the ISP.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/Throw": {
+			"get": {
+				"tags": ["Addresses"],
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success"
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ServiceRequests/{serviceRequestId}/Appointments": {
+			"get": {
+				"tags": ["Appointments"],
+				"summary": "Returns the appointment details for a service request.",
+				"description": "Although this returns a list, ther eis usually only one appointment.",
+				"operationId": "GetFiberCityAddressAppointments",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Id e.g. PICA-AD-1",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "Request Id e.g. PICA-SR-0000-0001",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns an appointment record.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AppointmentResponseDTOPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No appointment was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Appointments"],
+				"summary": "Creates a new appointment for a Service Request.",
+				"operationId": "CreateFiberCityAddressAppointment",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Id e.g. PICA-AD-1",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "Request Id e.g. PICA-SR-0000-0001",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "the AppointmentRequestDetailsDTO which contains the appointment to add.",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AppointmentRequestDetailsDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "The appointment was created."
+					},
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ServiceRequests/{serviceRequestId}/Appointments/{appointmentId}": {
+			"get": {
+				"tags": ["Appointments"],
+				"summary": "Returns the appointment details for a service request.",
+				"operationId": "GetFiberCityAddressAppointment",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Id e.g. PICA-AD-1",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "Request Id e.g. PICA-SR-0000-0001",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "appointmentId",
+						"in": "path",
+						"description": "The Id of the appointment that was returned when the appointment was created",
+						"required": true,
+						"schema": {
+							"maximum": 999999999,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns an appointment record.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AppointmentResponseDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No appointment was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Appointments"],
+				"summary": "Updates the appointment contact details.",
+				"operationId": "UpdateAppointment",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "The ID of the service request.  eq PICA-SR-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "appointmentId",
+						"in": "path",
+						"description": "The ID of the appointment.  123.",
+						"required": true,
+						"schema": {
+							"maximum": 999999999,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "The appointment contact details in AppointmentUpdateRequestDTO",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AppointmentUpdateRequestDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Appointments"],
+				"summary": "Deletes the appointment from a service request.",
+				"operationId": "DeleteFiberCityAddressAppointment",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Id e.g. PICA-AD-1",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "Request Id e.g. PICA-SR-0000-0001",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "appointmentId",
+						"in": "path",
+						"description": "The Id of the appointment that was returned when the appointment was created",
+						"required": true,
+						"schema": {
+							"maximum": 999999999,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "Returns no content on success."
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No appointment was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ServiceRequests": {
+			"get": {
+				"tags": ["ServiceRequests"],
+				"summary": "Get a list of orders with search and filtering.",
+				"operationId": "GetServiceRequestSummaryList",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "Limit",
+						"in": "query",
+						"description": "The number of items per page.",
+						"schema": {
+							"maximum": 500,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 50
+						},
+						"example": 50
+					},
+					{
+						"name": "Page",
+						"in": "query",
+						"description": "The page to retrieve.",
+						"schema": {
+							"maximum": 100000,
+							"minimum": 1,
+							"type": "integer",
+							"format": "int32",
+							"example": 1
+						},
+						"example": 1
+					},
+					{
+						"name": "Search",
+						"in": "query",
+						"description": "The a term to search for.",
+						"schema": {
+							"maxLength": 100,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Key",
+						"in": "query",
+						"description": "Filter Key 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Operation",
+						"in": "query",
+						"description": "Filter Operation 1",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value1",
+						"in": "query",
+						"description": "Filter Value 1",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter1Value2",
+						"in": "query",
+						"description": "Filter Value 1 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Key",
+						"in": "query",
+						"description": "Filter Key 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Operation",
+						"in": "query",
+						"description": "Filter Operation 2",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value1",
+						"in": "query",
+						"description": "Filter Value 2",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter2Value2",
+						"in": "query",
+						"description": "Filter Value 2 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Key",
+						"in": "query",
+						"description": "Filter Key 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Operation",
+						"in": "query",
+						"description": "Filter Operation 3",
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value1",
+						"in": "query",
+						"description": "Filter Value 3",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "Filter3Value2",
+						"in": "query",
+						"description": "Filter Value 3 (for \"between\" etc)",
+						"schema": {
+							"maxLength": 50,
+							"minLength": 0,
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceRequestSummaryResponseDtoPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceRequestSummaryResponseDtoPagedResponse"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["ServiceRequests"],
+				"summary": "Creates the Fiber Service Order.",
+				"operationId": "CreateServiceRequest",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "The request details.",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ServiceRequestDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ServiceRequests/{serviceRequestId}": {
+			"get": {
+				"tags": ["ServiceRequests"],
+				"summary": "Returns the Fiber Service Order details.",
+				"operationId": "GetServiceRequestDetails",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "The ID of the service request.  eq PICA-SR-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns the Service Order information.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceRequestResponseDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Fiber City was found that matches the id.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ServiceRequestResponseDTO"
+								}
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": ["ServiceRequests"],
+				"summary": "Updates the Fiber Service Order details.",
+				"description": "If the service has been deployed, the service order will be updated then the change will be deployed to the provisioned service.\r\n            This can take several minutes to complete.",
+				"operationId": "UpdatePartial3ServiceRequest",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "The ID of the service request.  eq PICA-SR-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "A set of key/values to update in the request.",
+					"content": {
+						"application/json-patch+json": {
+							"schema": {
+								"$ref": "#/components/schemas/JsonPatchDocument"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Success"
+					},
+					"201": {
+						"description": "Created"
+					},
+					"202": {
+						"description": "Accepted"
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["ServiceRequests"],
+				"summary": "Deletes/Cancels the Fiber Service order.",
+				"description": "A service order may be deleted prior to starting deployment.  Once it has started deployment, use the delete on the Provisoned Service controller to terminate the service.",
+				"operationId": "DeleteServiceRequest",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "serviceRequestId",
+						"in": "path",
+						"description": "The ID of the service request.  eq PICA-SR-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-SR-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Forbidden",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Not Found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ProvisionedServices": {
+			"get": {
+				"tags": ["ProvisionedServices"],
+				"summary": "Get Provisioned Service summaries that match the Fiber City ID, search string and filters",
+				"operationId": "GetProvisionedServiceSummaryList",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Id.  e.g. PICA.",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/FiberCitySummaryResponseDtoPagedResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ProvisionedServices/{provisionedServiceId}": {
+			"get": {
+				"tags": ["ProvisionedServices"],
+				"summary": "Returns a the details of an installed Fiber Services.",
+				"operationId": "GetProvisionedService",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "provisionedServiceId",
+						"in": "path",
+						"description": "The ID of the provisioned service.  eg PICA-PS-1234-4321.",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Returns a list of Fiber City summaries with links to City details.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProvisionedServiceResponseDTO"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "No Cities were found that match the search and filter criteria.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["ProvisionedServices"],
+				"summary": "Cancels/terminates the service.  The provisioning will be removed and the address tagged for decommissioning.",
+				"operationId": "CancelService",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "provisionedServiceId",
+						"in": "path",
+						"description": "The ID of the provisioned service.  eg PICA-PS-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-PS-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"202": {
+						"description": "The cancellation was accepted and is in progress."
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The existing service was not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ProvisionedServices/{provisionedServiceId}/Reboot": {
+			"post": {
+				"tags": ["ProvisionedServices"],
+				"summary": "Send a command to reboot the ONT.  The reboot will be scheduled and is usually complete within 2-4 mintues.",
+				"operationId": "PostReboot",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "provisionedServiceId",
+						"in": "path",
+						"description": "The ID of the provisioned service.  eg PICA-PS-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-PS-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"202": {
+						"description": "The reboot command was accepted and is in progress."
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The existing service was not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ProvisionedServices/{provisionedServiceId}/ReProvision": {
+			"post": {
+				"tags": ["ProvisionedServices"],
+				"summary": "Send a command to reprovision the ONT.  The reprovision will cause an outage for 2-4 minutes.",
+				"operationId": "PostReProvision",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "provisionedServiceId",
+						"in": "path",
+						"description": "The ID of the provisioned service.  eg PICA-PS-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-PS-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"202": {
+						"description": "The reprovision command was accepted and is in progress."
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The existing service was not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/FiberCities/{fiberCityId}/Addresses/{addressId}/ProvisionedServices/{provisionedServiceId}/Wifi": {
+			"post": {
+				"tags": ["ProvisionedServices"],
+				"summary": "Send a command to update the Wifi SSID and/or Password.  If either are left empty, they will be left as is.",
+				"operationId": "PostWifi",
+				"parameters": [
+					{
+						"name": "fiberCityId",
+						"in": "path",
+						"description": "Fiber City Identifier",
+						"required": true,
+						"schema": {
+							"maxLength": 10,
+							"minLength": 0,
+							"type": "string"
+						}
+					},
+					{
+						"name": "addressId",
+						"in": "path",
+						"description": "Address Identifier",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-AD-[0-9]{1,6}$",
+							"type": "string"
+						}
+					},
+					{
+						"name": "provisionedServiceId",
+						"in": "path",
+						"description": "The ID of the provisioned service.  eg PICA-PS-1234-4321.",
+						"required": true,
+						"schema": {
+							"pattern": "^[A-Z]{4,5}-PS-[0-9]{4}-[0-9]{4}$",
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "DTO Containing updates to Wifi",
+					"content": {
+						"application/json-patch+json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProvisionedServiceUpdateDTO"
+							}
+						},
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProvisionedServiceUpdateDTO"
+							}
+						},
+						"text/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProvisionedServiceUpdateDTO"
+							}
+						},
+						"application/*+json": {
+							"schema": {
+								"$ref": "#/components/schemas/ProvisionedServiceUpdateDTO"
+							}
+						}
+					}
+				},
+				"responses": {
+					"202": {
+						"description": "The wifi parameters were accepted and is in progress."
+					},
+					"400": {
+						"description": "An error usually due to missing or invalid parameters.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "The user has not signed in (no authorization token in header).",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user is signed in but is not authorized to use this end point.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "The existing service was not found.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/v2/UserInfo": {
+			"get": {
+				"tags": ["UserInfo"],
+				"summary": "Gets user data from the incomming token.",
+				"description": "sample request:\r\n\r\n    GET api/v2/UserData",
+				"responses": {
+					"200": {
+						"description": "Returns the newly user info.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserData"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "bad stuff happened",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "The user was recongised but not authorised",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ProblemDetails"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"AddressResponseDTO": {
+				"required": ["city", "country", "state", "streetName", "streetNumber", "zip"],
+				"type": "object",
+				"properties": {
+					"streetNumber": {
+						"maxLength": 10,
+						"minLength": 0,
+						"type": "string",
+						"description": "The number of the property in the thoroughfare.  This can include letters.///",
+						"example": "4444"
+					},
+					"suite": {
+						"maxLength": 20,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name of the sub address such as suite, apartment, etc.",
+						"nullable": true,
+						"example": "Suite A"
+					},
+					"streetName": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name component of a thoroughfare including prefix and suffix.",
+						"example": "Hillcrest Ave"
+					},
+					"city": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The postal city name.",
+						"example": "Placentia"
+					},
+					"state": {
+						"maxLength": 20,
+						"minLength": 0,
+						"type": "string",
+						"description": "The two letter state code.",
+						"example": "CA"
+					},
+					"country": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The ISO country code.",
+						"example": "USA"
+					},
+					"zip": {
+						"maxLength": 20,
+						"minLength": 0,
+						"type": "string",
+						"description": "The Postal code.",
+						"example": "92870"
+					},
+					"rooftopLat": {
+						"maximum": 90,
+						"minimum": -90,
+						"type": "number",
+						"description": "Decimalized GPS latitude for location of property roof center.",
+						"format": "double",
+						"nullable": true,
+						"example": 33.883644
+					},
+					"rooftopLong": {
+						"maximum": 180,
+						"minimum": -180,
+						"type": "number",
+						"description": "Decimalized GPS longitude for location of property roof center.",
+						"format": "double",
+						"nullable": true,
+						"example": -117.8601
+					},
+					"totalUnits": {
+						"type": "integer",
+						"description": "The total units in the complex that this property is a part of.",
+						"format": "int32",
+						"nullable": true,
+						"example": 6
+					},
+					"isServiceable": {
+						"type": "boolean",
+						"description": "A Y or N indicating that the property is ready for installation.",
+						"nullable": true,
+						"example": true
+					},
+					"estimatedServiceableDate": {
+						"type": "string",
+						"description": "The date of order for a new service.",
+						"format": "date-time",
+						"nullable": true,
+						"example": "2020-02-01T13:00:00"
+					},
+					"primaryConnectionStatus": {
+						"maxLength": 20,
+						"minLength": 0,
+						"type": "string",
+						"nullable": true
+					},
+					"secondaryConnectionStatus": {
+						"maxLength": 20,
+						"minLength": 0,
+						"type": "string",
+						"nullable": true
+					},
+					"propertyType": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The in-service status of the property's primary conenction.\r\n                    \r\n                    Id       propertyType    privateYn    businessResidential    minUnits    maxUnits\r\n                   -1        Unknown             U                U                  0         9999\r\n                    1        MDU 3-12\t         Y                R                  3\t         12\r\n                    2        MDU 13-24\t         Y                R                 13           24\r\n                    3        MDU 25-36\t         Y                R                 25           36\r\n                    4        MDU 37-48\t         Y                R                 37           48\r\n                    5        MDU >48\t         Y                R                 49         9999\r\n                    6        HOA                 Y                R                  1         9999\r\n                    7        SFH                 N                R                  1            1\r\n                    8        Duplex residential  N                R                  2            2\r\n                    9        Duplex commercial   N                B                  2            2\r\n                    10       Single commercial   N                B                  1            1\r\n                    11       MBU                 Y                B                  2         9999\r\n                    12       Mixed               Y                NULL               2         9999\r\n                    13       Vacant lot          NULL             NULL               0            0\r\n                    14       Smart City Point    NULL             NULL               1         9999\r\n                    15       Other               NULL             NULL               0         9999",
+						"nullable": true,
+						"example": "SFH"
+					},
+					"isBusiness": {
+						"type": "boolean",
+						"description": "This property is classified as Commercial in Sifi's scheme.",
+						"nullable": true,
+						"example": true
+					},
+					"isResidential": {
+						"type": "boolean",
+						"description": "This property is classified as Residential in Sifi's scheme.",
+						"nullable": true,
+						"example": true
+					},
+					"isPrivateProperty": {
+						"type": "boolean",
+						"description": "This property is classified as residing in a privately managed area in Sifi's scheme.",
+						"nullable": true,
+						"example": true
+					},
+					"privateRecordId": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The Id of the private property that this address belongs to.  e.g. a gated community name.",
+						"nullable": true,
+						"example": "1234"
+					},
+					"privatePropertyName": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name (if available) of the private property that this address belongs to.  e.g. a gated community name.",
+						"nullable": true,
+						"example": "Golf Estates"
+					},
+					"hasCommercialQuote": {
+						"type": "boolean",
+						"description": "The last time this address record was modified.",
+						"nullable": true,
+						"example": true
+					},
+					"isCommercialQuoteRequired": {
+						"type": "boolean",
+						"description": "Verify description",
+						"nullable": true,
+						"example": true
+					},
+					"isRoERequired": {
+						"type": "boolean",
+						"description": "This property requires a Right of Entry agreement.",
+						"nullable": true,
+						"example": true
+					},
+					"hasRoE": {
+						"type": "boolean",
+						"description": "A flag indicating the property has a Right of Entry agreement.",
+						"nullable": true,
+						"example": true
+					},
+					"isTrenchRequired": {
+						"type": "boolean",
+						"description": "Verify description",
+						"nullable": true,
+						"example": true
+					},
+					"hasTrench": {
+						"type": "boolean",
+						"description": "The last time this address record was modified.",
+						"nullable": true,
+						"example": true
+					},
+					"lastModifiedDate": {
+						"type": "string",
+						"description": "The date this record was last updated.",
+						"format": "date-time",
+						"nullable": true,
+						"example": "2020-02-01T13:00:00"
+					},
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"standardizedAddress": {
+						"type": "string",
+						"description": "Concatenated address fields including street number, suite, streen name, county and zip.",
+						"nullable": true,
+						"example": "414 Hillcrest Ave, Placentia, CA, 92870, USA"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "Used for Get operations on Address."
+			},
+			"AddressSummaryLocationResponseDTO": {
+				"type": "object",
+				"properties": {
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"standardizedAddress": {
+						"type": "string",
+						"description": "Concatenated address fields including street number, suite, streen name, county and zip.",
+						"nullable": true,
+						"example": "414 Hillcrest Ave, Placentia, CA, 92870, USA"
+					},
+					"isPrivateProperty": {
+						"type": "boolean",
+						"nullable": true
+					},
+					"isServiceable": {
+						"type": "boolean",
+						"description": "A Y or N indicating that the property is ready for installation.",
+						"nullable": true,
+						"example": true
+					},
+					"rooftopLat": {
+						"type": "number",
+						"description": "Decimalized GPS latitude for location of property roof center.",
+						"format": "double",
+						"nullable": true,
+						"example": 33.883644
+					},
+					"rooftopLong": {
+						"type": "number",
+						"description": "Decimalized GPS longitude for location of property roof center.",
+						"format": "double",
+						"nullable": true,
+						"example": -117.8601
+					},
+					"totalUnits": {
+						"type": "integer",
+						"description": "The total units in the complex that this property is a part of.",
+						"format": "int32",
+						"nullable": true,
+						"example": 6
+					},
+					"estimatedServiceableDate": {
+						"type": "string",
+						"description": "The date of order for a new service.",
+						"format": "date-time",
+						"nullable": true,
+						"example": "2020-02-01T13:00:00"
+					},
+					"lastUpdatedDate": {
+						"type": "string",
+						"description": "The date this record was last updated.",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"AddressSummaryLocationResponseDTOPagedResponse": {
+				"type": "object",
+				"properties": {
+					"currentPage": {
+						"type": "integer",
+						"description": "The current page number being returned.",
+						"format": "int32"
+					},
+					"totalItems": {
+						"type": "integer",
+						"description": "The total number of items matching the query search and filters.",
+						"format": "int64"
+					},
+					"totalPages": {
+						"type": "integer",
+						"description": "The total page count.",
+						"format": "int32"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AddressSummaryLocationResponseDTO"
+						},
+						"description": "Result rows",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to other neighboring pages.",
+						"nullable": true
+					},
+					"pageSize": {
+						"type": "integer",
+						"description": "The current page size.",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"description": "This paged response which includes a page summary plus a set of items"
+			},
+			"AppointmentRequestDetailsDTO": {
+				"required": [
+					"installContactEmail",
+					"installContactName",
+					"installContactPhone",
+					"installServiceId",
+					"startTime",
+					"timeZone"
+				],
+				"type": "object",
+				"properties": {
+					"installServiceId": {
+						"maxLength": 36,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name of the calendar in the booking service",
+						"example": "BFC55AE8-2AA5-49E1-9256-87A477890C6E"
+					},
+					"startTime": {
+						"type": "string",
+						"description": "The start time of the slot",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"timeZone": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The local IANA Timezone.",
+						"example": "America/Los_Angeles"
+					},
+					"installContactName": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name of the address contact for installation appointments.",
+						"example": "Firstname Lastname"
+					},
+					"installContactEmail": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "The Email of the address contact for installation appointments.",
+						"format": "email",
+						"example": "Firstname.Lastname@email.com"
+					},
+					"installContactPhone": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The contact phone number for installation appointments.",
+						"example": "206-123-1234"
+					}
+				},
+				"additionalProperties": false,
+				"description": "The details of a booking appointment request."
+			},
+			"AppointmentResponseDTO": {
+				"required": [
+					"installContactEmail",
+					"installContactName",
+					"installContactPhone",
+					"installServiceId",
+					"startTime",
+					"timeZone"
+				],
+				"type": "object",
+				"properties": {
+					"installServiceId": {
+						"maxLength": 36,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name of the calendar in the booking service",
+						"example": "BFC55AE8-2AA5-49E1-9256-87A477890C6E"
+					},
+					"startTime": {
+						"type": "string",
+						"description": "The start time of the slot",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"timeZone": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The local IANA Timezone.",
+						"example": "America/Los_Angeles"
+					},
+					"installContactName": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "The name of the address contact for installation appointments.",
+						"example": "Firstname Lastname"
+					},
+					"installContactEmail": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "The Email of the address contact for installation appointments.",
+						"format": "email",
+						"example": "Firstname.Lastname@email.com"
+					},
+					"installContactPhone": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"description": "The contact phone number for installation appointments.",
+						"example": "206-123-1234"
+					},
+					"appointmentId": {
+						"type": "integer",
+						"description": "The internal ID of a booking appointment.",
+						"format": "int64"
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"addressSummary": {
+						"type": "string",
+						"description": "Concatenated address fields including street number, suite, streen name, county and zip.",
+						"nullable": true,
+						"example": "414 Hillcrest Ave, Placentia, CA, 92870, USA"
+					},
+					"serviceRequestId": {
+						"type": "string",
+						"description": "The Id of the service order.",
+						"nullable": true,
+						"example": "PICA-SR-0091-0001"
+					},
+					"installServiceName": {
+						"type": "string",
+						"nullable": true
+					},
+					"durationInHours": {
+						"type": "integer",
+						"description": "The duration of the service type.",
+						"format": "int32",
+						"example": 4
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"AppointmentResponseDTOPagedResponse": {
+				"type": "object",
+				"properties": {
+					"currentPage": {
+						"type": "integer",
+						"description": "The current page number being returned.",
+						"format": "int32"
+					},
+					"totalItems": {
+						"type": "integer",
+						"description": "The total number of items matching the query search and filters.",
+						"format": "int64"
+					},
+					"totalPages": {
+						"type": "integer",
+						"description": "The total page count.",
+						"format": "int32"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AppointmentResponseDTO"
+						},
+						"description": "Result rows",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to other neighboring pages.",
+						"nullable": true
+					},
+					"pageSize": {
+						"type": "integer",
+						"description": "The current page size.",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"description": "This paged response which includes a page summary plus a set of items"
+			},
+			"AppointmentSlot": {
+				"required": ["installServiceId", "timeZone"],
+				"type": "object",
+				"properties": {
+					"installServiceId": {
+						"type": "string",
+						"description": "The name of the calendar in the booking service",
+						"example": "BFC55AE8-2AA5-49E1-9256-87A477890C6E"
+					},
+					"startTime": {
+						"type": "string",
+						"description": "The start time of the slot",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"timeZone": {
+						"type": "string",
+						"description": "The local IANA Timezone.",
+						"example": "America/Los_Angeles"
+					},
+					"durationInHours": {
+						"maximum": 4,
+						"minimum": 1,
+						"type": "integer",
+						"description": "The duration of the service type.",
+						"format": "int32",
+						"example": 4
+					},
+					"isAvailable": {
+						"type": "boolean",
+						"description": "The availability of the booking slot being returned.",
+						"example": false
+					},
+					"numberAppointmentsAvailable": {
+						"type": "integer",
+						"description": "The availability of the booking slot being returned.",
+						"format": "int32",
+						"example": false
+					}
+				},
+				"additionalProperties": false,
+				"description": "Information about an available appointment slot."
+			},
+			"AppointmentSlotResponse": {
+				"type": "object",
+				"properties": {
+					"appointmentSlot": {
+						"$ref": "#/components/schemas/AppointmentSlot"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "The appointment slot data plus links returned in a list of available appointments"
+			},
+			"AppointmentSummaryResponseDTO": {
+				"required": ["durationInHours", "installServiceId", "installServiceName", "startTime", "timeZone"],
+				"type": "object",
+				"properties": {
+					"appointmentId": {
+						"type": "integer",
+						"description": "The internal ID of a booking appointment.",
+						"format": "int64"
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"installContactName": {
+						"type": "string",
+						"description": "The name of the address contact for installation appointments.",
+						"nullable": true,
+						"example": "Firstname Lastname"
+					},
+					"addressSummary": {
+						"type": "string",
+						"nullable": true
+					},
+					"serviceRequestId": {
+						"type": "string",
+						"description": "The Id of the service order.",
+						"nullable": true,
+						"example": "PICA-SR-0091-0001"
+					},
+					"installServiceId": {
+						"type": "string",
+						"description": "The name of the calendar in the booking service",
+						"example": "BFC55AE8-2AA5-49E1-9256-87A477890C6E"
+					},
+					"installServiceName": {
+						"type": "string",
+						"description": "The unique ID of the install service type.",
+						"example": "Installation"
+					},
+					"startTime": {
+						"type": "string",
+						"description": "The start time of the slot",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"durationInHours": {
+						"type": "integer",
+						"description": "The duration of the service type.",
+						"format": "int32",
+						"example": 4
+					},
+					"timeZone": {
+						"type": "string",
+						"description": "The local IANA Timezone.",
+						"example": "America/Los_Angeles"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"AppointmentSummaryResponseDTOPagedResponse": {
+				"type": "object",
+				"properties": {
+					"currentPage": {
+						"type": "integer",
+						"description": "The current page number being returned.",
+						"format": "int32"
+					},
+					"totalItems": {
+						"type": "integer",
+						"description": "The total number of items matching the query search and filters.",
+						"format": "int64"
+					},
+					"totalPages": {
+						"type": "integer",
+						"description": "The total page count.",
+						"format": "int32"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AppointmentSummaryResponseDTO"
+						},
+						"description": "Result rows",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to other neighboring pages.",
+						"nullable": true
+					},
+					"pageSize": {
+						"type": "integer",
+						"description": "The current page size.",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"description": "This paged response which includes a page summary plus a set of items"
+			},
+			"AppointmentUpdateRequestDTO": {
+				"type": "object",
+				"properties": {
+					"installContactName": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"nullable": true
+					},
+					"installContactEmail": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"format": "email",
+						"nullable": true
+					},
+					"installContactPhone": {
+						"maxLength": 50,
+						"minLength": 0,
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"FiberCityAvailableAppointmentsDTO": {
+				"type": "object",
+				"properties": {
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"appointmentSlots": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/AppointmentSlotResponse"
+						},
+						"description": "List of available appointment slots.",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "The list of appointements available to book."
+			},
+			"FiberCityResponseDTO": {
+				"required": [
+					"cityIdentifier",
+					"cityName",
+					"cityStatus",
+					"country",
+					"county",
+					"fiberCityCode",
+					"fiberCityId",
+					"locode",
+					"municipality",
+					"state"
+				],
+				"type": "object",
+				"properties": {
+					"cityName": {
+						"type": "string",
+						"description": "The name of the lead city.",
+						"example": "Placentia"
+					},
+					"cityIdentifier": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"example": "PICA"
+					},
+					"locode": {
+						"type": "string",
+						"description": "The location code of the city.",
+						"example": "USPBG"
+					},
+					"fiberCityCode": {
+						"type": "string",
+						"description": "The internal city code",
+						"example": "P192CA"
+					},
+					"municipality": {
+						"type": "string",
+						"description": "The official name of the governing municipality (township, town, city, etc)",
+						"example": "City of Placentia"
+					},
+					"state": {
+						"type": "string",
+						"description": "The two letter state code.",
+						"example": "CA"
+					},
+					"county": {
+						"type": "string",
+						"description": "The official of the county",
+						"example": "LA County"
+					},
+					"country": {
+						"type": "string",
+						"description": "The ISO country code.",
+						"example": "USA"
+					},
+					"cityStatus": {
+						"type": "string",
+						"description": "City Status.\r\n                    \r\n                    Id status\r\n                    1   Dormant\r\n                    2   Stage 1 in progress\r\n                    3   Stage 2 in progress\r\n                    4   Stage 3 in progress\r\n                    5   Engineering Design Complete\r\n                    6   Live",
+						"example": "6"
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"example": "PICA"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "Used for Get operations on Fiber City."
+			},
+			"FiberCitySummaryResponseDto": {
+				"required": ["cityStatus"],
+				"type": "object",
+				"properties": {
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"cityName": {
+						"type": "string",
+						"description": "The name of the lead city.",
+						"nullable": true,
+						"example": "Placentia"
+					},
+					"state": {
+						"type": "string",
+						"description": "The two letter state code.",
+						"nullable": true,
+						"example": "CA"
+					},
+					"cityStatus": {
+						"type": "string",
+						"description": "City Status.\r\n                    \r\n                    Id status\r\n                    1   Dormant\r\n                    2   Stage 1 in progress\r\n                    3   Stage 2 in progress\r\n                    4   Stage 3 in progress\r\n                    5   Engineering Design Complete\r\n                    6   Live",
+						"example": "6"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"FiberCitySummaryResponseDtoPagedResponse": {
+				"type": "object",
+				"properties": {
+					"currentPage": {
+						"type": "integer",
+						"description": "The current page number being returned.",
+						"format": "int32"
+					},
+					"totalItems": {
+						"type": "integer",
+						"description": "The total number of items matching the query search and filters.",
+						"format": "int64"
+					},
+					"totalPages": {
+						"type": "integer",
+						"description": "The total page count.",
+						"format": "int32"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/FiberCitySummaryResponseDto"
+						},
+						"description": "Result rows",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to other neighboring pages.",
+						"nullable": true
+					},
+					"pageSize": {
+						"type": "integer",
+						"description": "The current page size.",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"description": "This paged response which includes a page summary plus a set of items"
+			},
+			"IContractResolver": {
+				"type": "object",
+				"additionalProperties": false
+			},
+			"InstallServiceResponseDTO": {
+				"type": "object",
+				"properties": {
+					"installServiceId": {
+						"type": "string",
+						"description": "The name of the calendar in the booking service",
+						"nullable": true,
+						"example": "BFC55AE8-2AA5-49E1-9256-87A477890C6E"
+					},
+					"installServiceName": {
+						"type": "string",
+						"description": "The unique ID of the install service type.",
+						"nullable": true,
+						"example": "Installation"
+					},
+					"description": {
+						"type": "string",
+						"description": "The unique ID of the install service type.",
+						"nullable": true,
+						"example": "Full Distribution and ONT Install service"
+					},
+					"durationInHours": {
+						"type": "integer",
+						"description": "The duration of the service type.",
+						"format": "int32",
+						"nullable": true,
+						"example": 4
+					}
+				},
+				"additionalProperties": false
+			},
+			"JsonPatchDocument": {
+				"type": "array",
+				"items": {
+					"$ref": "#/components/schemas/Operation"
+				},
+				"description": "Array of operations to perform"
+			},
+			"LinkedResource": {
+				"type": "object",
+				"properties": {
+					"href": {
+						"type": "string",
+						"nullable": true
+					},
+					"title": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"LinkedResourceTypeLinkedResourceKeyValuePair": {
+				"type": "object",
+				"properties": {
+					"key": {
+						"enum": [
+							"None",
+							"PrevPage",
+							"NextPage",
+							"Self",
+							"Detail",
+							"Create",
+							"Update",
+							"Delete",
+							"Rel",
+							"ParentRel"
+						],
+						"type": "string"
+					},
+					"value": {
+						"$ref": "#/components/schemas/LinkedResource"
+					}
+				},
+				"additionalProperties": false
+			},
+			"Operation": {
+				"type": "object",
+				"properties": {
+					"op": {
+						"type": "string"
+					},
+					"value": {
+						"type": "string"
+					},
+					"path": {
+						"type": "string"
+					}
+				}
+			},
+			"ProblemDetails": {
+				"type": "object",
+				"properties": {
+					"type": {
+						"type": "string",
+						"nullable": true
+					},
+					"title": {
+						"type": "string",
+						"nullable": true
+					},
+					"status": {
+						"type": "integer",
+						"format": "int32",
+						"nullable": true
+					},
+					"detail": {
+						"type": "string",
+						"nullable": true
+					},
+					"instance": {
+						"type": "string",
+						"nullable": true
+					}
+				},
+				"additionalProperties": {}
+			},
+			"ProvisionedServiceResponseDTO": {
+				"type": "object",
+				"properties": {
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"standardizedAddress": {
+						"type": "string",
+						"description": "Concatenated address fields including street number, suite, streen name, county and zip.",
+						"nullable": true,
+						"example": "414 Hillcrest Ave, Placentia, CA, 92870, USA"
+					},
+					"isBusiness": {
+						"type": "boolean",
+						"description": "This property is classified as Commercial in Sifi's scheme.",
+						"example": true
+					},
+					"provisionedServiceId": {
+						"type": "string",
+						"description": "The Id of the service order.",
+						"nullable": true,
+						"example": "PICA-PS-0000-0001"
+					},
+					"serviceProviderId": {
+						"type": "integer",
+						"description": "The id of the service provider (though we will get this from the credentials.",
+						"format": "int64"
+					},
+					"serviceProviderName": {
+						"type": "string",
+						"description": "The id of the service provider (though we will get this from the credentials.",
+						"nullable": true,
+						"example": "ISP ID"
+					},
+					"serviceRequestId": {
+						"type": "string",
+						"nullable": true
+					},
+					"serviceRequestStatusId": {
+						"type": "integer",
+						"description": "The status id of the service request.             \r\n                    \r\n                    Id   name\r\n                    0    New\r\n                    100  Held\r\n                    200  Order Pending Schedule\r\n                    250  Order Pending Direct Install\r\n                    300  Order Pending Deployment\r\n                    350  Deploying Direct\r\n                    400  Scheduled Pending Install\r\n                    500  Installed Pending Deployment\r\n                    550  Deploying\r\n                    600  Live\r\n                    700  Order Pending Cancellation\r\n                    800  Cancelled\r\n                    900  Service Pending Termination\r\n                    1000 Terminated",
+						"format": "int32",
+						"example": 0
+					},
+					"serviceRequestStatusName": {
+						"type": "string",
+						"description": "The status name of the service request.\r\n                    \r\n                    Id   name\r\n                    0    New\r\n                    100  Held\r\n                    200  Order Pending Schedule\r\n                    250  Order Pending Direct Install\r\n                    300  Order Pending Deployment\r\n                    350  Deploying Direct\r\n                    400  Scheduled Pending Install\r\n                    500  Installed Pending Deployment\r\n                    550  Deploying\r\n                    600  Live\r\n                    700  Order Pending Cancellation\r\n                    800  Cancelled\r\n                    900  Service Pending Termination\r\n                    1000 Terminated",
+						"nullable": true,
+						"example": "New"
+					},
+					"connectionNumber": {
+						"type": "integer",
+						"description": "The connection number to the property.  Normally 1 but can be 2 if this is the second line for a business.",
+						"format": "int32",
+						"nullable": true,
+						"example": 1
+					},
+					"serviceTypeName": {
+						"type": "string",
+						"description": "The name of the service type that can be implemented on a fiber service.",
+						"nullable": true,
+						"example": "INTERNET_SERVICE"
+					},
+					"serviceSubTypeName": {
+						"type": "string",
+						"description": "Each service type has a set of sub types that define the stack that will be deployed.\r\n                    \r\n                    Id  name\r\n                    0   BUILT_IN_WIFI\r\n                    1   EXTERNAL_DEVICE\r\n                    2   EXTERNAL_DEVICE_WITH_VOICE",
+						"nullable": true,
+						"example": "BUILT_IN_WIFI"
+					},
+					"serviceTierName": {
+						"type": "string",
+						"description": "The SLA tier name for the ISP's customer.  \r\n                    \r\n                    serviceTierId\tserviceTier\r\n                    0   NONE\r\n                    10  BRONZE\r\n                    20  SILVER\r\n                    30  GOLD\r\n                    40  PLATINUM",
+						"nullable": true,
+						"example": "BRONZE"
+					},
+					"templateName": {
+						"type": "string",
+						"description": "The deployed template name.",
+						"nullable": true,
+						"example": "SIFI_XGS_RG_STACK"
+					},
+					"ontSerialNumber": {
+						"type": "string",
+						"description": "The ONT serial number.",
+						"nullable": true,
+						"example": "ALCLFC7BD001"
+					},
+					"ontEquippedType": {
+						"type": "string",
+						"description": "The ONT device model is use.            \r\n                    \r\n                G-240W-B    (Nokia Legacy 1.25GBps ONT),\r\n                XS-2426G-A  (Nokia 1G lan-side, 4 x 10G network side ONT),\r\n                XS-2426X-A  (Nokia 1 x 10G & 4 x 1G lan-side ports, 10G network-side ONT).",
+						"nullable": true,
+						"example": "XS-2426X-A"
+					},
+					"speedInMbps": {
+						"type": "integer",
+						"description": "The speed requested in Mbps and 1000 = 1G.\r\n                \r\n                1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, \r\n                200, 250, 300, 400, 500, 600, 700, 750, 800, 900, 1000, \r\n                *2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000\r\n                *Speeds above 1GB supported by XS-2426X-A devices only.",
+						"format": "int32",
+						"nullable": true,
+						"example": 1000
+					},
+					"wifiSsid": {
+						"type": "string",
+						"description": "For services that include wifi, the requested SSID of that network.  Must be null for non HSI services.",
+						"nullable": true,
+						"example": "MY_SSID"
+					},
+					"wifiPassphrase": {
+						"type": "string",
+						"description": "For services that include wifi, the requested passphrase for the network.  Must be null for non HSI services.",
+						"nullable": true,
+						"example": "Pass Phrase"
+					},
+					"customerVlanIdH": {
+						"type": "integer",
+						"description": "Customer side vlan tag for HSI traffic.",
+						"format": "int32",
+						"nullable": true,
+						"example": 4093
+					},
+					"customerVlanIdV": {
+						"type": "integer",
+						"description": "Customer side vlan tag for Voice traffic.",
+						"format": "int32",
+						"nullable": true,
+						"example": 2001
+					},
+					"dhcP82RemoteIdH": {
+						"type": "string",
+						"description": "For HSI traffic, the \"RemoteId\" value of the DHCP Option 82 setting, provided by the ISP.",
+						"nullable": true,
+						"example": "RemoteId"
+					},
+					"dhcP82RemoteIdV": {
+						"type": "string",
+						"description": "For Voice traffic, the \"RemoteId\" value of the DHCP Option 82 setting, provided by the ISP.",
+						"nullable": true,
+						"example": "RemoteId"
+					},
+					"hasISPSuppliedGateway": {
+						"type": "boolean",
+						"description": "Flag to indeicate that the property has an ISP supplied gateway device.",
+						"nullable": true,
+						"example": false
+					},
+					"lastUpdatedDate": {
+						"type": "string",
+						"description": "The date this record was last updated.",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"cvlan": {
+						"type": "integer",
+						"description": "Network side C-vlan id for HSI.  This is null until the address has been assigned to a cabinet.",
+						"format": "int32",
+						"nullable": true,
+						"example": 1903
+					},
+					"svlan": {
+						"type": "integer",
+						"description": "Network side S-vlan id for HSI.  This is null until the address has been assigned to a cabinet.",
+						"format": "int32",
+						"nullable": true
+					},
+					"cvlanV": {
+						"type": "integer",
+						"description": "Network side c-vlan for Voice traffic.",
+						"format": "int32",
+						"nullable": true
+					},
+					"svlanV": {
+						"type": "integer",
+						"description": "Network side s-vlan for Voice traffic.",
+						"format": "int32",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "Enables the client to get the details of the fiber service.  This DTO is used for Get operations."
+			},
+			"ProvisionedServiceUpdateDTO": {
+				"required": ["wifiPassphrase", "wifiSsid"],
+				"type": "object",
+				"properties": {
+					"wifiSsid": {
+						"maxLength": 64,
+						"minLength": 2,
+						"type": "string",
+						"description": "For services that include wifi, the requested SSID of that network.  Must be null for non HSI services.",
+						"example": "MY_SSID"
+					},
+					"wifiPassphrase": {
+						"maxLength": 63,
+						"minLength": 8,
+						"type": "string",
+						"description": "For services that include wifi, the requested passphrase for the network.  Must be null for non HSI services.",
+						"example": "Pass Phrase"
+					}
+				},
+				"additionalProperties": false,
+				"description": "The allowable things an ISP can update on an existing service."
+			},
+			"ServiceRequestDTO": {
+				"required": ["connectionNumber", "serviceSubTypeName", "serviceTierName", "serviceTypeName", "speedInMbps"],
+				"type": "object",
+				"properties": {
+					"serviceTypeName": {
+						"type": "string",
+						"description": "The name of the service type that can be implemented on a fiber service.",
+						"example": "INTERNET_SERVICE"
+					},
+					"serviceSubTypeName": {
+						"type": "string",
+						"description": "Each service type has a set of sub types that define the stack that will be deployed.\r\n                    \r\n                    Id  name\r\n                    0   BUILT_IN_WIFI\r\n                    1   EXTERNAL_DEVICE\r\n                    2   EXTERNAL_DEVICE_WITH_VOICE",
+						"example": "BUILT_IN_WIFI"
+					},
+					"serviceTierName": {
+						"type": "string",
+						"description": "The SLA tier name for the ISP's customer.  \r\n                    \r\n                    serviceTierId\tserviceTier\r\n                    0   NONE\r\n                    10  BRONZE\r\n                    20  SILVER\r\n                    30  GOLD\r\n                    40  PLATINUM",
+						"example": "BRONZE"
+					},
+					"connectionNumber": {
+						"maximum": 2,
+						"minimum": 1,
+						"type": "integer",
+						"description": "The connection number to the property.  Normally 1 but can be 2 if this is the second line for a business.",
+						"format": "int32",
+						"example": 1
+					},
+					"ispCustomerNumber": {
+						"maxLength": 5,
+						"minLength": 0,
+						"type": "string",
+						"description": "(Deprecated) the customer number that is used to calculate th SVLan in the V1 system.",
+						"nullable": true,
+						"example": "12345"
+					},
+					"speedInMbps": {
+						"type": "integer",
+						"description": "The speed requested in Mbps and 1000 = 1G.\r\n                \r\n                1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, \r\n                200, 250, 300, 400, 500, 600, 700, 750, 800, 900, 1000, \r\n                *2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000\r\n                *Speeds above 1GB supported by XS-2426X-A devices only.",
+						"format": "int32",
+						"example": 1000
+					},
+					"wifiSsid": {
+						"maxLength": 64,
+						"minLength": 2,
+						"type": "string",
+						"description": "For services that include wifi, the requested SSID of that network.  Must be null for non HSI services.",
+						"nullable": true,
+						"example": "MY_SSID"
+					},
+					"wifiPassphrase": {
+						"maxLength": 63,
+						"minLength": 8,
+						"type": "string",
+						"description": "For services that include wifi, the requested passphrase for the network.  Must be null for non HSI services.",
+						"nullable": true,
+						"example": "Pass Phrase"
+					},
+					"customerVlanIdH": {
+						"type": "integer",
+						"description": "Customer side vlan tag for HSI traffic.",
+						"format": "int32",
+						"nullable": true,
+						"example": 4093
+					},
+					"customerVlanIdV": {
+						"type": "integer",
+						"description": "Customer side vlan tag for Voice traffic.",
+						"format": "int32",
+						"nullable": true,
+						"example": 2001
+					},
+					"dhcP82RemoteIdH": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "For HSI traffic, the \"RemoteId\" value of the DHCP Option 82 setting, provided by the ISP.",
+						"nullable": true,
+						"example": "RemoteId"
+					},
+					"dhcP82RemoteIdV": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "For Voice traffic, the \"RemoteId\" value of the DHCP Option 82 setting, provided by the ISP.",
+						"nullable": true,
+						"example": "RemoteId"
+					},
+					"hasISPSuppliedGateway": {
+						"type": "boolean",
+						"description": "Flag to indeicate that the property has an ISP supplied gateway device.",
+						"nullable": true,
+						"example": false
+					}
+				},
+				"additionalProperties": false,
+				"description": "DTO to post a new Service Request.."
+			},
+			"ServiceRequestResponseDTO": {
+				"required": ["connectionNumber", "serviceSubTypeName", "serviceTierName", "serviceTypeName", "speedInMbps"],
+				"type": "object",
+				"properties": {
+					"serviceTypeName": {
+						"type": "string",
+						"description": "The name of the service type that can be implemented on a fiber service.",
+						"example": "INTERNET_SERVICE"
+					},
+					"serviceSubTypeName": {
+						"type": "string",
+						"description": "Each service type has a set of sub types that define the stack that will be deployed.\r\n                    \r\n                    Id  name\r\n                    0   BUILT_IN_WIFI\r\n                    1   EXTERNAL_DEVICE\r\n                    2   EXTERNAL_DEVICE_WITH_VOICE",
+						"example": "BUILT_IN_WIFI"
+					},
+					"serviceTierName": {
+						"type": "string",
+						"description": "The SLA tier name for the ISP's customer.  \r\n                    \r\n                    serviceTierId\tserviceTier\r\n                    0   NONE\r\n                    10  BRONZE\r\n                    20  SILVER\r\n                    30  GOLD\r\n                    40  PLATINUM",
+						"example": "BRONZE"
+					},
+					"connectionNumber": {
+						"maximum": 2,
+						"minimum": 1,
+						"type": "integer",
+						"description": "The connection number to the property.  Normally 1 but can be 2 if this is the second line for a business.",
+						"format": "int32",
+						"example": 1
+					},
+					"ispCustomerNumber": {
+						"maxLength": 5,
+						"minLength": 0,
+						"type": "string",
+						"description": "(Deprecated) the customer number that is used to calculate th SVLan in the V1 system.",
+						"nullable": true,
+						"example": "12345"
+					},
+					"speedInMbps": {
+						"type": "integer",
+						"description": "The speed requested in Mbps and 1000 = 1G.\r\n                \r\n                1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, \r\n                200, 250, 300, 400, 500, 600, 700, 750, 800, 900, 1000, \r\n                *2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000\r\n                *Speeds above 1GB supported by XS-2426X-A devices only.",
+						"format": "int32",
+						"example": 1000
+					},
+					"wifiSsid": {
+						"maxLength": 64,
+						"minLength": 2,
+						"type": "string",
+						"description": "For services that include wifi, the requested SSID of that network.  Must be null for non HSI services.",
+						"nullable": true,
+						"example": "MY_SSID"
+					},
+					"wifiPassphrase": {
+						"maxLength": 63,
+						"minLength": 8,
+						"type": "string",
+						"description": "For services that include wifi, the requested passphrase for the network.  Must be null for non HSI services.",
+						"nullable": true,
+						"example": "Pass Phrase"
+					},
+					"customerVlanIdH": {
+						"type": "integer",
+						"description": "Customer side vlan tag for HSI traffic.",
+						"format": "int32",
+						"nullable": true,
+						"example": 4093
+					},
+					"customerVlanIdV": {
+						"type": "integer",
+						"description": "Customer side vlan tag for Voice traffic.",
+						"format": "int32",
+						"nullable": true,
+						"example": 2001
+					},
+					"dhcP82RemoteIdH": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "For HSI traffic, the \"RemoteId\" value of the DHCP Option 82 setting, provided by the ISP.",
+						"nullable": true,
+						"example": "RemoteId"
+					},
+					"dhcP82RemoteIdV": {
+						"maxLength": 100,
+						"minLength": 0,
+						"type": "string",
+						"description": "For Voice traffic, the \"RemoteId\" value of the DHCP Option 82 setting, provided by the ISP.",
+						"nullable": true,
+						"example": "RemoteId"
+					},
+					"hasISPSuppliedGateway": {
+						"type": "boolean",
+						"description": "Flag to indeicate that the property has an ISP supplied gateway device.",
+						"nullable": true,
+						"example": false
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"serviceProviderName": {
+						"type": "string",
+						"description": "The id of the service provider (though we will get this from the credentials.",
+						"nullable": true,
+						"example": "ISP ID"
+					},
+					"serviceRequestId": {
+						"type": "string",
+						"description": "The Id of the service order.",
+						"nullable": true,
+						"example": "PICA-SR-0091-0001"
+					},
+					"serviceRequestStatusId": {
+						"type": "integer",
+						"description": "The status id of the service request.             \r\n                    \r\n                    Id   name\r\n                    0    New\r\n                    100  Held\r\n                    200  Order Pending Schedule\r\n                    250  Order Pending Direct Install\r\n                    300  Order Pending Deployment\r\n                    350  Deploying Direct\r\n                    400  Scheduled Pending Install\r\n                    500  Installed Pending Deployment\r\n                    550  Deploying\r\n                    600  Live\r\n                    700  Order Pending Cancellation\r\n                    800  Cancelled\r\n                    900  Service Pending Termination\r\n                    1000 Terminated",
+						"format": "int32",
+						"example": 0
+					},
+					"serviceRequestStatusName": {
+						"type": "string",
+						"description": "The status name of the service request.\r\n                    \r\n                    Id   name\r\n                    0    New\r\n                    100  Held\r\n                    200  Order Pending Schedule\r\n                    250  Order Pending Direct Install\r\n                    300  Order Pending Deployment\r\n                    350  Deploying Direct\r\n                    400  Scheduled Pending Install\r\n                    500  Installed Pending Deployment\r\n                    550  Deploying\r\n                    600  Live\r\n                    700  Order Pending Cancellation\r\n                    800  Cancelled\r\n                    900  Service Pending Termination\r\n                    1000 Terminated",
+						"nullable": true,
+						"example": "New"
+					},
+					"isBusiness": {
+						"type": "boolean",
+						"description": "This property is classified as Commercial in Sifi's scheme.",
+						"nullable": true,
+						"example": true
+					},
+					"svlan": {
+						"type": "integer",
+						"description": "Network side S-vlan id for HSI.  This is null until the address has been assigned to a cabinet.",
+						"format": "int32",
+						"nullable": true
+					},
+					"cvlan": {
+						"type": "integer",
+						"description": "Network side C-vlan id for HSI.  This is null until the address has been assigned to a cabinet.",
+						"format": "int32",
+						"nullable": true,
+						"example": 1903
+					},
+					"orderDate": {
+						"type": "string",
+						"description": "The date of order for a new service.",
+						"format": "date-time",
+						"nullable": true,
+						"example": "2020-02-01T13:00:00"
+					},
+					"lastUpdatedDate": {
+						"type": "string",
+						"description": "The date this record was last updated.",
+						"format": "date-time",
+						"example": "2020-02-01T13:00:00"
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "DTO to return full Fiber Service Request information for a specific request.  Includes properties from ServiceRequestDTO."
+			},
+			"ServiceRequestSummaryResponseDto": {
+				"type": "object",
+				"properties": {
+					"serviceRequestId": {
+						"type": "string",
+						"description": "The Id of the service order.",
+						"nullable": true,
+						"example": "PICA-SR-0091-0001"
+					},
+					"fiberCityId": {
+						"type": "string",
+						"description": "The ID of  the city that hosts the fiber network.",
+						"nullable": true,
+						"example": "PICA"
+					},
+					"addressId": {
+						"type": "string",
+						"description": "The unique ID of an address within a city.",
+						"nullable": true,
+						"example": "PLCA-AD-1"
+					},
+					"addressSummary": {
+						"type": "string",
+						"description": "Concatenated address fields including street number, suite, streen name, county and zip.",
+						"nullable": true,
+						"example": "414 Hillcrest Ave, Placentia, CA, 92870, USA"
+					},
+					"connectionNumber": {
+						"type": "integer",
+						"description": "The connection ID for the service.  Most addresses have only 1 but businesses could have 2 connections at the same address.",
+						"format": "int32",
+						"example": 0
+					},
+					"isBusiness": {
+						"type": "boolean",
+						"description": "This property is classified as Commercial in Sifi's scheme.",
+						"example": true
+					},
+					"serviceRequestStatusId": {
+						"type": "integer",
+						"description": "The status id of the service request.             \r\n                    \r\n                    Id   name\r\n                    0    New\r\n                    100  Held\r\n                    200  Order Pending Schedule\r\n                    250  Order Pending Direct Install\r\n                    300  Order Pending Deployment\r\n                    350  Deploying Direct\r\n                    400  Scheduled Pending Install\r\n                    500  Installed Pending Deployment\r\n                    550  Deploying\r\n                    600  Live\r\n                    700  Order Pending Cancellation\r\n                    800  Cancelled\r\n                    900  Service Pending Termination\r\n                    1000 Terminated",
+						"format": "int32",
+						"example": 0
+					},
+					"serviceRequestStatusName": {
+						"type": "string",
+						"description": "The status name of the service request.\r\n                    \r\n                    Id   name\r\n                    0    New\r\n                    100  Held\r\n                    200  Order Pending Schedule\r\n                    250  Order Pending Direct Install\r\n                    300  Order Pending Deployment\r\n                    350  Deploying Direct\r\n                    400  Scheduled Pending Install\r\n                    500  Installed Pending Deployment\r\n                    550  Deploying\r\n                    600  Live\r\n                    700  Order Pending Cancellation\r\n                    800  Cancelled\r\n                    900  Service Pending Termination\r\n                    1000 Terminated",
+						"nullable": true,
+						"example": "New"
+					},
+					"serviceTypeName": {
+						"type": "string",
+						"nullable": true
+					},
+					"serviceSubTypeName": {
+						"type": "string",
+						"description": "Each service type has a set of sub types that define the stack that will be deployed.\r\n                    \r\n                    Id  name\r\n                    0   BUILT_IN_WIFI\r\n                    1   EXTERNAL_DEVICE\r\n                    2   EXTERNAL_DEVICE_WITH_VOICE",
+						"nullable": true,
+						"example": "BUILT_IN_WIFI"
+					},
+					"serviceTierName": {
+						"type": "string",
+						"description": "The SLA tier name for the ISP's customer.  \r\n                    \r\n                    serviceTierId\tserviceTier\r\n                    0   NONE\r\n                    10  BRONZE\r\n                    20  SILVER\r\n                    30  GOLD\r\n                    40  PLATINUM",
+						"nullable": true,
+						"example": "BRONZE"
+					},
+					"speedInMbps": {
+						"type": "integer",
+						"description": "The speed requested in Mbps and 1000 = 1G.\r\n                \r\n                1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, \r\n                200, 250, 300, 400, 500, 600, 700, 750, 800, 900, 1000, \r\n                *2000, 2500, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000\r\n                *Speeds above 1GB supported by XS-2426X-A devices only.",
+						"format": "int32",
+						"nullable": true,
+						"example": 1000
+					},
+					"svlan": {
+						"type": "integer",
+						"description": "Network side S-vlan id for HSI.  This is null until the address has been assigned to a cabinet.",
+						"format": "int32",
+						"nullable": true
+					},
+					"cvlan": {
+						"type": "integer",
+						"description": "Network side C-vlan id for HSI.  This is null until the address has been assigned to a cabinet.",
+						"format": "int32",
+						"nullable": true,
+						"example": 1903
+					},
+					"orderDate": {
+						"type": "string",
+						"description": "The date of order for a new service.",
+						"format": "date-time",
+						"nullable": true,
+						"example": "2020-02-01T13:00:00"
+					},
+					"lastUpdatedDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to related records",
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "To support returning a list of orders based on a filter.  Normally wrapped in a PagedResponse object."
+			},
+			"ServiceRequestSummaryResponseDtoPagedResponse": {
+				"type": "object",
+				"properties": {
+					"currentPage": {
+						"type": "integer",
+						"description": "The current page number being returned.",
+						"format": "int32"
+					},
+					"totalItems": {
+						"type": "integer",
+						"description": "The total number of items matching the query search and filters.",
+						"format": "int64"
+					},
+					"totalPages": {
+						"type": "integer",
+						"description": "The total page count.",
+						"format": "int32"
+					},
+					"items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ServiceRequestSummaryResponseDto"
+						},
+						"description": "Result rows",
+						"nullable": true
+					},
+					"links": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/LinkedResourceTypeLinkedResourceKeyValuePair"
+						},
+						"description": "Links to other neighboring pages.",
+						"nullable": true
+					},
+					"pageSize": {
+						"type": "integer",
+						"description": "The current page size.",
+						"format": "int32"
+					}
+				},
+				"additionalProperties": false,
+				"description": "This paged response which includes a page summary plus a set of items"
+			},
+			"ServiceUpdateRequestDTOJsonPatchDocument": {
+				"type": "object",
+				"properties": {
+					"operations": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/ServiceUpdateRequestDTOOperation"
+						},
+						"nullable": true,
+						"readOnly": true
+					},
+					"contractResolver": {
+						"$ref": "#/components/schemas/IContractResolver"
+					}
+				},
+				"additionalProperties": false
+			},
+			"ServiceUpdateRequestDTOOperation": {
+				"type": "object",
+				"properties": {
+					"operationType": {
+						"enum": ["Add", "Remove", "Replace", "Move", "Copy", "Test", "Invalid"],
+						"type": "string",
+						"readOnly": true
+					},
+					"path": {
+						"type": "string",
+						"nullable": true
+					},
+					"op": {
+						"type": "string",
+						"nullable": true
+					},
+					"from": {
+						"type": "string",
+						"nullable": true
+					},
+					"value": {
+						"nullable": true
+					}
+				},
+				"additionalProperties": false
+			},
+			"UserData": {
+				"required": ["objectId"],
+				"type": "object",
+				"properties": {
+					"objectId": {
+						"type": "string",
+						"description": "The ID of the user"
+					},
+					"appId": {
+						"type": "string",
+						"nullable": true
+					},
+					"delegateName": {
+						"type": "string",
+						"nullable": true
+					},
+					"uniqueName": {
+						"type": "string",
+						"nullable": true
+					},
+					"scopes": {
+						"type": "string",
+						"nullable": true
+					},
+					"roles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"nullable": true
+					},
+					"orgName": {
+						"type": "string",
+						"nullable": true,
+						"readOnly": true
+					},
+					"dataAccessRoles": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"nullable": true,
+						"readOnly": true
+					},
+					"allClaims": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"nullable": true
+					}
+				},
+				"additionalProperties": false,
+				"description": "A test DTO for returning the user information"
+			}
+		},
+		"securitySchemes": {
+			"oauth2": {
+				"type": "oauth2",
+				"description": "Description",
+				"flows": {
+					"implicit": {
+						"authorizationUrl": "https://login.microsoftonline.com/02865e59-f93f-4af7-8849-62cc9c6d193d/oauth2/v2.0/authorize",
+						"tokenUrl": "https://login.microsoftonline.com/02865e59-f93f-4af7-8849-62cc9c6d193d/oauth2/v2.0/token",
+						"scopes": {
+							"api://15fe7200-dbf3-4f27-94a9-da1b1f408334/users.read": "App Enabled scopes"
+						}
+					}
+				}
+			}
+		}
+	},
+	"security": [
+		{
+			"oauth2": ["api://15fe7200-dbf3-4f27-94a9-da1b1f408334/users.read"]
+		}
+	],
+	"tags": [
+		{
+			"name": "FiberCities",
+			"description": "Rrturns information about a city."
+		},
+		{
+			"name": "Addresses",
+			"description": "Returns resources for addresses in a city."
+		},
+		{
+			"name": "ServiceRequests",
+			"description": "Manages resources that represent a request for fiber service (pending or fulfilled)."
+		},
+		{
+			"name": "Appointments",
+			"description": "Manages resources for installation appointments for an address that requires a property visit."
+		},
+		{
+			"name": "ProvisionedServices",
+			"description": "Manages the resources that represent an installed fiber service."
+		},
+		{
+			"name": "UserInfo",
+			"description": "A temporary utility to return information about the requesting user or app."
+		}
+	]
+}

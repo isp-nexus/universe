@@ -1,0 +1,156 @@
+{
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[markdown]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[shellscript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	// "[sql]": {
+	// 	"editor.defaultFormatter": "esbenp.prettier-vscode"
+	// },
+	// "sqltools.format": {
+	// 	"language": "sql",
+	// 	"reservedWordCase": "lower"
+	// },
+	"[yaml]": {
+		"editor.autoIndent": "advanced",
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	},
+
+	"cssvar.files": [
+		"./node_modules/open-props/open-props.min.css",
+		// if you have an alternative path to where your styles are located
+		// you can add it in this array of files
+		"assets/styles/variables.css"
+	],
+
+	// Do not ignore node_modules css files, which is ignored by default
+	"cssvar.ignore": [],
+
+	// add support for autocomplete in JS or JS like files
+	"cssvar.extensions": ["css", "postcss", "jsx", "tsx"],
+
+	"editor.insertSpaces": false,
+	"editor.tabSize": 2,
+
+	"eslint.useFlatConfig": true,
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		"*.cjs": "*.d.cts",
+		".node-version": ".nvmrc",
+		"runtime.example.ts": "runtime.example.ts, runtime.development.ts, runtime.production.ts, runtime.test.ts",
+		"runtime.local.ts": "runtime.example.ts, runtime.local.ts, runtime.development.ts, runtime.production.ts, runtime.test.ts",
+		"package.json": "package-lock.json, yarn.lock, .yarnrc, .yarnrc.yml, .yarn, .nvmrc, .node-version",
+		"tsconfig.json": "tsconfig.*.json, jsconfig.json"
+	},
+	"files.exclude": {
+		".editorconfig": true,
+		".eslintignore": true,
+		".eslintrc.cjs": true,
+		".node-version": true,
+		".yarnrc": true,
+		// "dist": true,
+		"functions": true,
+		".docusaurus": true,
+		"out": true,
+		"paths.mjs": true,
+		"yarn.lock": true
+	},
+	"javascript.preferences.importModuleSpecifier": "project-relative",
+	"javascript.preferences.importModuleSpecifierEnding": "js",
+	"js/ts.implicitProjectConfig.checkJs": true,
+	"search.exclude": {
+		"**/*.csv": true,
+		"**/dist": true,
+		"**/out": true,
+		".docusaurus": true,
+		"./functions": true,
+		".editorconfig": false,
+		".eslintignore": false,
+		".eslintrc.cjs": false,
+		".node-version": false,
+		".yarn": true,
+		"yarn.lock": true
+	},
+	"javascript.format.semicolons": "remove",
+	"typescript.format.semicolons": "remove",
+	"javascript.preferences.quoteStyle": "double",
+	"typescript.preferences.quoteStyle": "double",
+	"typescript.preferences.importModuleSpecifier": "project-relative",
+	"typescript.preferences.importModuleSpecifierEnding": "js",
+	"typescript.preferences.includePackageJsonAutoImports": "on",
+
+	//#region Exclude Patterns
+	"typescript.preferences.autoImportFileExcludePatterns": [
+		// --- Test Files ---
+		"**/*.{test,spec}.{ts,tsx}",
+		"**/setupTests.{ts,tsx}",
+		"**/setupProxy.{ts,tsx}",
+
+		// --- Entrypoints ---
+		"**/serviceWorker.{ts,tsx,js,mjs}",
+		"**/service-worker.{ts,tsx,js,mjs}",
+
+		// --- TypeScript Syntax Overlaps ---
+		// BAD: import { type } from 'node:os'
+		"**/@types/node/os.d.ts",
+		"os",
+		"node:os",
+		// BAD: import { exp } from 'node:constants'
+		"**/@types/node/constants.d.ts",
+		"constants",
+		"node:constants",
+		// BAD: import { Console } from 'node:console'
+		"node:console",
+		"console",
+		"**/@types/node/console.d.ts",
+		// BAD: import { request } from 'node:http'
+		"node:http",
+		"http",
+		"**/@types/node/https.d.ts",
+		// BAD: import { request } from 'node:https'
+		"node:https",
+		"https",
+		"**/@types/node/https.d.ts",
+		// BAD: import { satisfies } from 'semver'
+		"**/semver/**",
+		// --- React Overlaps ---
+		// BAD: import { createContext } from 'vm'
+		"**/@types/node/vm.d.ts",
+		"vm",
+		"node:vm",
+		// -- Monorepo Relative Imports --
+		"**/../{core,spatial,tiger,fcc,mailwoman,sdk,sync,app,schema}/**",
+		// -- Compiled output --
+		"**/../out/**",
+		// -- Re-exported --
+		"**/../index.{ts,tsx,js,mjs}"
+	],
+
+	"js/ts.implicitProjectConfig.module": "ESNext",
+	"js/ts.implicitProjectConfig.target": "ESNext",
+	"github.copilot.enable": {
+		"*": true,
+		"csv": false,
+		"scminput": false
+	}
+}

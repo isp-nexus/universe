@@ -1,0 +1,67 @@
+{
+	"name": "@isp.nexus/cartographer",
+	"version": "1.0.0",
+	"description": "Mapping utilities for the ISP Nexus platform.",
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./scripts/*": {
+			"types": "./scripts/*.ts",
+			"import": "./out/scripts/*.js"
+		},
+		"./styles": {
+			"types": "./out/styles/index.d.ts",
+			"import": "./out/styles/index.js"
+		},
+		"./tiles": {
+			"types": "./out/tiles/index.d.ts",
+			"import": "./out/tiles/index.js"
+		},
+		"./base": {
+			"types": "./out/base/index.d.ts",
+			"import": "./out/base/index.js"
+		},
+		"./bdc": {
+			"types": "./out/bdc/index.d.ts",
+			"import": "./out/bdc/index.js"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		}
+	},
+	"dependencies": {
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/fcc": "workspace:*",
+		"@isp.nexus/mailwoman": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*",
+		"@isp.nexus/spatial": "workspace:*",
+		"@isp.nexus/tiger": "workspace:*",
+		"@maplibre/maplibre-gl-style-spec": "^20.3.1",
+		"d3-scale-chromatic": "^3.1.0",
+		"maplibre-contour": "^0.0.7",
+		"maplibre-gl": "^4.5.2",
+		"protomaps-themes-base": "^3.1.0",
+		"type-fest": "^4.26.1"
+	},
+	"devDependencies": {
+		"@types/d3-scale-chromatic": "^3.0.3"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

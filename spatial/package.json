@@ -1,0 +1,54 @@
+{
+	"name": "@isp.nexus/spatial",
+	"version": "1.0.0",
+	"description": "Utilities for working with geo-spatial data.",
+	"keywords": [
+		"typescript",
+		"geo",
+		"spatial"
+	],
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./sdk": {
+			"types": "./out/sdk/index.d.ts",
+			"import": "./out/sdk/index.js"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		}
+	},
+	"dependencies": {
+		"@isp.nexus/core": "workspace:*",
+		"h3-js": "^4.1.0",
+		"wkx": "^0.5.0"
+	},
+	"devDependencies": {
+		"@googlemaps/google-maps-services-js": "^3.4.0",
+		"@types/google.maps": "^3.55.9",
+		"type-fest": "^4.26.1"
+	},
+	"optionalDependencies": {
+		"@googlemaps/google-maps-services-js": "^3.4.0",
+		"@types/google.maps": "^3.55.9",
+		"axios": "^1.7.2"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

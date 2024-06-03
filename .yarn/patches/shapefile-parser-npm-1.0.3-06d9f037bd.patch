@@ -1,0 +1,15 @@
+diff --git a/package.json b/package.json
+index 481acf98021bb115707507fd72ad35db5e504a27..7a0721bbd9c1905cd75f584c62c78e07117871ce 100644
+--- a/package.json
++++ b/package.json
+@@ -2,8 +2,8 @@
+   "name": "shapefile-parser",
+   "version": "1.0.3",
+   "description": "A Node.js/Typescript module to parse geometries data from the (*.shp) Shape and (*.dbf) dBase files.",
+-  "main": "shapefile-parser.js",
+-  "types": "shapefile-parser.d.ts",
++  "main": "shapeFile-parser.js",
++  "types": "shapeFile-parser.d.ts",
+   "scripts": {
+     "build": "tsc -p tsconfig.production.json",
+     "test": "mocha -r ts-node/register tests/**/*.test.ts",

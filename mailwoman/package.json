@@ -1,0 +1,64 @@
+{
+	"name": "@isp.nexus/mailwoman",
+	"version": "1.0.0",
+	"description": "Utilities for working with contacts for email, phone, and postal mail.",
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./postal": {
+			"types": "./out/postal/index.d.ts",
+			"import": "./out/postal/index.js"
+		},
+		"./contacts": {
+			"types": "./out/contacts/index.d.ts",
+			"import": "./out/contacts/index.js"
+		},
+		"./org": {
+			"types": "./out/org/index.d.ts",
+			"import": "./out/org/index.js"
+		},
+		"./sdk": {
+			"types": "./out/sdk/index.d.ts",
+			"import": "./out/sdk/index.js"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		}
+	},
+	"scripts": {
+		"test": "node ./out/sdk/PostalService.test.js"
+	},
+	"dependencies": {
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/fcc": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*",
+		"@isp.nexus/spatial": "workspace:*",
+		"@isp.nexus/tiger": "workspace:*",
+		"lru-cache": "^11.0.0",
+		"open-location-code": "^1.0.3",
+		"phone": "^3.1.43",
+		"type-fest": "^4.26.1",
+		"typeorm": "^0.3.20"
+	},
+	"devDependencies": {
+		"@types/open-location-code": "^1.0.0"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

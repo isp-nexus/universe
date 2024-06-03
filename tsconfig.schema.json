@@ -1,0 +1,23 @@
+// TypeScript configuration for schema generation.
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"noEmit": true
+	},
+	"exclude": [
+		// ---
+		"node_modules",
+		"dist",
+		"schema",
+		"**/out/**"
+	],
+	"references": [
+		// Note that references are in the order we want them to be built.
+		{ "path": "./core" },
+		{ "path": "./spatial" },
+		{ "path": "./tiger" },
+		{ "path": "./fcc" },
+		{ "path": "./mailwoman" }
+	]
+}

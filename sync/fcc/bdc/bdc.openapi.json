@@ -1,0 +1,1755 @@
+{
+	"openapi": "3.0.1",
+	"info": {
+		"title": "BDC Public Data",
+		"description": "BDC Public Data Application Programming Interfaces",
+		"termsOfService": "https://www.fcc.gov/reports-research/developers/api-terms-service",
+		"contact": {
+			"email": "BroadbandDataInquiries@fcc.gov"
+		},
+		"version": "1.2.0"
+	},
+	"externalDocs": {
+		"description": "Find out more about Swagger",
+		"url": "http://swagger.io"
+	},
+	"servers": [
+		{
+			"url": "https://broadbandmap.fcc.gov/api/public"
+		}
+	],
+	"tags": [
+		{
+			"name": "public-data-api",
+			"description": "BDC Public Data APIs"
+		}
+	],
+	"paths": {
+		"/map/listAsOfDates": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get List of Available As Of Dates",
+				"description": "Provides a listing of as of dates available for each data type",
+				"operationId": "public_map_api.getListAsOfDates",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/getListAsOfDates"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/map/downloads/listAvailabilityData/{as_of_date}": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get List of Availability Data Downloads",
+				"description": "Provides a full listing of all coverage files that are available for download for a given as of date",
+				"operationId": "public_map_api.getListAvailabilityData",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "as_of_date",
+						"in": "path",
+						"description": "As Of Date of selected data",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "category",
+						"in": "query",
+						"description": "category data",
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "subcategory",
+						"in": "query",
+						"description": "subcategory data",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/getListAvailabilityData"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid Input Parameters",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string",
+											"description": "error: * `First Error` - as_of_date is required field\n",
+											"default": "as_of_date is required field",
+											"enum": ["as_of_date is required field"]
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "401",
+									"message": "FRN is required",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/map/downloads/listChallengeData/{as_of_date}": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get List of Challenge Data Downloads",
+				"description": "Provides a full listing of all challenge files that are available for download for a given as of date",
+				"operationId": "public_map_api.getListChallengeData",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "as_of_date",
+						"in": "path",
+						"description": "As Of Date of selected data",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "category",
+						"in": "query",
+						"description": "category data",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/getListChallengeData"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid Input Parameters",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string",
+											"description": "error: * `First Error` - as_of_date is required field\n",
+											"default": "as_of_date is required field",
+											"enum": ["as_of_date is required field"]
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "401",
+									"message": "FRN is required",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/map/downloads/downloadFile/{data_type}/{file_id}": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get Download File",
+				"description": "Allows users to download availability and challenge data based on the ID and type of the file",
+				"operationId": "public_map_api.getDownloadFile",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "data_type",
+						"in": "path",
+						"description": "Data Type of selected data",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "file_id",
+						"in": "path",
+						"description": "File Id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Download a file",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "binary"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid Input Parameters",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string",
+											"description": "error: * `First Error` - data_type and file_id are required field\n",
+											"default": "data_type and file_id are required field",
+											"enum": ["data_type and file_id are required field"]
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "401",
+									"message": "data_type and file_id are required field",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "${file_id} -> File Id: the file_id does not exist",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 422,
+									"message": "${file_id} -> File Id: the file_id does not exist",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/map/downloadFile/{data_type}/{file_id}/{file_type}": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get Download File",
+				"description": "Allows users to download availability and challenge data based on the ID and type of the file",
+				"operationId": "public_map_api.getDownloadFile_file_type",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "data_type",
+						"in": "path",
+						"description": "Data Type of selected data",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "file_id",
+						"in": "path",
+						"description": "File Id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "file_type",
+						"in": "path",
+						"description": "File Id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Download a file",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "binary"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid Input Parameters",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string",
+											"description": "error: * `First Error` - data_type and file_id are required field\n",
+											"default": "data_type and file_id are required field",
+											"enum": ["data_type and file_id are required field"]
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "401",
+									"message": "data_type and file_id are required field",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "${file_id} -> File Id: the file_id does not exist",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 422,
+									"message": "${file_id} -> File Id: the file_id does not exist",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/fundingmap/downloads/listFundingData": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get List of Broadband Funding Data",
+				"description": "Provides a listing of broadband funding data available for download",
+				"operationId": "public_map_api.listFundingData",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/listFundingData"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/fundingmap/downloads/downloadFile/{file_id}": {
+			"get": {
+				"tags": ["public-data-api"],
+				"summary": "Get Download File",
+				"description": "Allows users to download broadband funding data based on the file ID",
+				"operationId": "public_map_api.downloadFundingDataFile",
+				"parameters": [
+					{
+						"name": "username",
+						"in": "header",
+						"description": "Username from FCC User Reg",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "hash_value",
+						"in": "header",
+						"description": "Hash value token associated with username",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "file_id",
+						"in": "path",
+						"description": "File Id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Download a file",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string",
+									"format": "binary"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Invalid Input Parameters",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string",
+											"description": "error: * `First Error` - file_id is required field\n",
+											"default": "file_id is required field",
+											"enum": ["file_id is required field"]
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "400",
+									"message": "file_id is required field",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Invalid authorization",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 401,
+									"message": "Unauthorized",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"403": {
+						"description": "Method not available",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"data": {
+											"type": "array",
+											"items": {
+												"type": "object",
+												"properties": {}
+											}
+										},
+										"result_count": {
+											"type": "number"
+										},
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										},
+										"request_date": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"data": [],
+									"result_count": 0,
+									"status_code": "403",
+									"message": "Method not available",
+									"status": "successful",
+									"request_date": "2022-04-08T12:50:38.962Z"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Path not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 404,
+									"message": "Path not found",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"422": {
+						"description": "${file_id} -> File Id: the file_id is invalid",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 422,
+									"message": "${file_id} -> File Id: the file_id is invalid",
+									"status": "fail"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "An internal error occurred",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"status_code": {
+											"type": "string"
+										},
+										"message": {
+											"type": "string"
+										},
+										"status": {
+											"type": "string"
+										}
+									}
+								},
+								"example": {
+									"status_code": 500,
+									"message": "An internal error occurred",
+									"status": "fail"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"getListAsOfDates": {
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"data_type": {
+									"type": "string"
+								},
+								"as_of_date": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"result_count": {
+						"type": "number"
+					},
+					"status_code": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"request_date": {
+						"type": "string"
+					}
+				}
+			},
+			"getListAvailabilityData": {
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"file_id": {
+									"type": "number"
+								},
+								"category": {
+									"type": "string"
+								},
+								"subcategory": {
+									"type": "string"
+								},
+								"technology_code": {
+									"type": "string"
+								},
+								"technology_code_desc": {
+									"type": "string"
+								},
+								"state_fips": {
+									"type": "string"
+								},
+								"state_name": {
+									"type": "string"
+								},
+								"provider_id": {
+									"type": "number"
+								},
+								"provider_name": {
+									"type": "string"
+								},
+								"file_type": {
+									"type": "string"
+								},
+								"file_name": {
+									"type": "string"
+								},
+								"record_count": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"result_count": {
+						"type": "number"
+					},
+					"status_code": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"request_date": {
+						"type": "string"
+					}
+				}
+			},
+			"getListChallengeData": {
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"file_id": {
+									"type": "number"
+								},
+								"category": {
+									"type": "string"
+								},
+								"state_fips": {
+									"type": "string"
+								},
+								"state_name": {
+									"type": "string"
+								},
+								"record_count": {
+									"type": "string"
+								}
+							}
+						}
+					},
+					"result_count": {
+						"type": "number"
+					},
+					"status_code": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"request_date": {
+						"type": "string"
+					}
+				}
+			},
+			"listFundingData": {
+				"type": "object",
+				"properties": {
+					"data": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"file_id": {
+									"type": "number"
+								},
+								"category": {
+									"type": "string"
+								},
+								"data_type": {
+									"type": "string"
+								},
+								"agency_name": {
+									"type": "string"
+								},
+								"program_name": {
+									"type": "string"
+								},
+								"project_name": {
+									"type": "string"
+								},
+								"state_fips": {
+									"type": "string"
+								},
+								"state_name": {
+									"type": "string"
+								},
+								"file_name": {
+									"type": "string"
+								},
+								"record_count": {
+									"type": "number"
+								}
+							}
+						}
+					},
+					"result_count": {
+						"type": "number"
+					},
+					"status_code": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"request_date": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	},
+	"x-original-swagger-version": "2.0"
+}

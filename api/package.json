@@ -1,0 +1,47 @@
+{
+	"name": "@isp.nexus/api",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Cloudflare Worker API for the ISP Nexus",
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./scripts/*": {
+			"types": "./scripts/*.ts",
+			"import": "./out/scripts/*.js"
+		},
+		"./sdk": {
+			"types": "./out/sdk/index.d.ts",
+			"import": "./out/sdk/index.js"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		}
+	},
+	"dependencies": {
+		"@cloudflare/workers-types": "^4.20240712.0",
+		"@isp.nexus/cartographer": "workspace:*",
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*",
+		"@isp.nexus/spatial": "workspace:*",
+		"pmtiles": "3.0.6"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

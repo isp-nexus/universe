@@ -1,0 +1,66 @@
+{
+	"configurations": [
+		{
+			"console": "integratedTerminal",
+			"cwd": "${workspaceRoot}",
+			"localRoot": "${workspaceFolder}",
+			"name": "Serve Web App",
+			"request": "launch",
+			"runtimeArgs": ["serve"],
+			"runtimeExecutable": "yarn",
+			"skipFiles": ["<node_internals>/**"],
+			"sourceMaps": true,
+			"type": "node"
+		},
+		{
+			"console": "integratedTerminal",
+			"cwd": "${workspaceRoot}",
+			"localRoot": "${workspaceFolder}",
+			"name": "Generate JSON Schema",
+			"request": "launch",
+			"runtimeArgs": ["workspace", "@isp.nexus/schema", "generate"],
+			"runtimeExecutable": "yarn",
+			"skipFiles": ["<node_internals>/**"],
+			"sourceMaps": true,
+			"type": "node"
+		},
+		{
+			"console": "integratedTerminal",
+			"cwd": "${workspaceRoot}",
+			"localRoot": "${workspaceFolder}",
+			"name": "Sync FCC Registration",
+			"request": "launch",
+			"runtimeArgs": ["workspace", "@isp.nexus/sync", "registrations"],
+			"runtimeExecutable": "yarn",
+			"skipFiles": ["<node_internals>/**"],
+			"sourceMaps": true,
+			"type": "node"
+		},
+
+		{
+			"console": "integratedTerminal",
+			"cwd": "${workspaceRoot}",
+			"localRoot": "${workspaceFolder}",
+			"name": "Sync Provider Availability",
+			"request": "launch",
+			"runtimeArgs": ["workspace", "@isp.nexus/sync", "availability"],
+			"runtimeExecutable": "yarn",
+			"skipFiles": ["<node_internals>/**"],
+			"sourceMaps": true,
+			"type": "node"
+		},
+
+		{
+			"console": "integratedTerminal",
+			"cwd": "${workspaceRoot}",
+			"localRoot": "${workspaceFolder}",
+			"name": "Test TIGER",
+			"request": "launch",
+			"runtimeArgs": ["workspace", "@isp.nexus/tiger", "test"],
+			"runtimeExecutable": "yarn",
+			"skipFiles": ["<node_internals>/**"],
+			"sourceMaps": true,
+			"type": "node"
+		}
+	]
+}

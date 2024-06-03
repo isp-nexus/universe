@@ -1,0 +1,18 @@
+# Git Attributes
+# https://git-scm.com/docs/gitattributes
+
+#region Git LFS
+
+* text=auto
+
+# Treat JSON files as JSONC
+**/*.json linguist-language=jsonc
+# For SQLite3 files, use LFS, and treat them as binary
+*.sqlite3 filter=lfs diff=lfs merge=lfs -text
+
+#endregion
+
+#region Github Linguist
+
+# Treat JSON files as JSONC
+.vscode/*.json linguist-language=jsonc

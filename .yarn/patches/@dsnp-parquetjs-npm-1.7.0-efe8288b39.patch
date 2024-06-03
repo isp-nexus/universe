@@ -1,0 +1,40 @@
+diff --git a/package.json b/package.json
+index 69abb1a4d428d890dfdce2932b5cf532e6e6078b..0f4dd600dd94e94a83f94009867d66d24aeff799 100644
+--- a/package.json
++++ b/package.json
+@@ -15,10 +15,6 @@
+     "url": "git://github.com/LibertyDSNP/parquetjs.git"
+   },
+   "dependencies": {
+-    "@aws-sdk/client-s3": "^3.575.0",
+-    "@types/long": "^4.0.2",
+-    "@types/node-int64": "^0.4.32",
+-    "@types/thrift": "^0.10.17",
+     "brotli-wasm": "^3.0.0",
+     "browserify-zlib": "^0.2.0",
+     "bson": "6.7.0",
+@@ -34,9 +30,12 @@
+     "@smithy/util-stream": "^3.0.0",
+     "@types/chai": "^4.3.16",
+     "@types/json-schema": "^7.0.15",
++    "@types/long": "^4.0.2",
+     "@types/mocha": "^10.0.6",
++    "@types/node-int64": "^0.4.32",
+     "@types/node": "^20.12.12",
+     "@types/sinon": "^17.0.3",
++    "@types/thrift": "^0.10.17",
+     "@types/varint": "^6.0.3",
+     "assert": "^2.1.0",
+     "aws-sdk-client-mock": "^4.0.0",
+@@ -51,9 +50,9 @@
+     "object-stream": "^0.0.1",
+     "process": "^0.11.10",
+     "regenerator-runtime": "^0.14.1",
+-    "sinon": "^17.0.2",
+-    "sinon-chai": "^3.7.0",
+     "sinon-chai-in-order": "^0.1.0",
++    "sinon-chai": "^3.7.0",
++    "sinon": "^17.0.2",
+     "stream-browserify": "^3.0.0",
+     "tsx": "^4.10.2",
+     "typescript": "^5.4.5"

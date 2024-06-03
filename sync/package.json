@@ -1,0 +1,78 @@
+{
+	"name": "@isp.nexus/sync",
+	"version": "1.0.0",
+	"description": "Utilities for syncing data between the ISP Nexus and external sources.",
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./tiger": {
+			"types": "./out/tiger/index.d.ts",
+			"import": "./out/tiger/index.js"
+		},
+		"./fcc": {
+			"types": "./out/fcc/index.d.ts",
+			"import": "./out/fcc/index.js"
+		},
+		"./scripts/*": {
+			"types": "./scripts/*.ts",
+			"import": "./out/scripts/*.js"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		}
+	},
+	"bin": {
+		"nexus-sync": "./out/cli.js"
+	},
+	"scripts": {
+		"availability": "nexus-sync bdc-sync",
+		"experiments:att": "node ./out/experiments/pluck-att.js",
+		"generate-geojson": "nexus-sync generate-geojson /Volumes/Sister/Projects/isp.nexus/data-store/scratch/geojson",
+		"generate-tiger-tiles": "node ./out/scripts/generate-tiger-tiles.js",
+		"geocode-bsl": "nexus-sync geocode-bsl",
+		"migrate": "node ./out/scripts/migrate.js",
+		"registrations": "node ./out/scripts/registrations.js",
+		"tiger": "node ./out/scripts/sync.js",
+		"usac": "node ./out/scripts/parse-usac.js"
+	},
+	"dependencies": {
+		"@dsnp/parquetjs": "1.7.0",
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/fcc": "workspace:*",
+		"@isp.nexus/mailwoman": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*",
+		"@isp.nexus/spatial": "workspace:*",
+		"@isp.nexus/tiger": "workspace:*",
+		"@ngageoint/simple-features-wkb-js": "^1.1.1",
+		"csv": "^6.3.9",
+		"deepmerge-ts": "^7.1.0",
+		"fixed-width-parser": "^3.0.0",
+		"nodejs-polars": "^0.15.0",
+		"redis": "^4.7.0",
+		"sql-formatter": "^15.4.2",
+		"turndown": "^7.2.0",
+		"yargs": "^17.7.2"
+	},
+	"devDependencies": {
+		"@types/turndown": "^5.0.5",
+		"@types/yargs": "^17.0.32"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

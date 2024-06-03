@@ -1,0 +1,185 @@
+{
+	"name": "vaxis",
+	"displayName": "ISP Nexus",
+	"version": "0.0.1",
+	"description": "Perform and render spatial firmographics for broadband markets.",
+	"categories": [
+		"Data Science",
+		"Visualization"
+	],
+	"repository": {
+		"url": "git+https://github.com/isp-nexus/universe.git",
+		"directory": "vaxis"
+	},
+	"license": "AGPL-3.0",
+	"publisher": "open-isp",
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./scripts/*": {
+			"types": "./scripts/*.ts",
+			"import": "./out/scripts/*.js"
+		},
+		"./*": {
+			"types": "./out/*.d.ts",
+			"import": "./out/*.js"
+		}
+	},
+	"main": "./dist/ext/main.host.cjs",
+	"scripts": {
+		"pretest": "yarn run compile-web",
+		"test": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. --extensionTestsPath=dist/test/suite/extensionTests.js",
+		"vscode:prepublish": "yarn run package-web",
+		"compile-web": "yarn run check-types && node ./out/scripts/build.js",
+		"watch-web": "npm-run-all -p watch-web:*",
+		"watch-web:esbuild": "node ./out/scripts/build.js --watch",
+		"watch-web:tsc": "tsc --noEmit --watch --project tsconfig.json",
+		"package-web": "yarn run check-types && node ./out/scripts/build.js --production",
+		"check-types": "tsc --noEmit",
+		"run-in-browser": "vscode-test-web --browserType=chromium --extensionDevelopmentPath=. ./test/data"
+	},
+	"contributes": {
+		"commands": [
+			{
+				"command": "viewMap",
+				"title": "%viewMap.title%",
+				"category": "%category.nexus.title%",
+				"icon": {
+					"dark": "./media/icon-dark.svg",
+					"light": "./media/icon-light.svg"
+				}
+			},
+			{
+				"command": "viewCurrentGeoJSON",
+				"category": "%category.nexus.title%",
+				"title": "%viewCurrentGeoJSON.title%"
+			},
+			{
+				"command": "displayVersion",
+				"category": "%category.nexus.title%",
+				"title": "%displayVersion.title%"
+			},
+			{
+				"command": "debug",
+				"category": "%category.nexus.title%",
+				"title": "%debug.title%"
+			}
+		],
+		"configurationDefaults": {
+			"[geojsons]": {
+				"editor.wordWrap": "off"
+			}
+		},
+		"customEditors": [
+			{
+				"viewType": "geomap",
+				"displayName": "%customEditors.geomap.displayName%",
+				"selector": [
+					{
+						"filenamePattern": "*.geojson"
+					}
+				]
+			}
+		],
+		"grammars": [
+			{
+				"language": "geojsons",
+				"scopeName": "source.geojsons",
+				"path": "./syntaxes/geojsons.tmLanguage.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "geojsons",
+				"mimetypes": [
+					"application/geo+json-sequence",
+					"application/geo+json-lines"
+				],
+				"icon": {
+					"dark": "./media/geojsons.svg",
+					"light": "./media/geojsons.svg"
+				},
+				"aliases": [
+					"GeoJSON Sequence",
+					"geojsons"
+				],
+				"extensions": [
+					".geojsons",
+					".geojsonl"
+				],
+				"configuration": "./languages/geojsons.language-configuration.json"
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"command": "viewMap",
+					"when": "resourceFilename =~ /.*\\.(geojson|geojsons)/",
+					"group": "navigation"
+				}
+			],
+			"editor/title": [
+				{
+					"command": "viewMap",
+					"when": "resourceFilename =~ /.*(.geojson|.geojsons)/",
+					"group": "navigation"
+				}
+			],
+			"editor/title/context": [
+				{
+					"command": "viewMap",
+					"when": "resourceFilename =~ /.*\\.(geojson|geojsons)/",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"activationEvents": [
+		"onLanguage:plaintext"
+	],
+	"devDependencies": {
+		"@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+		"@isp.nexus/cartographer": "workspace:*",
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/fcc": "workspace:*",
+		"@isp.nexus/spatial": "workspace:*",
+		"@isp.nexus/tiger": "workspace:*",
+		"@maplibre/maplibre-gl-style-spec": "^20.3.1",
+		"@types/assert": "^1.5.10",
+		"@types/mocha": "^10.0.8",
+		"@types/react": "^18.3.10",
+		"@types/react-dom": "^18.3.0",
+		"@types/vscode": "^1.93.0",
+		"@vscode/test-web": "^0.0.60",
+		"@vscode/vsce": "^3.1.0",
+		"assert": "^2.1.0",
+		"classnames": "^2.5.1",
+		"d3-scale-chromatic": "^3.1.0",
+		"deepmerge-ts": "^7.1.0",
+		"esbuild": "^0.24.0",
+		"fast-glob": "^3.3.2",
+		"maplibre-gl": "^4.7.1",
+		"mocha": "^10.7.3",
+		"npm-run-all": "^4.1.5",
+		"open-props": "^1.7.6",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"react-map-gl": "^7.1.7",
+		"typescript": "^5.6.2"
+	},
+	"engines": {
+		"vscode": "^1.93.0"
+	},
+	"icon": "media/icon.png",
+	"preview": true,
+	"capabilities": {
+		"virtualWorkspaces": false,
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	}
+}

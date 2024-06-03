@@ -1,0 +1,102 @@
+{
+	"name": "@isp.nexus/sdk",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Development kit for building applications on the ISP Nexus platform.",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./paths": {
+			"types": "./paths.ts",
+			"import": "./out/paths.js"
+		},
+		"./runtime": {
+			"types": "./runtime/index.ts",
+			"import": "./out/runtime/index.js"
+		},
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		"./files": {
+			"types": "./files/index.ts",
+			"import": "./out/files/index.js"
+		},
+		"./schema-generator": {
+			"types": "./schema-generator/index.ts",
+			"import": "./out/schema-generator/index.js"
+		},
+		"./headless": {
+			"types": "./headless/index.ts",
+			"import": "./out/headless/index.js"
+		},
+		"./fcc": {
+			"types": "./fcc/index.ts",
+			"import": "./out/fcc/index.js"
+		},
+		"./scripts/*": {
+			"types": "./scripts/*.ts",
+			"import": "./out/scripts/*.js"
+		},
+		"./data": {
+			"types": "./data/index.ts",
+			"import": "./out/data/index.js"
+		},
+		"./tiger": {
+			"types": "./tiger/index.ts",
+			"import": "./out/tiger/index.js"
+		},
+		"./llm": {
+			"types": "./llm/index.ts",
+			"import": "./out/llm/index.js"
+		},
+		"./reflection": {
+			"types": "./reflection/index.ts",
+			"import": "./out/reflection/index.js"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		},
+		"./*": {
+			"types": "./out/*.d.ts",
+			"import": "./out/*.js"
+		}
+	},
+	"dependencies": {
+		"@faker-js/faker": "^8.4.1",
+		"@isp.nexus/core": "workspace:*",
+		"@sinclair/typebox": "^0.32.30",
+		"@sinclair/typebox-codegen": "^0.10.2",
+		"@types/json-to-pretty-yaml": "^1.2.1",
+		"change-case": "^5.4.4",
+		"cheerio": "^1.0.0",
+		"dotenv": "^16.4.5",
+		"es-main": "^1.3.0",
+		"fast-glob": "^3.3.2",
+		"jimp": "^0.22.12",
+		"json-schema-ref-resolver": "^1.0.1",
+		"json-to-pretty-yaml": "^1.2.2",
+		"memfs": "^4.9.4",
+		"openai": "^4.57.0",
+		"openapi-typescript": "^7.1.0",
+		"sqlite3": "^5.1.7",
+		"tileserver-gl-light": "^4.11.1",
+		"type-fest": "^4.26.1",
+		"typeorm": "^0.3.20",
+		"typescript": "^5.6.2",
+		"urlpattern-polyfill": "^10.0.0"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "restricted"
+	}
+}

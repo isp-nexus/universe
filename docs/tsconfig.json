@@ -1,0 +1,19 @@
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"baseUrl": "."
+	},
+	"exclude": ["./out/**/*"],
+	"references": [
+		// ---
+		{ "path": "../core" },
+		{ "path": "../sdk" },
+		{ "path": "../fcc" },
+		{ "path": "../mailwoman" },
+		{ "path": "../spatial" },
+		{ "path": "../schema" }
+	]
+}

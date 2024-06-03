@@ -1,0 +1,79 @@
+{
+	"name": "@isp.nexus/core",
+	"version": "1.0.0",
+	"description": "A small collection of common utilities",
+	"keywords": [
+		"typescript"
+	],
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./schema/*.json": {
+			"types": "./dist/schema/*.d.ts",
+			"import": "./dist/schema/*.json"
+		},
+		".": {
+			"types": "./out/index.d.ts",
+			"import": "./out/index.js"
+		},
+		"./polyfills/*": {
+			"types": "./out/polyfills/*.d.ts",
+			"import": "./out/polyfills/*.js"
+		},
+		"./logging": {
+			"types": "./out/logging/index.d.ts",
+			"import": "./out/logging/index.js"
+		},
+		"./routing": {
+			"types": "./out/routing/index.d.ts",
+			"import": "./out/routing/index.js"
+		},
+		"./lifecycle": {
+			"types": "./out/lifecycle/index.d.ts",
+			"import": "./out/lifecycle/index.js"
+		},
+		"./errors": {
+			"types": "./out/errors/index.d.ts",
+			"import": "./out/errors/index.js"
+		},
+		"./templates": {
+			"types": "./out/templates.d.ts",
+			"import": "./out/templates.js"
+		},
+		"./env": {
+			"types": "./out/env.d.ts",
+			"import": "./out/env.js"
+		}
+	},
+	"dependencies": {
+		"cli-progress": "^3.12.0",
+		"core-js": "^3.37.1",
+		"http-status-codes": "^2.3.0",
+		"jssha": "^3.3.1",
+		"pino": "^9.0.0",
+		"pino-pretty": "^11.0.0",
+		"type-fest": "^4.26.1",
+		"typeorm": "^0.3.20",
+		"urlpattern-polyfill": "^10.0.0",
+		"uuid": "^10.0.0",
+		"uuid-by-string": "^4.0.0"
+	},
+	"devDependencies": {
+		"@types/cli-progress": "^3.11.5",
+		"@types/core-js": "^2.5.8",
+		"axios": "^1.7.2"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

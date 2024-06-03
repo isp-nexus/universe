@@ -1,0 +1,13 @@
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"baseUrl": "."
+	},
+	"exclude": ["./out/**/*"],
+	"references": [
+		{
+			"path": "../core"
+		}
+	]
+}

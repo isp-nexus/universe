@@ -1,0 +1,18 @@
+{
+	"extends": "@sister.software/tsconfig",
+	"compilerOptions": {
+		"allowSyntheticDefaultImports": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"baseUrl": "."
+	},
+	"exclude": ["./out/**/*"],
+	"references": [
+		// ---
+		{ "path": "../core" },
+		{ "path": "../sdk" },
+		{ "path": "../spatial" },
+		{ "path": "../tiger" },
+		{ "path": "../schema" }
+	]
+}

@@ -1,0 +1,55 @@
+@import "open-props/style";
+@import "open-props/normalize/dark";
+
+/* @import "ag-grid-community/styles/ag-grid.css";
+@import "ag-grid-community/styles/ag-theme-quartz.css"; */
+
+:root {
+	color-scheme: dark;
+	--font-family-sans-serif: "Helvetica Neue", helvetica, arial, sans-serif;
+	--font-family-serif: "Georgia", serif;
+	--font-family-monospace: "Fira Code", "Menlo", "Monaco", monospace;
+	--font-family-base: var(--font-family-sans-serif);
+	--font-family-heading: var(--font-family-serif);
+	--font-size-base: 16px;
+	--spacing-unit: 8px;
+}
+
+html {
+	scroll-behavior: smooth;
+	text-size-adjust: 100%;
+	height: calc(100% + env(safe-area-inset-top));
+}
+
+body {
+	/* display: flex; */
+	overflow-y: auto;
+	overscroll-behavior-y: none;
+	text-rendering: optimizelegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-family: var(--font-family-base);
+	background-color: black;
+}
+
+#app-root {
+	flex: 1 0 auto;
+	display: flex;
+	overflow: hidden;
+}
+
+#app-root,
+body,
+html {
+	width: 100%;
+	-webkit-overflow-scrolling: touch;
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+main {
+	height: 100dvh;
+	display: grid;
+	grid-template-rows: auto 1fr;
+}
