@@ -1,4 +1,7 @@
-# ISP Nexus Univeral Mono-repo
+# ISP Nexus Univeral Mono-Repo
+
+![GitHub License](https://img.shields.io/github/license/isp-nexus/universe)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/isp-nexus/universe)
 
 Welcome to the mono-repo for ISP Nexus. This repository contains all the packages that make up the Nexus platform.
 
@@ -9,6 +12,8 @@ A few features of the Nexus platform include:
 - Broadband Label Parsing
 - Cartographic tools for firmographic analysis
 - Self-hosted map tile generation for custom maps
+
+⚠️ **This repository is under active development and will be updated frequently.** ⚠️
 
 ## License
 
