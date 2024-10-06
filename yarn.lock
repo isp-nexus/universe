@@ -3942,7 +3942,6 @@ __metadata:
     tileserver-gl-light: "npm:^4.11.1"
     type-fest: "npm:^4.26.1"
     typeorm: "npm:^0.3.20"
-    typescript: "npm:^5.6.2"
     urlpattern-polyfill: "npm:^10.0.0"
   languageName: unknown
   linkType: soft

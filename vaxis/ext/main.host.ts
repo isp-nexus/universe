@@ -10,7 +10,6 @@ import { commands, ExtensionContext, TextEditor, window } from "vscode"
 import { CommandID } from "../common/commands.js"
 import { matchFile, VectorLikeFileMatchers } from "../common/files.js"
 import { FileOnDropProvider } from "./FileOnDropProvider.js"
-// import { GeoMapEditorProvider } from "./GeoMapEditorProvider.js"
 import { ReactPanel } from "./ReactPanel.js"
 
 /**
@@ -28,8 +27,6 @@ export function activate(context: ExtensionContext) {
 			ReactPanel.createOrShow(context)
 		})
 	)
-
-	// context.subscriptions.push(GeoMapEditorProvider.register(context))
 
 	const viewCommandID = CommandID("viewCurrentGeoJSON")
 
