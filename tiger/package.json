@@ -3,7 +3,9 @@
 	"version": "1.0.0",
 	"description": "US Census TIGER/Line data processing and analysis.",
 	"keywords": [
-		"typescript"
+		"census",
+		"tiger",
+		"geospatial"
 	],
 	"license": "AGPL-3.0",
 	"contributors": [

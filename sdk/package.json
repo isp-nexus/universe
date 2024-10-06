@@ -84,13 +84,11 @@
 		"json-schema-ref-resolver": "^1.0.1",
 		"json-to-pretty-yaml": "^1.2.2",
 		"memfs": "^4.9.4",
-		"openai": "^4.57.0",
-		"openapi-typescript": "^7.1.0",
+		"openai": "^4.67.1",
 		"sqlite3": "^5.1.7",
 		"tileserver-gl-light": "^4.11.1",
 		"type-fest": "^4.26.1",
 		"typeorm": "^0.3.20",
-		"typescript": "^5.6.2",
 		"urlpattern-polyfill": "^10.0.0"
 	},
 	"engines": {

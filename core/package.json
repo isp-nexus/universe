@@ -2,9 +2,6 @@
 	"name": "@isp.nexus/core",
 	"version": "1.0.0",
 	"description": "Runtime-agnostic core functionality for Nexus packages.",
-	"keywords": [
-		"typescript"
-	],
 	"license": "AGPL-3.0",
 	"contributors": [
 		{

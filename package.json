@@ -38,7 +38,8 @@
 		"lint:prettier": "eslint .",
 		"lint:eslint:check": "eslint .",
 		"lint:eslint:fix": "eslint --fix .",
-		"build": "run-s compile schema:generate site:build",
+		"build:site": "run-s compile schema:generate site:build",
+		"build:schema": "run-s compile schema:generate",
 		"schema:generate": "yarn workspace @isp.nexus/schema generate",
 		"site:build": "yarn workspace @isp.nexus/site build",
 		"release": "release-it"
@@ -88,7 +89,7 @@
 		"puppeteer-extra-plugin-adblocker": "^2.13.6",
 		"puppeteer-extra-plugin-stealth": "^2.11.2",
 		"reflect-metadata": "^0.2.2",
-		"release-it": "^17.6.0",
+		"release-it": "^17.7.0",
 		"typedoc": "^0.26.7",
 		"typedoc-plugin-markdown": "^4.2.9",
 		"typescript": "^5.6.2",

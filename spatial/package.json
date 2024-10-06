@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"description": "Spatial analysis, geocoding, and other geo-related utilities.",
 	"keywords": [
-		"typescript",
 		"geo",
 		"spatial"
 	],
