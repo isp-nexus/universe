@@ -38,9 +38,9 @@
 		"lint:prettier": "eslint .",
 		"lint:eslint:check": "eslint .",
 		"lint:eslint:fix": "eslint --fix .",
-		"build": "run-s compile schema:generate",
+		"build": "run-s compile schema:generate site:build",
 		"schema:generate": "yarn workspace @isp.nexus/schema generate",
-		"site:build": "run-s build yarn workspace @isp.nexus/site build",
+		"site:build": "yarn workspace @isp.nexus/site build",
 		"release": "release-it"
 	},
 	"browserslist": [
