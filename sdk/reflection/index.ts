@@ -6,4 +6,3 @@
 
 export * from "./monorepo.js"
 export * from "./path-builders.js"
-export * from "./scripting.js"

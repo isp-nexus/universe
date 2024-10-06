@@ -8,7 +8,7 @@
 
 import { ISPNexusPackages } from "@isp.nexus/core"
 import { cleanCompiledArtifacts, cleanDistributionArtifacts } from "@isp.nexus/sdk/files"
-import { runScript } from "@isp.nexus/sdk/reflection"
+import { runScript } from "@isp.nexus/sdk/runner"
 
 await runScript(() => {
 	return Promise.all([

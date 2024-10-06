@@ -12,34 +12,13 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./schema/*.json": {
-			"types": "./dist/schema/*.d.ts",
-			"import": "./dist/schema/*.json"
-		},
-		"./scripts/*": {
-			"types": "./scripts/*.ts",
-			"import": "./out/scripts/*.js"
-		},
-		"./styles": {
-			"types": "./out/styles/index.d.ts",
-			"import": "./out/styles/index.js"
-		},
-		"./tiles": {
-			"types": "./out/tiles/index.d.ts",
-			"import": "./out/tiles/index.js"
-		},
-		"./base": {
-			"types": "./out/base/index.d.ts",
-			"import": "./out/base/index.js"
-		},
-		"./bdc": {
-			"types": "./out/bdc/index.d.ts",
-			"import": "./out/bdc/index.js"
-		},
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.js"
-		}
+		"./schema/*.json": "./dist/schema/*.json",
+		"./scripts/*": "./out/scripts/*.js",
+		"./styles": "./out/styles/index.js",
+		"./tiles": "./out/tiles/index.js",
+		"./base": "./out/base/index.js",
+		"./bdc": "./out/bdc/index.js",
+		".": "./out/index.js"
 	},
 	"dependencies": {
 		"@isp.nexus/core": "workspace:*",

@@ -6,8 +6,8 @@
 
 import { iterateInParallel, takeInParallel } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
-import { createCLIProgressBar, DataSourceFile, dataSourcePathBuilder, NexusDataSource } from "@isp.nexus/sdk"
-import { packagePathBuilder, runScript } from "@isp.nexus/sdk/reflection"
+import { createCLIProgressBar, DataSourceFile, dataSourcePathBuilder, NexusDataSource, runScript } from "@isp.nexus/sdk"
+import { packagePathBuilder } from "@isp.nexus/sdk/reflection"
 import {
 	AdminLevel1Code,
 	AdminLevel1CodeToAbbreviation,

@@ -12,26 +12,11 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./schema/*.json": {
-			"types": "./dist/schema/*.d.ts",
-			"import": "./dist/schema/*.json"
-		},
-		"./tiger": {
-			"types": "./out/tiger/index.d.ts",
-			"import": "./out/tiger/index.js"
-		},
-		"./fcc": {
-			"types": "./out/fcc/index.d.ts",
-			"import": "./out/fcc/index.js"
-		},
-		"./scripts/*": {
-			"types": "./scripts/*.ts",
-			"import": "./out/scripts/*.js"
-		},
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.js"
-		}
+		"./schema/*.json": "./dist/schema/*.json",
+		"./tiger": "./out/tiger/index.js",
+		"./fcc": "./out/fcc/index.js",
+		"./scripts/*": "./out/scripts/*.js",
+		".": "./out/index.js"
 	},
 	"bin": {
 		"nexus-sync": "./out/cli.js"

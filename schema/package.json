@@ -15,18 +15,9 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./*.json": {
-			"import": "./generated/*.json",
-			"types": "./generated/*.json.d.ts"
-		},
-		"./sdk": {
-			"types": "./out/sdk/index.d.ts",
-			"import": "./out/sdk/index.js"
-		},
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.js"
-		}
+		"./*.json": "./generated/*.json",
+		"./sdk": "./out/sdk/index.js",
+		".": "./out/index.js"
 	},
 	"scripts": {
 		"generate": "node ./out/scripts/generate.js"

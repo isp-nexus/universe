@@ -6,7 +6,8 @@
 
 import { writeLocalJSONFile } from "@isp.nexus/sdk/files"
 import { createHeadlessBrowser } from "@isp.nexus/sdk/headless"
-import { repoRootPathBuilder, runScript } from "@isp.nexus/sdk/reflection"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { runScript } from "@isp.nexus/sdk/runner"
 import { AdminLevel1Abbreviation } from "@isp.nexus/tiger"
 import * as fs from "node:fs/promises"
 

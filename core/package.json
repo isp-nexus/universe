@@ -12,42 +12,15 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./schema/*.json": {
-			"types": "./dist/schema/*.d.ts",
-			"import": "./dist/schema/*.json"
-		},
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.js"
-		},
-		"./polyfills/*": {
-			"types": "./out/polyfills/*.d.ts",
-			"import": "./out/polyfills/*.js"
-		},
-		"./logging": {
-			"types": "./out/logging/index.d.ts",
-			"import": "./out/logging/index.js"
-		},
-		"./routing": {
-			"types": "./out/routing/index.d.ts",
-			"import": "./out/routing/index.js"
-		},
-		"./lifecycle": {
-			"types": "./out/lifecycle/index.d.ts",
-			"import": "./out/lifecycle/index.js"
-		},
-		"./errors": {
-			"types": "./out/errors/index.d.ts",
-			"import": "./out/errors/index.js"
-		},
-		"./templates": {
-			"types": "./out/templates.d.ts",
-			"import": "./out/templates.js"
-		},
-		"./env": {
-			"types": "./out/env.d.ts",
-			"import": "./out/env.js"
-		}
+		"./schema/*.json": "./dist/schema/*.json",
+		".": "./out/index.js",
+		"./polyfills/*": "./out/polyfills/*.js",
+		"./logging": "./out/logging/index.js",
+		"./routing": "./out/routing/index.js",
+		"./lifecycle": "./out/lifecycle/index.js",
+		"./errors": "./out/errors/index.js",
+		"./templates": "./out/templates.js",
+		"./env": "./out/env.js"
 	},
 	"dependencies": {
 		"cli-progress": "^3.12.0",

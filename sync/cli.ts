@@ -9,7 +9,7 @@
 
 import "urlpattern-polyfill"
 
-import { logScriptError, postScriptCleanup } from "@isp.nexus/sdk/reflection"
+import { logScriptError, postScriptCleanup } from "@isp.nexus/sdk/runner"
 import yargs from "yargs"
 import { hideBin } from "yargs/helpers"
 import { CLICommands } from "./commands/index.js"

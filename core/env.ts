@@ -451,6 +451,7 @@ export const ISPNexusPackages = tuple(
 	"sync",
 	"api",
 	"vaxis",
+	"site",
 	"schema"
 )
 

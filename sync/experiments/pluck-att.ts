@@ -5,9 +5,9 @@
  */
 
 import { formatPlanIdentifier, ParsedPlanIdentifier, pluckUniquePlanID } from "@isp.nexus/fcc"
-import { cleanDirectory, createCLIProgressBar } from "@isp.nexus/sdk"
+import { cleanDirectory, createCLIProgressBar, runScript } from "@isp.nexus/sdk"
 import { createOpenAIClient } from "@isp.nexus/sdk/llm"
-import { repoRootPathBuilder, runScript } from "@isp.nexus/sdk/reflection"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
 import { zodResponseFormat } from "openai/helpers/zod"

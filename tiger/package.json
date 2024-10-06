@@ -17,22 +17,10 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./schema/*.json": {
-			"types": "./dist/schema/*.d.ts",
-			"import": "./dist/schema/*.json"
-		},
-		"./scripts/*": {
-			"types": "./scripts/*.ts",
-			"import": "./out/scripts/*.js"
-		},
-		"./sdk": {
-			"types": "./out/sdk/index.d.ts",
-			"import": "./out/sdk/index.js"
-		},
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.js"
-		}
+		"./schema/*.json": "./dist/schema/*.json",
+		"./scripts/*": "./out/scripts/*.js",
+		"./sdk": "./out/sdk/index.js",
+		".": "./out/index.js"
 	},
 	"scripts": {
 		"test": "node ./out/sdk/TIGERService.test.js"

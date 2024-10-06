@@ -31,8 +31,10 @@ export function logScriptError(error: unknown): void {
 
 /**
  * A script callback function to invoke.
+ *
+ * @internal
  */
-type ScriptCallback = (...args: any[]) => Promise<unknown>
+export type ScriptCallback = (...args: any[]) => Promise<unknown>
 
 /**
  * Cleans up services and exits the script cleanly.

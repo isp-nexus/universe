@@ -12,62 +12,19 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./paths": {
-			"types": "./paths.ts",
-			"import": "./out/paths.js"
-		},
-		"./runtime": {
-			"types": "./runtime/index.ts",
-			"import": "./out/runtime/index.js"
-		},
-		"./schema/*.json": {
-			"types": "./dist/schema/*.d.ts",
-			"import": "./dist/schema/*.json"
-		},
-		"./files": {
-			"types": "./files/index.ts",
-			"import": "./out/files/index.js"
-		},
-		"./schema-generator": {
-			"types": "./schema-generator/index.ts",
-			"import": "./out/schema-generator/index.js"
-		},
-		"./headless": {
-			"types": "./headless/index.ts",
-			"import": "./out/headless/index.js"
-		},
-		"./fcc": {
-			"types": "./fcc/index.ts",
-			"import": "./out/fcc/index.js"
-		},
-		"./scripts/*": {
-			"types": "./scripts/*.ts",
-			"import": "./out/scripts/*.js"
-		},
-		"./data": {
-			"types": "./data/index.ts",
-			"import": "./out/data/index.js"
-		},
-		"./tiger": {
-			"types": "./tiger/index.ts",
-			"import": "./out/tiger/index.js"
-		},
-		"./llm": {
-			"types": "./llm/index.ts",
-			"import": "./out/llm/index.js"
-		},
-		"./reflection": {
-			"types": "./reflection/index.ts",
-			"import": "./out/reflection/index.js"
-		},
-		".": {
-			"types": "./out/index.d.ts",
-			"import": "./out/index.js"
-		},
-		"./*": {
-			"types": "./out/*.d.ts",
-			"import": "./out/*.js"
-		}
+		"./runtime": "./out/runtime/index.js",
+		"./runner": "./out/runner/index.js",
+		"./schema/*.json": "./dist/schema/*.json",
+		"./files": "./out/files/index.js",
+		"./schema-generator": "./out/schema-generator/index.js",
+		"./headless": "./out/headless/index.js",
+		"./fcc": "./out/fcc/index.js",
+		"./scripts/*": "./out/scripts/*.js",
+		"./data": "./out/data/index.js",
+		"./llm": "./out/llm/index.js",
+		"./reflection": "./out/reflection/index.js",
+		".": "./out/index.js",
+		"./*": "./out/*.js"
 	},
 	"dependencies": {
 		"@faker-js/faker": "^8.4.1",

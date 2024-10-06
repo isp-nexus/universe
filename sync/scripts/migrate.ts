@@ -7,8 +7,7 @@
  */
 
 import { $ContactsDataSource, $PostalDataSource } from "@isp.nexus/mailwoman/sdk"
-import { NexusDataSource } from "@isp.nexus/sdk"
-import { runScript } from "@isp.nexus/sdk/reflection"
+import { NexusDataSource, runScript } from "@isp.nexus/sdk"
 import { $BDCDataSource, $FabricDataSource } from "@isp.nexus/sync/fcc"
 
 interface ProcessDatabaseServiceOptions {

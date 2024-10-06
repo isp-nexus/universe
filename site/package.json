@@ -30,6 +30,13 @@
 	"dependencies": {
 		"@docusaurus/core": "3.5.2",
 		"@docusaurus/preset-classic": "3.5.2",
+		"@isp.nexus/cartographer": "workspace:*",
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/fcc": "workspace:*",
+		"@isp.nexus/mailwoman": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*",
+		"@isp.nexus/spatial": "workspace:*",
+		"@isp.nexus/tiger": "workspace:*",
 		"@mdx-js/react": "^3.0.1",
 		"clsx": "^2.1.1",
 		"hast-util-has-property": "^3.0.0",

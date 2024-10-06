@@ -16,18 +16,9 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
-		"./schema/*.json": {
-			"types": "./dist/schema/*.d.ts",
-			"import": "./dist/schema/*.json"
-		},
-		"./scripts/*": {
-			"types": "./scripts/*.ts",
-			"import": "./out/scripts/*.js"
-		},
-		"./*": {
-			"types": "./out/*.d.ts",
-			"import": "./out/*.js"
-		}
+		"./schema/*.json": "./dist/schema/*.json",
+		"./scripts/*": "./out/scripts/*.js",
+		"./*": "./out/*.js"
 	},
 	"main": "./dist/ext/main.host.cjs",
 	"scripts": {

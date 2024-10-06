@@ -6,7 +6,7 @@
 
 import { writeLocalBuffer } from "@isp.nexus/sdk/files"
 import { createHeadlessBrowser, createWatermarkedScreenshot } from "@isp.nexus/sdk/headless"
-import { runScript } from "@isp.nexus/sdk/reflection"
+import { runScript } from "@isp.nexus/sdk/runner"
 
 const { browser, page, logger } = await createHeadlessBrowser()
 

@@ -6,13 +6,14 @@
 
 import type * as Preset from "@docusaurus/preset-classic"
 import type { Config } from "@docusaurus/types"
+import { packagePathBuilder } from "@isp.nexus/sdk/reflection"
 import type { PluginOptions as DocusaurusTypeDocPluginOptions } from "docusaurus-plugin-typedoc"
 import { themes as prismThemes } from "prism-react-renderer"
 import { EntryPointStrategy, TypeDocOptionMap } from "typedoc"
 
 const config: Config = {
 	title: "ISP Nexus",
-	tagline: "Dinosaurs are cool",
+	tagline: "Spatial firmographic software for telecom companies to managing risk and secure funding.",
 	favicon: "img/favicon.ico",
 	headTags: [
 		{
@@ -94,14 +95,14 @@ const config: Config = {
 				includeVersion: false,
 				entryPoints: [
 					//--
-					"../core",
-					"../spatial",
-					"../tiger",
-					"../fcc",
-					"../mailwoman",
-					"../cartographer",
-					"../sdk",
-				],
+					packagePathBuilder("core"),
+					packagePathBuilder("spatial"),
+					packagePathBuilder("tiger"),
+					packagePathBuilder("fcc"),
+					packagePathBuilder("mailwoman"),
+					packagePathBuilder("cartographer"),
+					packagePathBuilder("sdk"),
+				].map((builder) => builder.toString()),
 				mergeReadme: true,
 				indexFormat: "table",
 				disableSources: true,
