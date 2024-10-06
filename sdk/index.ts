@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for working with Node.js.
+ *
+ *   Utilities for working with Node.js.
  */
 
 export * from "./cli/index.js"

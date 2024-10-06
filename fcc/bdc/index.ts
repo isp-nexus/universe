@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file FCC Broadband Data Collection API module.
+ *
+ *   FCC Broadband Data Collection API module.
  */
 
 export * from "./bandwidth.js"

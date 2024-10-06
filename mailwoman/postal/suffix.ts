@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file USPS street suffixes and their abbreviations.
+ *
+ *   USPS street suffixes and their abbreviations.
  * @see {@link https://pe.usps.com/text/pub28/28apc_002.htm USPS Street Suffix Abbreviations}
  */
 

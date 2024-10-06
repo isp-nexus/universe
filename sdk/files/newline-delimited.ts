@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for working with newline-delimited files.
+ *
+ *   Utilities for working with newline-delimited files.
  */
 
 import "@isp.nexus/core/polyfills/promises/withResolvers"
@@ -62,7 +63,10 @@ export function readRange(fileHandle: FileHandle, start: number, end: number, bu
 	})
 }
 
-interface TakeReadStreamLinesOptions {
+/**
+ * Options for reading newline-delimited files.
+ */
+export interface TakeReadStreamLinesOptions {
 	/**
 	 * A file handle to use for reading the file. Useful for reusing a file handle across multiple
 	 * reads.
@@ -134,6 +138,7 @@ export async function* takeReadStreamLines(
 	}
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface CreateNewlineWriterOptions {}
 
 export interface NewlineWriter extends AsyncDisposable {
@@ -149,31 +154,29 @@ export function createNewlineWriter(filePath: string): NewlineWriter {
 	const writer = createWriteStream(filePath)
 
 	const writeLine = (line: string): Promise<void> => {
-		const withResolvers = Promise.withResolvers<void>()
+		return new Promise((resolve, reject) => {
+			writer.write(line, "utf8", (error) => {
+				if (error) {
+					reject(error)
+					return
+				}
 
-		writer.write(line, "utf8", (error) => {
-			if (error) {
-				withResolvers.reject(error)
-			} else {
-				withResolvers.resolve()
-			}
+				resolve()
+			})
 		})
-
-		return withResolvers.promise
 	}
 
 	const dispose = () => {
-		const withResolvers = Promise.withResolvers<void>()
+		return new Promise<void>((resolve, reject) => {
+			writer.close((error) => {
+				if (error) {
+					reject(error)
+					return
+				}
 
-		writer.close((error) => {
-			if (error) {
-				withResolvers.reject(error)
-			} else {
-				withResolvers.resolve()
-			}
+				resolve()
+			})
 		})
-
-		return withResolvers.promise
 	}
 
 	return {

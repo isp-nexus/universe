@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Service for managing point of contact information.
+ *
+ *   Service for managing point of contact information.
  */
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
@@ -13,6 +14,11 @@ import { EmailContactSchema } from "./EmailContactSchema.js"
 import { PhoneContactSchema } from "./PhoneContactEntity.js"
 import { PointOfContactSchema } from "./PointOfContactEntity.js"
 
+/**
+ * Data source for managing contact information.
+ *
+ * @singleton
+ */
 export const $ContactsDataSource = ServiceRepository.register(() => {
 	return new NexusDataSource({
 		displayName: "Contacts",

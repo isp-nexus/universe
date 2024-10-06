@@ -8,6 +8,8 @@
 coverage
 dist
 out
+site/docs
+site/api
 
 ## Environment
 *.env

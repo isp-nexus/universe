@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file FCC Broadband Data Collection Provider common types.
+ *
+ *   FCC Broadband Data Collection Provider common types.
  */
 
 import { JSONSchemaID, TemporalProperties } from "@isp.nexus/core"

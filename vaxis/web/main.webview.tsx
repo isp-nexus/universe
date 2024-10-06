@@ -10,7 +10,7 @@ import "urlpattern-polyfill"
 
 import { createRoot } from "react-dom/client"
 import { NexusClient } from "./NexusClient"
-import DashboardMap from "./components/DashboardMap/index.js"
+import DashboardMap from "./components/DashboardMap/DashboardMap.js"
 import { NexusStateProvider, pluckSerializedState } from "./contexts/WebviewContext"
 
 console.profile("Webview render")

@@ -2,12 +2,15 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Data archive path utilities.
+ *
+ *   Data archive path utilities.
  */
 
 import { ResourceError } from "@isp.nexus/core/errors"
-import { PathBuilder } from "@isp.nexus/sdk/reflection"
+import { PathBuilder, type PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import { $private, assertOptionalKeyPresent } from "@isp.nexus/sdk/runtime"
+
+export { type PathBuilder, type PathBuilderLike }
 
 /**
  * Valid data source package names.

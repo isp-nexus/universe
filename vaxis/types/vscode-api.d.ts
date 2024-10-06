@@ -21,17 +21,17 @@ declare global {
 		 *
 		 * @param message JSON-serializable payload to send to the extension.
 		 */
-		postMessage: (message: {}) => void
+		postMessage: (message: object) => void
 
 		/**
 		 * Persist the state of the webview.
 		 */
-		setState: (state: {}) => void
+		setState: (state: object) => void
 
 		/**
 		 * Get the current state of the webview.
 		 */
-		getState: <T extends {} = unknown>() => T | null
+		getState: <T extends object = unknown>() => T | null
 	}
 
 	/**

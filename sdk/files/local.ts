@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Provides utilities for reading files from the local repository.
+ *
+ *   Provides utilities for reading files from the local repository.
  */
 
 import { ConsoleLogger } from "@isp.nexus/core/logging"
@@ -35,7 +36,7 @@ export function readLocalTextFile<S extends string[]>(...pathSegments: S) {
  * @category Node
  * @category Files
  */
-export function readLocalJSONFile<T extends {} = Record<string, unknown>, S extends string[] = string[]>(
+export function readLocalJSONFile<T = Record<string, unknown>, S extends string[] = string[]>(
 	...pathSegments: S
 ): Promise<T> {
 	return readLocalTextFile(...pathSegments).then(JSON.parse)
@@ -73,22 +74,27 @@ export async function writeLocalTextFile<S extends string[]>(content: string, ..
  * @category Node
  * @category Files
  */
-export function writeLocalJSONFile<T extends {} = Record<string, unknown>, S extends string[] = string[]>(
+export function writeLocalJSONFile<T = Record<string, unknown>, S extends string[] = string[]>(
 	content: T,
 	...pathSegments: S
 ): Promise<void>
-export function writeLocalJSONFile<T extends {} = Record<string, unknown>, S extends string = string>(
+export function writeLocalJSONFile<T = Record<string, unknown>, S extends string = string>(
 	content: T,
 	filePath: S
 ): Promise<void>
-export function writeLocalJSONFile<T extends {} = Record<string, unknown>, S extends string[] = string[]>(
+export function writeLocalJSONFile<T = Record<string, unknown>, S extends string[] = string[]>(
 	content: T,
 	...pathSegments: S
 ): Promise<void> {
 	return writeLocalTextFile(JSON.stringify(content, null, "\t"), ...pathSegments)
 }
 
-type BufferLike =
+/**
+ * A buffer-like object that can be written to a file.
+ *
+ * @internal
+ */
+export type BufferLike =
 	| NodeJS.ArrayBufferView
 	| Iterable<string | NodeJS.ArrayBufferView>
 	| AsyncIterable<string | NodeJS.ArrayBufferView>

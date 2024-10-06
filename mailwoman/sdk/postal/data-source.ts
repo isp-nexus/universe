@@ -11,6 +11,8 @@ import { PostalAddressSchema } from "./PostalAddressSchema.js"
 
 /**
  * Postal data source.
+ *
+ * @singleton
  */
 export const $PostalDataSource = ServiceRepository.register(
 	() =>

@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Service for managing point of contact information.
+ *
+ *   Service for managing point of contact information.
  */
 
 import { pick } from "@isp.nexus/core"

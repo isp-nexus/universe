@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Provides functions for parsing and converting extended Well-Known text and binary data.
+ *
+ *   Provides functions for parsing and converting extended Well-Known text and binary data.
  */
 
 import type { GeometryCollection, GeometryLiteral } from "@isp.nexus/spatial"

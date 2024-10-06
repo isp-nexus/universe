@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Postal address encoding and decoding utilities.
+ *
+ *   Postal address encoding and decoding utilities.
  */
 
 import { simpleSHA3 } from "@isp.nexus/core"

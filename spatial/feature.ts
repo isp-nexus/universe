@@ -15,7 +15,7 @@ export interface IdentifiableGeoFeature {
  *
  * @see https://tools.ietf.org/html/rfc7946#section-3.2
  */
-export interface GeoFeature<G = GeometryLiteral, P extends {} | null = null> {
+export interface GeoFeature<G = GeometryLiteral, P extends object | null = null> {
 	/**
 	 * Declares the type of GeoJSON object as a `Feature`.
 	 */

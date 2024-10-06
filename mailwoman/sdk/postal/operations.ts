@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Geocoding service for converting between addresses and geographic positions.
+ *
+ *   Geocoding service for converting between addresses and geographic positions.
  */
 
 import { pick } from "@isp.nexus/core"

@@ -22,7 +22,12 @@ import { TileSetSourceID } from "../styles/sources.js"
  */
 export const BDCTileSetID = TileSetSourceID("bdc")
 
-type BDCLayerSpecificationInput = LayerSpecificationListInput<
+/**
+ * Broadband Data Collection layer specifications.
+ *
+ * @internal
+ */
+export type BDCLayerSpecificationInput = LayerSpecificationListInput<
 	| FillLayerSpecification
 	| LineLayerSpecification
 	| CircleLayerSpecification
@@ -31,7 +36,14 @@ type BDCLayerSpecificationInput = LayerSpecificationListInput<
 	| FillExtrusionLayerSpecification
 >
 
-type BaseBDCLayerSpecification<T> = T extends BDCLayerSpecificationInput ? Omit<T, "source-layer" | "source"> : never
+/**
+ * Base specification for a Broadband Data Collection layer.
+ *
+ * @internal
+ */
+export type BaseBDCLayerSpecification<T> = T extends BDCLayerSpecificationInput
+	? Omit<T, "source-layer" | "source">
+	: never
 
 function createBDCBlockLayer<T extends BDCLayerSpecificationInput>(spec: BaseBDCLayerSpecification<T>): T {
 	return {

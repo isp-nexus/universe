@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Universal Service Fund (USF) utilities.
+ *
+ *   Universal Service Fund (USF) utilities.
  */
 
 import { Tagged } from "type-fest"

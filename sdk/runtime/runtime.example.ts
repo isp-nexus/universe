@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Injected environment key-value pairs.
+ *
+ *   Injected environment key-value pairs.
  */
 
 import type { EnvironmentRecord } from "@isp.nexus/core"

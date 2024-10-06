@@ -68,7 +68,7 @@ export function isPointLiteral(input: PointLiteral | null | undefined | unknown)
  *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/GeolocationCoordinates MDN Web Docs}
  */
-interface GeolocationCoordinatesLike {
+export interface GeolocationCoordinatesLike {
 	latitude: number
 	longitude: number
 	altitude: number

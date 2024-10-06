@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Google Geocoding schema.
+ *
+ *   Google Geocoding schema.
  */
 
 import { GeocodeResponseData, Client as GoogleMapsClient } from "@googlemaps/google-maps-services-js"

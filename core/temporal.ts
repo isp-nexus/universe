@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for working with temporal data, such as dates and times.
+ *
+ *   Utilities for working with temporal data, such as dates and times.
  */
 
 import type { Tagged } from "type-fest"

@@ -11,17 +11,15 @@ import { StringKeyOf, pick } from "../object.js"
 /**
  * JSON serialize objects (not including arrays) and classes.
  *
- * @ignore
  * @internal
  */
-type ExtractJSONProperties<T extends object> = {
+export type ExtractJSONProperties<T extends object> = {
 	[Key in keyof T]: ExtractJSON<T[Key]>
 }
 
 /**
  * JSON serialize type.
  *
- * @ignore
  * @internal
  */
 export type ExtractJSON<T> = T extends JsonPrimitive
@@ -40,7 +38,6 @@ export type ExtractJSON<T> = T extends JsonPrimitive
 /**
  * Pick JSON properties from an object.
  *
- * @ignore
  * @internal
  */
 export type PickJSON<T, K extends keyof T> = { [P in K]: ExtractJSON<T[P]> }

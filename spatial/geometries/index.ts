@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file GeoJSON Geometry Entry Point
+ *
+ *   GeoJSON Geometry Entry Point
  */
 
 export * from "./collection.js"

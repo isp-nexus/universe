@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for working with FCC broadband, ISP, FRN, and Form 477 data.
+ *
+ *   Utilities for working with FCC broadband, ISP, FRN, and Form 477 data.
  */
 
 export * from "./bdc/block-aggregator.js"

@@ -55,7 +55,6 @@ export const DatabaseRetrieveRoute = WorkerRoute.GET(DB_ROUTE_PATTERN, async ({ 
 
 	const rangeData = await r2ObjectBody.arrayBuffer()
 
-	rangeData.byteLength
 	const response = new Response(rangeData, {
 		status: 206, // Partial Content
 		headers: [

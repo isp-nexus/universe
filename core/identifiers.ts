@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for working with identifiers, such as UUIDs.
+ *
+ *   Utilities for working with identifiers, such as UUIDs.
  */
 
 import { camelCase, capitalCase, snakeCase } from "change-case"
@@ -13,8 +14,14 @@ import uuidByString from "uuid-by-string"
 
 const jsSHA3 = jsSHA3Mod as unknown as (typeof import("jssha/sha3"))["default"]
 
-type SHA3Seed = string | number | boolean | null | Date | undefined
-type SHA3Input = Record<string | number, SHA3Seed> | SHA3Seed[]
+/**
+ * @internal
+ */
+export type SHA3Seed = string | number | boolean | null | Date | undefined
+/**
+ * @internal
+ */
+export type SHA3Input = Record<string | number, SHA3Seed> | SHA3Seed[]
 
 export function normalizeSHASeeds(input: SHA3Input): string[] {
 	const seeds = Array.isArray(input) ? input : Object.values(input)

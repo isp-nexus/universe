@@ -2,10 +2,12 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utility functions for working with objects.
+ *
+ *   Utility functions for working with objects.
  */
 
 import { isIterable } from "./collections.js"
+import { SetLike } from "./sets.js"
 
 /**
  * Type-utility for extracting the string keys of an object.
@@ -21,7 +23,7 @@ export type StringKeyOf<O> = Extract<keyof O, string>
  *
  * @returns A subset of the source object with only properties present in `scalarEnum`.
  */
-export function pick<O extends {}, K extends string>(
+export function pick<O extends object, K extends string>(
 	input: O,
 	scalarEnum: Record<K, K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any
@@ -33,7 +35,7 @@ export function pick<O extends {}, K extends string>(
  *
  * @returns A subset of the source object with only properties present in `scalarEnum`.
  */
-export function pick<O extends {}, K extends keyof O>(
+export function pick<O extends object, K extends keyof O>(
 	input: O,
 	setLike: SetLike<K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any
@@ -44,7 +46,7 @@ export function pick<O extends {}, K extends keyof O>(
  *
  * @returns A subset of the source object with only properties present in `scalarEnum`.
  */
-export function pick<O extends {}, K extends keyof O>(
+export function pick<O extends object, K extends keyof O>(
 	input: O,
 	scalarEnum: Record<K, K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any
@@ -55,7 +57,7 @@ export function pick<O extends {}, K extends keyof O>(
  *
  * @returns A subset of the source object with only properties present in `constraints`.
  */
-export function pick<O extends {}, K extends keyof O = StringKeyOf<O>>(
+export function pick<O extends object, K extends keyof O = StringKeyOf<O>>(
 	input: O,
 	constraints: Iterable<K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any
@@ -67,7 +69,7 @@ export function pick<O extends {}, K extends keyof O = StringKeyOf<O>>(
  *
  * @returns A subset of the source object with only properties present in `constraints`.
  */
-export function pick<O extends {}, K extends keyof O = StringKeyOf<O>>(
+export function pick<O extends object, K extends keyof O = StringKeyOf<O>>(
 	input: O,
 	constraints: Record<K, K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any
@@ -78,7 +80,7 @@ export function pick<O extends {}, K extends keyof O = StringKeyOf<O>>(
  *
  * @returns A subset of the source object with only properties present in `keys`.
  */
-export function pick<O extends {}, K extends string>(
+export function pick<O extends object, K extends string>(
 	input: O,
 	keys: Iterable<K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any
@@ -89,7 +91,7 @@ export function pick<O extends {}, K extends string>(
  *
  * @returns A subset of the source object with only properties present in `constraints`.
  */
-export function pick<O extends {}, K extends keyof O = StringKeyOf<O>>(
+export function pick<O extends object, K extends keyof O = StringKeyOf<O>>(
 	input: O,
 	constraints: Iterable<K> | Record<K, K> | SetLike<K>,
 	transform?: (value: O[keyof O], key: keyof O, input: O) => any

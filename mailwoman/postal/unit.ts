@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file USPS secondary address unit designators.
+ *
+ *   USPS secondary address unit designators.
  */
 
 /**
@@ -55,7 +56,7 @@ export type UnitDesignatorAbbreviation = (typeof UnitDesignatorAbbreviations)[nu
 /**
  * A record mapping unit prefixes to their abbreviations.
  */
-const UnitDesignatorAbbreviationRecord = {
+export const UnitDesignatorAbbreviationRecord = {
 	APARTMENT: "APT",
 	BUILDING: "BLDG",
 	FLOOR: "FL",
@@ -68,15 +69,13 @@ const UnitDesignatorAbbreviationRecord = {
 
 /**
  * A record mapping unit abbreviations to their full names.
- *
- * @internal
  */
-type UnitDesignatorsAbbreviationRecord = typeof UnitDesignatorAbbreviationRecord
+export type UnitDesignatorsAbbreviationRecord = typeof UnitDesignatorAbbreviationRecord
 
 /**
  * A record mapping designator abbreviations to their full names.
  */
-const UnitDesignatorRecord = {
+export const UnitDesignatorRecord = {
 	APT: "APARTMENT",
 	BLDG: "BUILDING",
 	FL: "FLOOR",
@@ -87,10 +86,7 @@ const UnitDesignatorRecord = {
 	"#": "#",
 } as const satisfies Record<UnitDesignatorAbbreviation, UnitDesignator>
 
-/**
- * @internal
- */
-type UnitDesignatorRecord = typeof UnitDesignatorRecord
+export type UnitDesignatorRecord = typeof UnitDesignatorRecord
 
 /**
  * A record mapping unit abbreviations to their pattern matchers.
@@ -106,8 +102,6 @@ export type UnitDesignatorsAbbreviation = UnitDesignatorsAbbreviationRecord[Unit
 
 /**
  * Result of a unit designator lookup.
- *
- * @internal
  */
 export interface UnitDesignatorsMatch<D extends UnitDesignator = UnitDesignator> {
 	/**

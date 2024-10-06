@@ -13,7 +13,7 @@ export const FabricDataSourcePath = dataSourcePathBuilder("fabric", DataSourceFi
 /**
  * FCC Fabric data source.
  *
- * @internal
+ * @singleton
  */
 export const $FabricDataSource = ServiceRepository.register(
 	() =>

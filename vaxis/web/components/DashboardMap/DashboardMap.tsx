@@ -4,7 +4,6 @@
  * @author Teffen Ellis, et al.
  */
 
-// import "@deck.gl/widgets/stylesheet.css"
 import "./styles.css"
 
 import {
@@ -97,21 +96,24 @@ const DashboardMap: React.FC = () => {
 
 	const persistenceFrameRef = useRef<number>()
 
-	const handleViewStateChange = useCallback((event: ViewStateChangeEvent) => {
-		self.clearTimeout(persistenceFrameRef.current)
-		persistenceFrameRef.current = self.setTimeout(() => {
-			persistWebviewState((currentWebViewState) => ({
-				...currentWebViewState,
-				mapView: event.viewState,
-			}))
-		}, 500)
-	}, [])
+	const handleViewStateChange = useCallback(
+		(event: ViewStateChangeEvent) => {
+			self.clearTimeout(persistenceFrameRef.current)
+			persistenceFrameRef.current = self.setTimeout(() => {
+				persistWebviewState((currentWebViewState) => ({
+					...currentWebViewState,
+					mapView: event.viewState,
+				}))
+			}, 500)
+		},
+		[persistWebviewState]
+	)
 
 	useEffect(() => {
 		fetchTileSetSources(tileSetSourceIDs).then((nextTileSources) => {
 			setTileSetSources(nextTileSources)
 		})
-	}, [tileSetSourceIDs])
+	}, [])
 
 	if (!styleSpec) {
 		return <SplashScreen>Loading map...</SplashScreen>

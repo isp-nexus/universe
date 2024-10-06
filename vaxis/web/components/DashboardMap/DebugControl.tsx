@@ -1,3 +1,9 @@
+/**
+ * @copyright OpenISP, Inc.
+ * @license AGPL-3.0
+ * @author Teffen Ellis, et al.
+ */
+
 import { ControlPosition, LngLat, MapGeoJSONFeature, MapLayerMouseEvent, Point } from "maplibre-gl"
 import "maplibre-gl/dist/maplibre-gl.css"
 import { memo, useEffect, useState } from "react"
@@ -57,7 +63,7 @@ export const DebugControl: React.FC = memo(() => {
 		return () => {
 			mapInstance.off("mousemove", handleMouseMove)
 		}
-	}, [])
+	}, [map])
 
 	return createPortal(
 		<>

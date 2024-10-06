@@ -1,4 +1,5 @@
 /* eslint-disable headers/header-format */
+
 // MIT License
 //
 // Copyright (c) Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)

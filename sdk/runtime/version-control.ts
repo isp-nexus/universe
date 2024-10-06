@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for working with version control, such as Git.
+ *
+ *   Utilities for working with version control, such as Git.
  */
 
 import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"

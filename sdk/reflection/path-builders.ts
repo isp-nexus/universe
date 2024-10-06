@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Path reflection utilities for the ISP Nexus mono-repo.
+ *
+ *   Path reflection utilities for the ISP Nexus mono-repo.
  */
 
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
@@ -12,14 +13,20 @@ import type { Join } from "type-fest"
 
 /**
  * Type-safe path builder.
+ *
+ * @external URL - The URL class.
+ * @template S - The type of the path string.
  */
-export interface PathBuilder<S extends string> extends URL, Omit<String, keyof URL> {
+export interface PathBuilder<S extends string> extends URL, Omit<string, keyof URL> {
 	/**
 	 * Append additional path segments to the current path.
 	 */
 	<T extends Array<string | number>>(...additionalPathSegments: T): PathBuilder<Join<[S, ...T], "/">> & string
 }
 
+/**
+ * Type-safe path builder.
+ */
 export class PathBuilder<S extends string = string> extends URL implements PathBuilder<S> {
 	/**
 	 * Get the current path as a string.
@@ -47,6 +54,12 @@ export class PathBuilder<S extends string = string> extends URL implements PathB
 	public [Symbol.for("nodejs.util.inspect.custom")]() {
 		return this.toString()
 	}
+
+	// @note This fixes invalid Markdown in the base class JSDoc.
+	/**
+	 * The port of the URL.
+	 */
+	public declare port: string
 
 	/**
 	 * Create a type-safe path builder.

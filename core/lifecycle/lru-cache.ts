@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file LRU cache utilities.
+ *
+ *   LRU cache utilities.
  */
 
 import { LRUCache } from "lru-cache"
@@ -15,7 +16,7 @@ export interface AsyncDisposableLRUCacheOptions {
 /**
  * An LRU cache that automatically disposes of its values when they are evicted.
  */
-export class AsyncDisposableLRUCache<K extends {}, V extends AsyncDisposable>
+export class AsyncDisposableLRUCache<K extends object, V extends AsyncDisposable>
 	extends LRUCache<K, V>
 	implements AsyncDisposable
 {

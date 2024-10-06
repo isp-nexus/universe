@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file USPS cardinal directions and their abbreviations.
+ *
+ *   USPS cardinal directions and their abbreviations.
  */
 
 /**
@@ -80,10 +81,9 @@ export type DirectionalAbbreviationVariation = (typeof DirectionalNameVariations
 /**
  * A record mapping directional abbreviations to their full names.
  *
- * @internal
  * @title Directional Abbreviation Record
  */
-const DirectionalAbbreviationRecord = {
+export const DirectionalAbbreviationRecord = {
 	N: "NORTH",
 	E: "EAST",
 	S: "SOUTH",
@@ -94,14 +94,12 @@ const DirectionalAbbreviationRecord = {
 	SW: "SOUTH WEST",
 } as const satisfies Record<DirectionalAbbreviation, DirectionalName>
 
-type DirectionalAbbreviationRecord = typeof DirectionalAbbreviationRecord
+export type DirectionalAbbreviationRecord = typeof DirectionalAbbreviationRecord
 
 /**
  * A record mapping directional names to their abbreviations.
- *
- * @internal
  */
-const DirectionAbbreviationRecord = {
+export const DirectionAbbreviationRecord = {
 	NORTH: DirectionalAbbreviation.NORTH,
 	EAST: DirectionalAbbreviation.EAST,
 	SOUTH: DirectionalAbbreviation.SOUTH,
@@ -134,28 +132,23 @@ const DirectionAbbreviationRecord = {
 	"South West": DirectionalAbbreviation.SOUTHWEST,
 } as const satisfies Record<DirectionalAbbreviationVariation, DirectionalAbbreviation>
 
-type DirectionAbbreviationRecord = typeof DirectionAbbreviationRecord
+export type DirectionAbbreviationRecord = typeof DirectionAbbreviationRecord
 
 /**
  * A type that represents all possible directional abbreviations.
- *
- * @internal
  */
-type DirectionalVariation = keyof DirectionAbbreviationRecord
+export type DirectionalVariation = keyof DirectionAbbreviationRecord
 
 /**
  * A mapping of directional abbreviations to their respective names.
- *
- * @internal
  */
-const AbbreviationToDirectional: ReadonlyMap<string, DirectionalName> = new Map(
+export const AbbreviationToDirectional: ReadonlyMap<string, DirectionalName> = new Map(
 	Object.entries(DirectionalAbbreviationRecord)
 )
 
 /**
  * A mapping of directionals to their respective abbreviations.
  *
- * @internal
  * @see {@link https://pe.usps.com/text/pub28/28c2_003.htm USPS Address Unit Designators}
  */
 export const DirectionalToAbbreviationMap: ReadonlyMap<string, DirectionalAbbreviation> = new Map(
@@ -164,16 +157,12 @@ export const DirectionalToAbbreviationMap: ReadonlyMap<string, DirectionalAbbrev
 
 /**
  * Given a directional abbreviation, returns the corresponding direction.
- *
- * @internal
  */
 export function pluckDirectionalName<C extends DirectionalAbbreviation | Lowercase<DirectionalAbbreviation>>(
 	directionalAbbreviation: C
 ): DirectionalAbbreviationRecord[Uppercase<C>]
 /**
  * Given a possible directional abbreviation or name, attempt to return the corresponding direction.
- *
- * @internal
  */
 export function pluckDirectionalName(input: unknown): DirectionalName | null
 export function pluckDirectionalName(input: unknown): DirectionalName | null {
@@ -190,8 +179,6 @@ export function pluckDirectionalName(input: unknown): DirectionalName | null {
 
 /**
  * Given a directional name, returns the corresponding abbreviation.
- *
- * @internal
  */
 export function lookupDirectionalAbbreviation<D extends DirectionalVariation>(
 	cardinalDirection: D
@@ -215,7 +202,6 @@ export function lookupDirectionalAbbreviation(input: unknown): DirectionalAbbrev
 /**
  * Result of a directional lookup.
  *
- * @internal
  * @see {@linkcode lookupDirectional} for usage.
  */
 export type DirectionalMatch<C extends DirectionalAbbreviation = DirectionalAbbreviation> = {

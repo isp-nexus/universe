@@ -4,7 +4,7 @@
  * @author Teffen Ellis, et al.
  */
 
-import { LoggerExtras, pino } from "pino"
+import { ChildLoggerOptions, LoggerExtras, pino } from "pino"
 import { PrivateEnvironmentKeys } from "../env.js"
 
 /**
@@ -39,10 +39,8 @@ export const DEFAULT_PINO_LOGGER_OPTIONS: ILoggerOptions = {
 
 /**
  * Logger with browser methods, as well as async disposability.
- *
- * @internal
  */
-export interface IRuntimeLogger<Prefixes extends string[] = string[]> extends pino.BaseLogger, LoggerExtras {
+export interface IRuntimeLogger<Prefixes extends string[] = string[]> extends pino.BaseLogger {
 	/**
 	 * The prefixes for the logger.
 	 */
@@ -51,6 +49,11 @@ export interface IRuntimeLogger<Prefixes extends string[] = string[]> extends pi
 	withPrefix: <ChildPrefixes extends string[]>(
 		...prefixes: ChildPrefixes
 	) => IRuntimeLogger<[...Prefixes, ...ChildPrefixes]>
+
+	child<ChildPrefixes extends string[]>(
+		bindings: pino.Bindings,
+		options?: ChildLoggerOptions<any>
+	): IRuntimeLogger<[...Prefixes, ...ChildPrefixes]>
 
 	[Symbol.asyncDispose](): Promise<void>
 }
@@ -120,14 +123,14 @@ export function createRuntimeLogger(options?: pino.LoggerOptions): IRuntimeLogge
 	}
 
 	// ...then we add the async disposability.
-	const logger: IRuntimeLogger = Object.assign(baseLogger, {
+	Object.assign(baseLogger, {
 		prefixes: [],
 		[Symbol.asyncDispose]: asyncDispose,
 		withPrefix,
 	})
 
 	// Finally, exposing the logger as a branded type.
-	return logger
+	return baseLogger as unknown as IRuntimeLogger
 }
 
 /**

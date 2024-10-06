@@ -19,6 +19,9 @@ const SisterSoftwareUniverseESLintConfig = createESLintPackageConfig({
 		ignores: [
 			// ---
 			"**/dist/**",
+			"**/*.json",
+			"site/docs/api/**",
+			"**/.docusaurus/**",
 			"**/out/**",
 			"**/node_modules/**",
 		],

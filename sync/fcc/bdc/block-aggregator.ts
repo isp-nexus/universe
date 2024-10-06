@@ -11,6 +11,7 @@ import {
 	createBloomFilters,
 	createCLIProgressBar,
 	ParquetReader,
+	ParquetRecordLike,
 	ParquetSchemaDefinition,
 	ParquetWriter,
 } from "@isp.nexus/sdk"
@@ -43,7 +44,7 @@ export type RawBSLAvailabilityRow = [
 	h3_res8_id: H3Cell,
 ]
 
-export interface CensusBlockAvailabilityRecord {
+export interface CensusBlockAvailabilityRecord extends ParquetRecordLike {
 	provider_id: ProviderID
 	location_id: BroadbandServicableLocationID
 	technology_code: BroadbandTechnologyCode

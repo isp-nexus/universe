@@ -1,7 +1,7 @@
 {
 	"name": "@isp.nexus/tiger",
 	"version": "1.0.0",
-	"description": "Utilities for working with Census TIGER data",
+	"description": "US Census TIGER/Line data processing and analysis.",
 	"keywords": [
 		"typescript"
 	],

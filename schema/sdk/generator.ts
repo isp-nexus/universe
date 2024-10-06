@@ -235,7 +235,7 @@ function addSimpleType(def: Definition, type: JSONSchema7TypeName): boolean {
 		def.type = type
 	} else if (typeof def.type !== "string") {
 		if (
-			!(<Object[]>def.type).every((val) => {
+			!(def.type as any[]).every((val) => {
 				return typeof val === "string"
 			})
 		) {

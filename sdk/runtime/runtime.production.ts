@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Production environment key-value pairs.
+ *
+ *   Production environment key-value pairs.
  */
 
 import type { PublicEnvironment } from "@isp.nexus/core"

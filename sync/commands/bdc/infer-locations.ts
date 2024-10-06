@@ -27,6 +27,7 @@ import { CommandBuilder } from "yargs"
 export const command = "geocode-bsl"
 export const describe = "Infer all broadband servicable locations"
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 interface CommandArgs {}
 
 export const builder: CommandBuilder<CommandArgs, CommandArgs> = {}

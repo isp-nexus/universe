@@ -10,9 +10,16 @@ import type { FieldDefinition } from "@dsnp/parquetjs/dist/lib/declare.js"
 import { LRUCache } from "lru-cache"
 
 /**
+ * A Parquet record-like object, i.e. a record with string keys and JSON-serializable values.
+ */
+export type ParquetRecordLike = {
+	[key: string]: unknown | undefined
+}
+
+/**
  * Typed Parquet schema definition.
  */
-export type ParquetSchemaDefinition<T = {}> = {
+export type ParquetSchemaDefinition<T = ParquetRecordLike> = {
 	[field in Extract<keyof T, string>]: FieldDefinition
 }
 
@@ -53,7 +60,7 @@ export class ParquetSchemaDefinitionCache
 		})
 	}
 
-	public findOrCreateSchema<T extends {}>(schemaDef: ParquetSchemaDefinition<T>): ParquetSchema<T> {
+	public findOrCreateSchema<T extends ParquetRecordLike>(schemaDef: ParquetSchemaDefinition<T>): ParquetSchema<T> {
 		let schema = this.get(schemaDef)
 
 		if (!schema) {

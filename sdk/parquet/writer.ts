@@ -12,17 +12,17 @@ import { osopen, WriteStreamMinimal } from "@dsnp/parquetjs/dist/lib/util.js"
 import { ParquetEnvelopeWriter } from "@dsnp/parquetjs/dist/lib/writer.js"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
-import { ParquetSchema, ParquetSchemaDefinition, ParquetSchemaDefinitionCache } from "./schema.js"
+import { ParquetRecordLike, ParquetSchema, ParquetSchemaDefinition, ParquetSchemaDefinitionCache } from "./schema.js"
 
 /**
  * A typed Parquet writer, wrapping the base Parquet writer.
  */
-export class ParquetWriter<T extends {}> extends BaseParquetWriter implements AsyncDisposable {
+export class ParquetWriter<T extends ParquetRecordLike> extends BaseParquetWriter implements AsyncDisposable {
 	declare schema: ParquetSchema<T>
 	protected static readonly SchemaDefinitionCache = new ParquetSchemaDefinitionCache()
 	#flushing: Promise<void> = Promise.resolve()
 
-	static override async openStream<T extends {}>(
+	static override async openStream<T extends ParquetRecordLike>(
 		schemaLike: ParquetSchema<T> | ParquetSchemaDefinition<T>,
 		outputStream: WriteStreamMinimal,
 		opts: WriterOptions = {}
@@ -40,7 +40,7 @@ export class ParquetWriter<T extends {}> extends BaseParquetWriter implements As
 	/**
 	 * Convenience method to create a new buffered parquet writer that writes to the specified file
 	 */
-	static override async openFile<T extends {}>(
+	static override async openFile<T extends ParquetRecordLike>(
 		schemaLike: ParquetSchema<T> | ParquetSchemaDefinition<T>,
 		sourcePath: string | Buffer | URL,
 		opts?: WriterOptions
@@ -54,6 +54,14 @@ export class ParquetWriter<T extends {}> extends BaseParquetWriter implements As
 		const writer = await ParquetWriter.openStream<T>(schemaLike, outputStream, opts)
 
 		return writer
+	}
+
+	// @note This fixes invalid Markdown in the base class JSDoc.
+	/**
+	 * Set a metadata key-value pair on the writer.
+	 */
+	public override setMetadata(key: string, value: string): void {
+		return super.setMetadata(key, value)
 	}
 
 	/**

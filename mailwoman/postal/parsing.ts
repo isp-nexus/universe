@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file USPS delivery address parsing
+ *
+ *   USPS delivery address parsing
  */
 
 import { ConsoleLogger } from "@isp.nexus/core/logging"

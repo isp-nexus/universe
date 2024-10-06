@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Download a file from the FCC's Broadband Data Collection API
+ *
+ *   Download a file from the FCC's Broadband Data Collection API
  */
 
 import { sumOf, takeInParallel } from "@isp.nexus/core"

@@ -3,7 +3,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Command-line interface ISP Nexus's data sync tool.
+ *
+ *   Command-line interface ISP Nexus's data sync tool.
  */
 
 import "urlpattern-polyfill"

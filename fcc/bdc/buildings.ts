@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file FCC/NITA Building Type Codes
+ *
+ *   FCC/NITA Building Type Codes
  * @see https://www.fcc.gov/sites/default/files/2019-08/Building%20Type%20Code%20List.pdf
  */
 

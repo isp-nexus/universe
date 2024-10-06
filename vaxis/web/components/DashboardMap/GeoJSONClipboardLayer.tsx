@@ -1,3 +1,9 @@
+/**
+ * @copyright OpenISP, Inc.
+ * @license AGPL-3.0
+ * @author Teffen Ellis, et al.
+ */
+
 import { tryParsingJSON } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { Feature, FeatureCollection } from "geojson"
@@ -100,7 +106,7 @@ export const GeoJSONClipboardLayer: React.FC = memo(() => {
 		return () => {
 			document.removeEventListener("paste", handlePaste)
 		}
-	}, [])
+	}, [appendGeoJSON])
 
 	useEffect(() => {
 		const mapInstance = map.current
@@ -127,7 +133,6 @@ export const GeoJSONClipboardLayer: React.FC = memo(() => {
 			event.preventDefault()
 
 			const { dataTransfer } = event
-			debugger
 			if (!dataTransfer) return
 
 			for (const file of dataTransfer.files) {
@@ -155,7 +160,7 @@ export const GeoJSONClipboardLayer: React.FC = memo(() => {
 			window.removeEventListener("dragend", handleDragEnd)
 			window.removeEventListener("dragstart", handleDragStart)
 		}
-	}, [map])
+	}, [appendGeoJSON, map])
 
 	return (
 		<>

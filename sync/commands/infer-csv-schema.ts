@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Convert a ShapeFile to GeoJSON.
+ *
+ *   Convert a ShapeFile to GeoJSON.
  */
 
 import { ResourceError } from "@isp.nexus/core/errors"

@@ -1,7 +1,7 @@
 {
 	"name": "@isp.nexus/mailwoman",
 	"version": "1.0.0",
-	"description": "Utilities for working with contacts for email, phone, and postal mail.",
+	"description": "Utilities for working with contacts for email, phone, and postal addresses.",
 	"license": "AGPL-3.0",
 	"contributors": [
 		{

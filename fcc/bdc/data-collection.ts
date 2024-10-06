@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file FCC Broadband Data Collection System
+ *
+ *   FCC Broadband Data Collection System
  */
 
 import { AdminLevel1Abbreviation, StateName } from "@isp.nexus/tiger"

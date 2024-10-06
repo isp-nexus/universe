@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utilities for running scripts conditionally.
+ *
+ *   Utilities for running scripts conditionally.
  */
 
 import { ResourceError } from "@isp.nexus/core/errors"

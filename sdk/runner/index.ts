@@ -12,7 +12,12 @@ const prefersJSONLogging = argv.includes("--json")
 
 const spinnerGlyphs = ["\uEE06", "\uEE07", "\uEE08", "\uEE09", "\uEE0A", "\uEE0B"]
 
-enum BarCharacter {
+/**
+ * A character to use for the progress bar.
+ *
+ * @internal
+ */
+export enum BarCharacter {
 	StartIncomplete = "\uEE00",
 	StartComplete = "\uEE03",
 	BodyIncomplete = "\uEE01",
@@ -21,7 +26,12 @@ enum BarCharacter {
 	EndComplete = "\uEE05",
 }
 
-interface BarPayload {
+/**
+ * Payload for a progress bar.
+ *
+ * @internal
+ */
+export interface BarPayload {
 	/**
 	 * The character to use for the spinner glyph.
 	 */
@@ -41,7 +51,7 @@ interface BarPayload {
 /**
  * Child instance of a progress bar managed by a `ProgressBarManager`.
  */
-export interface ChildProgressBar<P extends {} = {}> extends AsyncDisposable {
+export interface ChildProgressBar<P extends object | unknown = unknown> extends AsyncDisposable {
 	/**
 	 * The parent progress bar manager.
 	 */
@@ -181,7 +191,7 @@ export interface CreateCLIProgressBarOptions {
 /**
  * Create a new CLI progress bar.
  */
-export async function createCLIProgressBar<P extends {} = {}>(
+export async function createCLIProgressBar<P extends object | unknown = unknown>(
 	{
 		total = Infinity,
 		value = 0,
@@ -211,7 +221,7 @@ export async function createCLIProgressBar<P extends {} = {}>(
 		total,
 		value,
 		{
-			...payload,
+			...(payload || {}),
 			...barPayload,
 		},
 		{
@@ -224,7 +234,7 @@ export async function createCLIProgressBar<P extends {} = {}>(
 
 				displayName || "",
 
-				...Object.keys(payload).map((key) => `{${key}}`),
+				...Object.keys(payload || {}).map((key) => `{${key}}`),
 				showPerformance ? `{performance}/min` : "",
 				showDuration ? `{duration_formatted}` : "",
 				showETA ? `{eta_formatted}` : "",

@@ -12,8 +12,23 @@ import * as path from "node:path"
 import { DataSource, Driver, EntitySchema, LogLevel, MixedList } from "typeorm"
 import { DriverFactory } from "typeorm/driver/DriverFactory.js"
 import { SnakeNamingStrategy } from "./naming.js"
-import { SpatiaLiteDriver, SQLitePragmaRecord, StrictSQlitePragmas } from "./SpatiaLiteDriver.js"
+import {
+	SpatiaLiteDriver,
+	SQLitePragma,
+	SQLitePragmaRecord,
+	SQLitePragmaValue,
+	StrictSQlitePragmas,
+} from "./SpatiaLiteDriver.js"
+import { SpatiaLiteQueryRunner } from "./SpatiaLiteQueryRunner.js"
 import { TypeORMLogger } from "./TypeORMLogger.js"
+
+export {
+	type SpatiaLiteDriver,
+	type SpatiaLiteQueryRunner,
+	type SQLitePragma,
+	type SQLitePragmaRecord,
+	type SQLitePragmaValue,
+}
 
 const DriverFactoryCreateSuper = DriverFactory.prototype.create
 DriverFactory.prototype.create = function (connection: DataSource): Driver {
@@ -28,12 +43,15 @@ export interface NexusDataSourceConfig {
 	displayName: IRuntimeLogger | string
 	storagePath: string
 	migrationsPath?: string
-	entities?: MixedList<Function | string | EntitySchema>
+	entities?: MixedList<EntitySchema>
 	logLevels?: LogLevel[]
 	pragmas?: SQLitePragmaRecord
 	wal?: boolean
 }
 
+/**
+ * A TypeORM data source for ISP Nexus modules.
+ */
 export class NexusDataSource extends DataSource implements AsyncDisposable, AsyncInitializable {
 	declare driver: SpatiaLiteDriver
 	#logger: IRuntimeLogger

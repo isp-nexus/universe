@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Environment variables used in this monorepo.
+ *
+ *   Environment variables used in this monorepo.
  *
  *   Note that unlike the Node-specific module, this module is allowed to be imported by any other in
  *   the monorepo.

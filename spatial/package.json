@@ -1,7 +1,7 @@
 {
 	"name": "@isp.nexus/spatial",
 	"version": "1.0.0",
-	"description": "Utilities for working with geo-spatial data.",
+	"description": "Spatial analysis, geocoding, and other geo-related utilities.",
 	"keywords": [
 		"typescript",
 		"geo",

@@ -11,13 +11,26 @@ import { SqliteDriver } from "typeorm/driver/sqlite/SqliteDriver.js"
 import { SpatiaLiteQueryRunner } from "./SpatiaLiteQueryRunner.js"
 import { findSpatialiteExtensionPath } from "./spatial.js"
 
+/**
+ * A pragma that can be set on a SQLite database.
+ */
 export type SQLitePragma = "auto_vacuum" | "synchronous" | "locking_mode" | "page_size" | "cache_size" | "journal_mode"
+
+/**
+ * The value of a pragma that can be set on a SQLite database.
+ */
 export type SQLitePragmaValue = string | number
 
+/**
+ * A record of SQLite pragmas and their respective values.
+ */
 export type SQLitePragmaRecord = {
 	[pragma in SQLitePragma]?: SQLitePragmaValue | undefined
 }
 
+/**
+ * Default SQLite pragmas for a more write-heavy database.
+ */
 export const StrictSQlitePragmas = {
 	auto_vacuum: "FULL",
 	synchronous: "FULL",
@@ -26,6 +39,9 @@ export const StrictSQlitePragmas = {
 	cache_size: 10000,
 } as const satisfies SQLitePragmaRecord
 
+/**
+ * A TypeORM driver for working with SpatiaLite databases.
+ */
 export class SpatiaLiteDriver extends SqliteDriver {
 	#logger: IRuntimeLogger
 	declare databaseConnection: SQLiteDatabase

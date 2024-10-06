@@ -6,10 +6,15 @@
 
 import "@isp.nexus/core/polyfills/promises/withResolvers"
 
+import { ConsoleLogger, type IRuntimeLogger } from "@isp.nexus/core/logging"
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from "axios"
-import { ConsoleLogger, IRuntimeLogger } from "../logging/index.js"
 import { delegateAxiosError } from "./responses.js"
 
+export type { IRuntimeLogger }
+
+/**
+ * Configuration for an API client.
+ */
 export interface APIClientConfig {
 	/**
 	 * The logged display name of the API client.
@@ -47,7 +52,13 @@ export class APIClient<C extends APIClientConfig> extends EventTarget implements
 		return this.#cooldownWithResolvers?.promise || Promise.resolve()
 	}
 
+	/**
+	 * The prefixed logger for the API client.
+	 */
 	public readonly logger: IRuntimeLogger
+	/**
+	 * The Axios instance for the API client.
+	 */
 	public readonly axios: AxiosInstance
 
 	public get baseURL(): string | undefined {

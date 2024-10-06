@@ -63,6 +63,11 @@ export interface TIGERStateShapeAttributes {
 	NAME: StateName
 }
 
+/**
+ * Data source for the TIGER Nation service.
+ *
+ * @singleton
+ */
 export const $TIGERNation = ServiceRepository.register(async () => {
 	const dataSource = new NexusDataSource({
 		displayName: "TIGER Nation Service",

@@ -2,90 +2,79 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Utility functions for working with sets.
+ *
+ *   Utility functions for working with sets.
  */
 
 /**
- * Global augmentation for Set-like objects.
+ * A type representing a Set compatible object.
  *
+ * @category Polyfill
  * @internal
  */
-declare global {
+export interface SetLike<T> {
 	/**
-	 * A type representing a Set compatible object.
+	 * The number of elements in the set.
+	 *
+	 * @internal
+	 */
+	size: number
+
+	/**
+	 * Returns `true` if the set contains the specified element.
+	 *
+	 * @internal
+	 */
+	has(value: unknown): boolean
+
+	/**
+	 * Returns an iterable of the set's elements.
+	 *
+	 * @internal
+	 */
+	keys(): IterableIterator<T>
+}
+
+/**
+ * @internal
+ */
+export interface ExperimentalSetMethods<T> {
+	/**
+	 * Takes a set and returns a new set containing elements in this set but not in the given set.
 	 *
 	 * @category Polyfill
-	 * @internal
 	 */
-	export interface SetLike<T> {
-		/**
-		 * The number of elements in the set.
-		 *
-		 * @internal
-		 */
-		size: number
-
-		/**
-		 * Returns `true` if the set contains the specified element.
-		 *
-		 * @internal
-		 */
-		has(value: unknown): boolean
-
-		/**
-		 * Returns an iterable of the set's elements.
-		 *
-		 * @internal
-		 */
-		keys(): IterableIterator<T>
-	}
+	difference<U extends string | number>(other: SetLike<U>): Set<Exclude<T, U>>
+	difference<U>(other: SetLike<U>): Set<T>
 
 	/**
-	 * @internal
+	 * Returns a new set containing the elements that are present in both this set and the other set.
+	 *
+	 * @category Polyfill
 	 */
-	interface SetMethods<T> {
-		/**
-		 * Takes a set and returns a new set containing elements in this set but not in the given set.
-		 *
-		 * @category Polyfill
-		 */
-		difference<U extends string | number>(other: SetLike<U>): Set<Exclude<T, U>>
-		difference<U>(other: SetLike<U>): Set<T>
-
-		/**
-		 * Returns a new set containing the elements that are present in both this set and the other
-		 * set.
-		 *
-		 * @category Polyfill
-		 */
-		intersection<U>(other: SetLike<U>): Set<T & U>
-
-		/**
-		 * Takes a set and returns a new set containing elements which are in either this set or the
-		 * given set, but not in both.
-		 *
-		 * @category Polyfill
-		 */
-		symmetricDifference<U>(other: SetLike<U>): Set<T | U>
-
-		/**
-		 * Returns a new set containing elements which are in either or both of this set and the given
-		 * set.
-		 *
-		 * @category Polyfill
-		 */
-		union<U>(other: SetLike<U>): Set<T | U>
-	}
+	intersection<U>(other: SetLike<U>): Set<T & U>
 
 	/**
-	 * @internal
+	 * Takes a set and returns a new set containing elements which are in either this set or the given
+	 * set, but not in both.
+	 *
+	 * @category Polyfill
 	 */
-	interface Set<T> extends SetMethods<T> {}
+	symmetricDifference<U>(other: SetLike<U>): Set<T | U>
+
 	/**
-	 * @internal
+	 * Returns a new set containing elements which are in either or both of this set and the given
+	 * set.
+	 *
+	 * @category Polyfill
 	 */
-	interface ReadonlySet<T> extends SetMethods<T> {}
+	union<U>(other: SetLike<U>): Set<T | U>
 }
+
+/**
+ * @internal
+ */
+export type WithExperimentalSetMethods<T> = T extends SetLike<infer U> ? T & ExperimentalSetMethods<U> : never
 
 import "core-js/full/set/difference.js"
 import "core-js/full/set/intersection.js"
@@ -103,18 +92,13 @@ export function isSetLike<T>(value: unknown): value is SetLike<T> {
 
 /**
  * Type-helper for extracting the value type from a constant set.
- *
- * @internal
- * @internal
  */
 export type InferTupleMember<T extends SetLike<unknown>> = T extends SetLike<infer U> ? U : never
 
 /**
  * Set constructor that only accepts string values.
- *
- * @internal
  */
-class SetTuple<T extends string> extends Set<T> {
+export class SetTuple<T extends string> extends Set<T> {
 	// has(value: T): true
 	override has(value: T | null | undefined | string): value is T {
 		return super.has(value as any)
@@ -161,7 +145,7 @@ class SetTuple<T extends string> extends Set<T> {
  *
  * @internal
  */
-export function tuple<T extends {}>(fromObjectKeys: {
+export function tuple<T extends object>(fromObjectKeys: {
 	[K in keyof T]: boolean
 }): SetTuple<Extract<keyof T, string>>
 export function tuple<T extends string>(values: Iterable<T>): SetTuple<T>

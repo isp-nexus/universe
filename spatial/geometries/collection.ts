@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file GeoJSON Geometry Collection
+ *
+ *   GeoJSON Geometry Collection
  */
 
 import { GeoObjectLiteral } from "../object.js"

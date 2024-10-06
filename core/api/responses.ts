@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file API response utilities.
+ *
+ *   API response utilities.
  */
 
 import { AxiosError, HttpStatusCode, isAxiosError } from "axios"

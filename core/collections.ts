@@ -9,14 +9,14 @@ import { ResourceError } from "./errors/schema.js"
 /**
  * Extracts the property keys of an object that are of type `number`.
  */
-type NumericProperties<T> = {
+export type NumericProperties<T> = {
 	[K in keyof T]: T[K] extends number ? K : never
 }[keyof T]
 
 /**
  * Given an iterable of objects, returns the sum of the specified property.
  */
-export function sumOf<T extends {}>(iterable: Iterable<T>, prop: NumericProperties<T>): number {
+export function sumOf<T extends object>(iterable: Iterable<T>, prop: NumericProperties<T>): number {
 	let total = 0
 
 	for (const item of iterable) {

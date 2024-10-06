@@ -166,7 +166,7 @@ export const BSLAvailabilitySchema = new EntitySchema<BSLAvailability>({
 })
 
 export const BSLAvailabilityConflictPaths = Object.entries(BSLAvailabilitySchema.options.columns)
-	.filter(([, column]) => column.primary)
+	.filter(([, column]) => column?.primary)
 	.map(([columnName]) => columnName) as (keyof BSLAvailability)[]
 
 export const BDCDataSourcePath = dataSourcePathBuilder("bdc", DataSourceFile.SQLite3)
@@ -174,7 +174,7 @@ export const BDCDataSourcePath = dataSourcePathBuilder("bdc", DataSourceFile.SQL
 /**
  * Broadband Data Collection (BDC) data source.
  *
- * @internal
+ * @singleton
  */
 export const $BDCDataSource = ServiceRepository.register(
 	() =>

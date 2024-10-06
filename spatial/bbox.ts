@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file GeoJSON Bounding Boxes
+ *
+ *   GeoJSON Bounding Boxes
  */
 
 import type { PolygonLiteral, SolidPolygonPath } from "./geometries/polygon.js"

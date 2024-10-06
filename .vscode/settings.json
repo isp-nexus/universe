@@ -71,6 +71,7 @@
 		// "dist": true,
 		"functions": true,
 		".docusaurus": true,
+		"scratch": true,
 		"out": true,
 		"paths.mjs": true,
 		"yarn.lock": true
@@ -81,7 +82,10 @@
 	"search.exclude": {
 		"**/*.csv": true,
 		"**/dist": true,
+		"**/site/api": true,
+		"**/site/docs": true,
 		"**/out": true,
+		"**/scratch": true,
 		".docusaurus": true,
 		"./functions": true,
 		".editorconfig": false,

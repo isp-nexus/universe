@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Node.js environment variable parsing.
+ *
+ *   Node.js environment variable parsing.
  *
  *   Note that should only be imported by other Node.js modules.
  */
@@ -70,11 +71,15 @@ for (const [key, value] of Object.entries(process.env)) {
 
 /**
  * Source from which to import the environment module.
+ *
+ * @internal
  */
-type EnvironmentModuleSource = EnvironmentName | "local"
+export type EnvironmentModuleSource = EnvironmentName | "local"
 
 /**
  * Resolved ES module type with a default export.
+ *
+ * @internal
  */
 export interface ResolvedESModule<DefaultExport> {
 	default: DefaultExport

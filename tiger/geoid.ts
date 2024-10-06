@@ -271,7 +271,6 @@ export type GeoIDPartMapping = {
  *
  * Note that the length of a GeoID is the sum of the lengths of its parts.
  *
- * @ignore
  * @internal
  */
 export const GeoIDPartLength = {
@@ -307,7 +306,6 @@ export interface ParsedGeoIDBlockLevel {
 /**
  * A GeoID parsed to the block group level. The second most granular level.
  *
- * @ignore
  * @internal
  */
 export type ParsedGeoIDBlockGroupLevel = {
@@ -322,7 +320,6 @@ export type ParsedGeoIDBlockGroupLevel = {
 /**
  * A GeoID parsed to the tract level. The third most granular level.
  *
- * @ignore
  * @internal
  */
 export type ParsedGeoIDTractLevel = {
@@ -334,12 +331,16 @@ export type ParsedGeoIDTractLevel = {
 	[GeoIDPart.Block]: undefined
 }
 
-type ParsedGeoIDPartial = { [P in GeoIDPart]?: string }
+/**
+ * A GeoID parsed to a partial level.
+ *
+ * @internal
+ */
+export type ParsedGeoIDPartial = { [P in GeoIDPart]?: string }
 
 /**
  * A GeoID parsed to the county-subdivision level. The fourth most granular level.
  *
- * @ignore
  * @internal
  */
 export type ParsedGeoIDCountySubDivisionLevel = {
@@ -354,7 +355,6 @@ export type ParsedGeoIDCountySubDivisionLevel = {
 /**
  * A GeoID parsed to the county level. The fifth most granular level.
  *
- * @ignore
  * @internal
  */
 export type ParsedGeoIDCountyLevel = {
@@ -369,7 +369,6 @@ export type ParsedGeoIDCountyLevel = {
 /**
  * A GeoID parsed to the state level. The least granular level.
  *
- * @ignore
  * @internal
  */
 export type ParsedGeoIDStateLevel = {
@@ -384,7 +383,6 @@ export type ParsedGeoIDStateLevel = {
 /**
  * A GeoID parsed to a specific level.
  *
- * @ignore
  * @internal
  */
 export type ParsedGeoID =

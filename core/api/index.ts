@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Core API utilities.
+ *
+ *   Core API utilities.
  */
 
 export * from "./APIClient.js"

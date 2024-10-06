@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file FCC FRN utilities.
+ *
+ *   FCC FRN utilities.
  */
 
 import { Tagged } from "type-fest"

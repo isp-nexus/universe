@@ -239,7 +239,8 @@ await runScript(async () => {
 			`// prettier-ignore`,
 			"",
 			`/**`,
-			` * @file ${schemaID.name}`,
+			` *
+ *   ${schemaID.name}`,
 			" * @generated",
 			` */`,
 			`export = ${serializedJSON} as const`,

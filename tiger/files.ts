@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file TIGER Census data utilities.
+ *
+ *   TIGER Census data utilities.
  */
 
 import { AdminLevel1Code } from "./state.js"

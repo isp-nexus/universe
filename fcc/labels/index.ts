@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Broadband Label utilities.
+ *
+ *   Broadband Label utilities.
  *
  *   Broadband Labels are designed to provide clear, easy-to-understand, and accurate information
  *   about the cost and performance of high-speed internet services.

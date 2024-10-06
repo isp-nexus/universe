@@ -1,7 +1,7 @@
 {
 	"name": "@isp.nexus/fcc",
 	"version": "1.0.0",
-	"description": "Utilities for working with FCC data",
+	"description": "Federal Communications Commission APIs and data processing.",
 	"keywords": [
 		"fcc",
 		"isp",

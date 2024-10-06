@@ -2,7 +2,8 @@
  * @copyright OpenISP, Inc.
  * @license AGPL-3.0
  * @author Teffen Ellis, et al.
- * @file Headless browser utilities.
+ *
+ *   Headless browser utilities.
  */
 
 /**

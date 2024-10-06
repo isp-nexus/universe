@@ -53,18 +53,57 @@ export enum LandWaterBlockType {
  * @title TIGER Property
  */
 export enum TIGERProperty {
+	/**
+	 * @title Geographic Identifier
+	 */
 	GeoID = "GEOID",
+	/**
+	 * @title Display Name
+	 */
 	DisplayName = "display_name",
+	/**
+	 * @title Urban/Rural Code
+	 */
 	UrbanRuralCode = "urban_rural_code",
+	/**
+	 * @title Urban Area Code
+	 */
 	UrbanizedAreaCode = "urbanized_area_code",
+	/**
+	 * @title Land Area (square meters)
+	 */
 	LandAreaSqm = "land_area_sqm",
+	/**
+	 * @title Water Area (square meters)
+	 */
 	WaterAreaSqm = "water_area_sqm",
+	/**
+	 * @title Housing Unit Count
+	 */
 	HousingUnitCount = "housing_unit_count",
+	/**
+	 * @title Population Count
+	 */
 	Population = "population",
+	/**
+	 * @title Functional Status
+	 */
 	FunctionalStatus = "functional_status",
+	/**
+	 * @title Centroid Latitude
+	 */
 	CentroidLatitude = "latitude",
+	/**
+	 * @title Centroid Longitude
+	 */
 	CentroidLongitude = "longitude",
+	/**
+	 * @title Legal/Statistical Area Description
+	 */
 	LegalStatisticalAreaDescription = "legal_statistical_area_description",
+	/**
+	 * @title MAF/TIGER Feature Class Code
+	 */
 	ClassCode = "class_code",
 }
 
@@ -197,24 +236,6 @@ export interface TIGERPropertyRecord<GeoID extends string = string> {
 	 * @pattern ^[A-Z]$
 	 */
 	[TIGERProperty.FunctionalStatus]: TIGERFunctionalStatus
-
-	/**
-	 * Land Area in square meters.
-	 *
-	 * @type integer
-	 * @title Land Area
-	 * @minimum 0
-	 */
-	[TIGERProperty.LandAreaSqm]: number
-
-	/**
-	 * Water Area in square meters.
-	 *
-	 * @type integer
-	 * @title Water Area
-	 * @minimum 0
-	 */
-	[TIGERProperty.WaterAreaSqm]: number
 
 	/**
 	 * Longitude of the internal point.
