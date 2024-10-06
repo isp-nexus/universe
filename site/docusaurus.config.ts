@@ -95,7 +95,6 @@ const config: Config = {
 
 			// Options
 			{
-				cleanOutputDir: true,
 				out: "api",
 				entryPointStrategy: EntryPointStrategy.Packages as any,
 				includeVersion: false,
