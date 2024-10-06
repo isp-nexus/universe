@@ -1,0 +1,209 @@
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Extended.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Oblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web Oblique";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Oblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web Oblique";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Italic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Book.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBook.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-BookOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web Oblique";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-BookOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBookOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web Oblique";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBookOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-BookItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBookItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-Bold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-BoldOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web Oblique";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-BoldOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBoldOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web Oblique";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBoldOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-BoldItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IoveskaNexus/WOFF2/IosevkaNexus-ExtendedBoldItalic.woff2") format("woff2");
+}

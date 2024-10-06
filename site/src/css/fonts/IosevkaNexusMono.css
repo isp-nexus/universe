@@ -1,0 +1,218 @@
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Regular.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Extended.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Oblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web Oblique";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Oblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedOblique.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web Oblique";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedOblique.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: normal;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Italic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 400;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedItalic.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Book.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBook.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-BookOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web Oblique";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-BookOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBookOblique.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web Oblique";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBookOblique.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: normal;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-BookItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 450;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBookItalic.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-Bold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBold.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-BoldOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web Oblique";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-BoldOblique.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: oblique;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBoldOblique.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web Oblique";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBoldOblique.woff2")
+		format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: normal;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-BoldItalic.woff2") format("woff2");
+}
+
+@font-face {
+	font-family: "Iosevka Nexus Mono Web";
+	font-display: swap;
+	font-weight: 700;
+	font-stretch: expanded;
+	font-style: italic;
+	src: url("https://public.isp.nexus/fonts/IosevkaNexusMono/WOFF2/IosevkaNexusMono-ExtendedBoldItalic.woff2")
+		format("woff2");
+}

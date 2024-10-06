@@ -40,6 +40,7 @@
 		"lint:eslint:fix": "eslint --fix .",
 		"build": "run-s compile schema:generate",
 		"schema:generate": "yarn workspace @isp.nexus/schema generate",
+		"site:build": "run-s build yarn workspace @isp.nexus/site build",
 		"release": "release-it"
 	},
 	"browserslist": [
@@ -68,9 +69,9 @@
 	"devDependencies": {
 		"@isp.nexus/sync": "workspace:*",
 		"@release-it-plugins/workspaces": "^4.2.0",
-		"@sister.software/eslint-config": "6.0.0",
-		"@sister.software/prettier-config": "6.0.0",
-		"@sister.software/tsconfig": "6.0.0",
+		"@sister.software/eslint-config": "6.1.0",
+		"@sister.software/prettier-config": "6.1.0",
+		"@sister.software/tsconfig": "6.1.0",
 		"@types/adm-zip": "^0.5.5",
 		"@types/node": "^22.7.4",
 		"adm-zip": "^0.5.13",

@@ -81,6 +81,10 @@ _worker.js
 
 ## dotenv environment variables file
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .dev.vars
 runtime.local.ts
 
@@ -96,8 +100,11 @@ schema/generated
 
 # Docusaurus
 .docusaurus
+.cache-loader
 site/api
 site/docs
+# Production
+site/build
 
 # Remix
 /.cache
@@ -105,3 +112,6 @@ site/docs
 # VS Code extensions
 .vscode-test-web/
 *.vsix
+
+# Dependencies
+/node_modules

@@ -1,0 +1,45 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+html {
+	-webkit-font-smoothing: antialiased;
+	font-smoothing: antialiased;
+	text-rendering: optimizelegibility;
+}
+
+.theme-doc-sidebar-container {
+	background-color: var(--ifm-menu-background-color);
+}
+
+.theme-doc-sidebar-item-category {
+	&.theme-doc-sidebar-item-category-level-1 > .menu__list-item-collapsible > .menu__link {
+		display: none;
+	}
+
+	.menu__list-item-collapsible > .menu__link {
+		font-weight: var(--ifm-font-weight-bold);
+	}
+
+	&.theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible > .menu__link.menu__link--sublist {
+		--ifm-menu-color: var(--ifm-color-secondary);
+	}
+
+	&.theme-doc-sidebar-item-category-level-3 > .menu__list-item-collapsible > .menu__link.menu__link--sublist {
+		--ifm-menu-color: hsl(183.53deg 100% 50%);
+	}
+}
+.menu__link--active {
+	color: var(--ifm-color-primary);
+	font-weight: var(--ifm-font-weight-bold);
+}
+
+.theme-doc-sidebar-menu.menu__list .theme-doc-sidebar-item-category-level-1 > .menu__list {
+	padding-left: 0;
+}
+
+.footer--dark {
+	--ifm-footer-background-color: var(--ifm-color-gray-900);
+}
