@@ -6,10 +6,16 @@
 
 import type * as Preset from "@docusaurus/preset-classic"
 import type { Config } from "@docusaurus/types"
-import { packagePathBuilder } from "@isp.nexus/sdk/reflection"
 import type { PluginOptions as DocusaurusTypeDocPluginOptions } from "docusaurus-plugin-typedoc"
+import { dirname, resolve } from "node:path"
+import { fileURLToPath } from "node:url"
 import { themes as prismThemes } from "prism-react-renderer"
 import { EntryPointStrategy, TypeDocOptionMap } from "typedoc"
+
+/**
+ * The directory path of the current file, post-compilation.
+ */
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 const config: Config = {
 	title: "ISP Nexus",
@@ -95,14 +101,14 @@ const config: Config = {
 				includeVersion: false,
 				entryPoints: [
 					//--
-					packagePathBuilder("core"),
-					packagePathBuilder("spatial"),
-					packagePathBuilder("tiger"),
-					packagePathBuilder("fcc"),
-					packagePathBuilder("mailwoman"),
-					packagePathBuilder("cartographer"),
-					packagePathBuilder("sdk"),
-				].map((builder) => builder.toString()),
+					"core",
+					"spatial",
+					"tiger",
+					"fcc",
+					"mailwoman",
+					"cartographer",
+					"sdk",
+				].map((packageName) => resolve(__dirname, "..", packageName)),
 				mergeReadme: true,
 				indexFormat: "table",
 				disableSources: true,
