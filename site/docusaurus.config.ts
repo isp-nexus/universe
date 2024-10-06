@@ -66,7 +66,7 @@ const config: Config = {
 				docs: {
 					path: "api",
 					routeBasePath: "/api",
-					sidebarPath: "./sidebars.ts",
+					sidebarPath: resolve(__dirname, "sidebars.ts"),
 					editUrl: "https://github.com/isp-nexus/universe/tree/main/packages/create-docusaurus/templates/shared/",
 				},
 

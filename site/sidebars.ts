@@ -5,7 +5,21 @@
  */
 
 import type { SidebarsConfig } from "@docusaurus/plugin-content-docs"
-import typedocSidebar from "./docs/typedoc-sidebar.cjs"
+import typedocSidebar from "./api/typedoc-sidebar.cjs"
+
+/**
+ * Given a TypeDoc generated sidebar, recursively removes './' prefixes from all item identifiers.
+ */
+function fixSidebarItems(sidebarConfig: SidebarsConfig): SidebarsConfig {
+	return JSON.parse(
+		JSON.stringify(sidebarConfig, (key, value) => {
+			if (key === "id" && typeof value === "string") {
+				return value.replace(/^\.\//, "")
+			}
+			return value
+		})
+	)
+}
 
 const sidebars = {
 	apiSidebar: [
@@ -18,7 +32,7 @@ const sidebars = {
 			},
 			collapsed: false,
 			collapsible: false,
-			items: typedocSidebar,
+			items: fixSidebarItems(typedocSidebar),
 		},
 	],
 } satisfies SidebarsConfig
