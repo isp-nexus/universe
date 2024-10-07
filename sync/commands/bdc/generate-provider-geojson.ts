@@ -6,7 +6,7 @@
 
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
-import { CommandHandler, findSpatialiteExtensionPath } from "@isp.nexus/sdk"
+import { CommandHandler, findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk"
 import { BDCDataSourcePath, FabricDataSourcePath } from "@isp.nexus/sync/fcc"
 import { AdminLevel1Code, TIGERLevel } from "@isp.nexus/tiger"
 import { TIGERDataSourcePath } from "@isp.nexus/tiger/sdk"
@@ -57,7 +57,7 @@ export const handler: CommandHandler<CommandArgs> = async ({ providerID, stateCo
 	}
 
 	ConsoleLogger.info(`Generating GeoJSON for provider ${providerID} in state ${stateCode}...`)
-	const spatialiteLocation = findSpatialiteExtensionPath()
+	const spatialiteLocation = findCachedSpatialiteExtensionPath()
 
 	const template = /* sql */ `
 		SELECT load_extension('${spatialiteLocation}');

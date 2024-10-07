@@ -5,9 +5,8 @@
  */
 
 import { smartSnakeCase } from "@isp.nexus/core"
-import { basename, parse as parsePath } from "node:path"
-import { changeFileExtension } from "./extensions.js"
-import { LineDelimitedCharacter } from "./newline-delimited.js"
+import * as path from "node:path"
+import { LineDelimitedCharacter } from "../files/newline-delimited.js"
 
 /**
  * Function signature for parsing a CSV line.
@@ -89,6 +88,7 @@ export const pluckCSVColumnHeader: CSVLineParserFn = (
 	}
 
 	const headerFields = splitByFieldSeparator(csvHeaderLineContent, fieldSeparatorCharacterCode).map(smartSnakeCase)
+
 	const headerFieldCountMap = new Map<string, number>()
 	const uniqueHeaderFields = new Set<string>()
 
@@ -223,29 +223,16 @@ export function inferSQLiteFieldTypes(columnNames: string[], fieldContentSamples
 }
 
 /**
- * Given a file path, return a SQLite-compatible table name.
- */
-export function filePathToTableName(filePath: string): string {
-	return smartSnakeCase(parsePath(filePath).name)
-}
-
-/**
  * Creates a SQLite table schema from a set of column inferences.
  */
 export function tableSchemaFromInferences(tableName: string, columnInferences: SQLiteColumnInference[]): string {
 	const columnDefinitions = columnInferences.map((inference) => {
 		const columnDefinition = `'${inference.columnName}' ${inference.type}`
 
-		// TODO: Null checking is still a bit wonky.
-		// if (!inference.nullable) {
-		// 	return `${columnDefinition} NOT NULL`
-		// }
-
 		return columnDefinition
 	})
 
 	return /* sql */ `
-		.print 'Creating table ${tableName}...'
 
 		CREATE TABLE IF NOT EXISTS '${tableName}' (
 			${columnDefinitions.join(", \n\t")}
@@ -260,14 +247,14 @@ export interface CSVImportCommandOptions {
 	csvFilePath: string
 
 	/**
-	 * The path to the SQL file to write the import commands to.
-	 */
-	sqlFilePath: string
-
-	/**
 	 * Table name to import the CSV data into.
 	 */
 	tableName: string
+
+	/**
+	 * Column inferences for the CSV file.
+	 */
+	columnInferences: SQLiteColumnInference[]
 
 	/**
 	 * Number of lines to skip before importing data.
@@ -289,23 +276,30 @@ export interface CSVImportCommandOptions {
  */
 export function csvImportCommand({
 	csvFilePath,
-	sqlFilePath,
-	tableName = filePathToTableName(csvFilePath),
+	columnInferences,
+	tableName,
 	skip = 1,
 	fieldSeparator = ",",
 }: CSVImportCommandOptions): string {
-	const normalizedCSVFilePath = "./" + basename(csvFilePath)
-	const sqliteFilePath = "./" + basename(changeFileExtension(csvFilePath, ".sqlite3"))
+	const normalizedCSVFilePath = "./" + path.basename(csvFilePath)
 
-	return /* sql */ `
+	let sql = /* sql */ `
 		-- Import CSV data into SQLite table.
 		.mode csv
 		.separator "${fieldSeparator}"
 
-		.print 'Importing data from ${normalizedCSVFilePath} into ${tableName}...'
-
 		.import --csv --skip ${skip} "${normalizedCSVFilePath}" ${tableName}
-		.print 'Data imported.'
-		-- sqlite3 ${sqliteFilePath} < ${sqlFilePath}
+
+		-- Nullify empty strings.
 	`
+
+	for (const columnInference of columnInferences) {
+		sql += /* sql */ `
+			UPDATE ${tableName}
+			SET ${columnInference.columnName} = NULL
+			WHERE ${columnInference.columnName} = '';
+		`
+	}
+
+	return sql
 }

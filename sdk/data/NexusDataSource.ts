@@ -5,13 +5,13 @@
  */
 
 import { AsyncInitializable, ServiceSymbol } from "@isp.nexus/core/lifecycle"
-import { ConsoleLogger, IRuntimeLogger, pluckOrCreatePrefixedLogger } from "@isp.nexus/core/logging"
+import { IRuntimeLogger, pluckOrCreatePrefixedLogger } from "@isp.nexus/core/logging"
 import FastGlob from "fast-glob"
-import * as fs from "node:fs/promises"
 import * as path from "node:path"
-import { DataSource, Driver, EntitySchema, LogLevel, MixedList } from "typeorm"
+import { DataSource, Driver, EntitySchema, LogLevel, MigrationInterface, MixedList } from "typeorm"
 import { DriverFactory } from "typeorm/driver/DriverFactory.js"
 import { SnakeNamingStrategy } from "./naming.js"
+import { DataSourceName } from "./path-builder.js"
 import {
 	SpatiaLiteDriver,
 	SQLitePragma,
@@ -39,10 +39,12 @@ DriverFactory.prototype.create = function (connection: DataSource): Driver {
 	return DriverFactoryCreateSuper.call(this, connection)
 }
 
+export type MigrationInterfaceConstructor = new () => MigrationInterface
+
 export interface NexusDataSourceConfig {
 	displayName: IRuntimeLogger | string
 	storagePath: string
-	migrationsPath?: string
+	migrations?: string | MigrationInterfaceConstructor[]
 	entities?: MixedList<EntitySchema>
 	logLevels?: LogLevel[]
 	pragmas?: SQLitePragmaRecord
@@ -59,8 +61,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	public readonly storagePath: string
 
 	constructor(options: NexusDataSourceConfig) {
-		const { storagePath, entities, migrationsPath, logLevels } = options
-		const migrations = migrationsPath ? FastGlob.sync(path.join(migrationsPath, "*.js")) : []
+		const { storagePath, entities, migrations = [], logLevels } = options
 		const logger = pluckOrCreatePrefixedLogger(options.displayName)
 
 		super({
@@ -69,7 +70,9 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 			database: storagePath,
 			logger: new TypeORMLogger(logger, logLevels),
 			entities,
-			migrations,
+			migrations: typeof migrations === "string" ? FastGlob.sync(path.join(migrations, "*.js")) : migrations,
+
+			migrationsTableName: DataSourceName.MigrationsTableName,
 			namingStrategy: new SnakeNamingStrategy(),
 			enableWAL: options.wal,
 			name: logger.prefixes.join(":"),
@@ -96,11 +99,11 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 
 	public async dispose(): Promise<void> {
 		this.#logger.debug("Disconnecting...")
-		// await this.query(/* sql */ `
-		// 	BEGIN EXCLUSIVE;
-		// 	SELECT NULL;
-		// 	END;
-		// 	`)
+		await this.query(/* sql */ `
+			BEGIN EXCLUSIVE;
+			SELECT NULL;
+			END;
+			`)
 		await this.driver.queryRunner.release()
 		await this.driver.disconnect()
 	}
@@ -123,20 +126,4 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	public override toString(): string {
 		return this.#logger.prefixes.join(":")
 	}
-}
-
-/**
- * Reset the data source by removing the storage path and journal file.
- *
- * This cannot be undone, unless of course the data is persisted by Git.
- */
-export async function destructivelyResetDataSource(storagePath: string) {
-	if (!process.env.CLEAN_DATA_SOURCE) {
-		throw new Error("Cannot reset data source without CLEAN_DATA_SOURCE environment variable.")
-	}
-
-	ConsoleLogger.info(`⛔️ Removing existing data at ${storagePath}`)
-	await fs.rm(storagePath, { force: true })
-	await fs.rm(storagePath + "-journal", { force: true })
-	await fs.mkdir(path.basename(storagePath), { recursive: true })
 }

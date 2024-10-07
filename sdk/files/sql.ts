@@ -9,6 +9,7 @@ import { format as formatSQL } from "sql-formatter"
 
 const SQLITE_DOT_COMMAND_PATTERN = "(\\.[a-zA-Z0-9+]\\s?)"
 const SQLITE_DOT_COMMAND_PATTERN_COMMENT = `-- ${SQLITE_DOT_COMMAND_PATTERN}`
+
 /**
  * Format SQL for SQLite.
  */

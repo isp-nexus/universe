@@ -43,3 +43,16 @@ export async function throwIf(predicate: unknown): Promise<void> {
 
 	throw new PredicateError("`throwIf` condition met.")
 }
+
+/**
+ * Something like an identity function, but swallows errors and returns null.
+ */
+export function supressErrors<Callback extends (...args: any[]) => any>(
+	callback: Callback
+): ReturnType<Callback> | null {
+	try {
+		return callback()
+	} catch {
+		return null
+	}
+}

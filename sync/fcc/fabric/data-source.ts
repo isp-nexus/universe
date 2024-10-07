@@ -20,7 +20,7 @@ export const $FabricDataSource = ServiceRepository.register(
 		new NexusDataSource({
 			displayName: "BDC",
 			storagePath: dataSourcePathBuilder("fabric", DataSourceFile.SQLite3),
-			migrationsPath: packageOutPathBuilder("sync", "fcc", "fabric", "migrations"),
+			migrations: packageOutPathBuilder("sync", "fcc", "fabric", "migrations"),
 
 			wal: true,
 			pragmas: {

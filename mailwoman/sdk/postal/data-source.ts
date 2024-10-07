@@ -19,7 +19,7 @@ export const $PostalDataSource = ServiceRepository.register(
 		new NexusDataSource({
 			displayName: "Postal",
 			storagePath: dataSourcePathBuilder("postal", DataSourceFile.SQLite3),
-			migrationsPath: packageOutPathBuilder("mailwoman", "sdk", "postal", "migrations"),
+			migrations: packageOutPathBuilder("mailwoman", "sdk", "postal", "migrations"),
 
 			entities: [
 				// ---

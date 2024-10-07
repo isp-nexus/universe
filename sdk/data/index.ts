@@ -6,8 +6,9 @@
  *   API data module.
  */
 
+export * from "./migrations/runner.js"
+export * from "./migrations/templating.js"
 export * from "./naming.js"
 export * from "./NexusDataSource.js"
 export * from "./path-builder.js"
 export * from "./query-builder.js"
-export * from "./spatial.js"

@@ -23,7 +23,7 @@ export const $ContactsDataSource = ServiceRepository.register(() => {
 	return new NexusDataSource({
 		displayName: "Contacts",
 		storagePath: dataSourcePathBuilder("contacts", DataSourceFile.SQLite3),
-		migrationsPath: packageOutPathBuilder("mailwoman", "sdk", "contacts", "migrations"),
+		migrations: packageOutPathBuilder("mailwoman", "sdk", "contacts", "migrations"),
 		entities: [
 			// ---
 			EmailContactSchema,

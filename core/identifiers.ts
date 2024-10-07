@@ -58,9 +58,22 @@ export enum ModelIDLength {
  * Converts a name to snake_case, unless the name is already in all caps.
  */
 export function smartSnakeCase<T extends string>(name: T): T extends Uppercase<T> ? T : SnakeCase<T> {
-	if (name.toUpperCase() === name) return name as any
+	const normalizedName = name
+		// Remove periods after capital letters, e.g. "U.S.A." -> "USA"
+		.replace(/([A-Z])(\.+)/g, "$1")
+		.trim()
 
-	return snakeCase(name) as any
+	if (normalizedName.toUpperCase() === normalizedName) {
+		return (
+			name
+				// Replace all non-word characters with underscores...
+				.replace(/\W{1,}/g, "_")
+				// ...and then replace all sequences of underscores with a single underscore.
+				.replace(/_{2,}/g, "_") as any
+		)
+	}
+
+	return snakeCase(normalizedName) as any
 }
 
 /**

@@ -9,7 +9,7 @@ import { Database as SQLiteDatabase } from "sqlite3"
 import { DataSource, QueryRunner } from "typeorm"
 import { SqliteDriver } from "typeorm/driver/sqlite/SqliteDriver.js"
 import { SpatiaLiteQueryRunner } from "./SpatiaLiteQueryRunner.js"
-import { findSpatialiteExtensionPath } from "./spatial.js"
+import { findCachedSpatialiteExtensionPath } from "./path-builder.js"
 
 /**
  * A pragma that can be set on a SQLite database.
@@ -55,7 +55,7 @@ export class SpatiaLiteDriver extends SqliteDriver {
 	}
 
 	public loadSpatialiteExtension = async (): Promise<void> => {
-		const extensionPath = findSpatialiteExtensionPath()
+		const extensionPath = findCachedSpatialiteExtensionPath()
 		await this.loadExtension(extensionPath)
 	}
 
