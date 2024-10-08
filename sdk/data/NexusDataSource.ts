@@ -4,14 +4,17 @@
  * @author Teffen Ellis, et al.
  */
 
+import { ResourceError } from "@isp.nexus/core/errors"
 import { AsyncInitializable, ServiceSymbol } from "@isp.nexus/core/lifecycle"
 import { IRuntimeLogger, pluckOrCreatePrefixedLogger } from "@isp.nexus/core/logging"
+import { PathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection/path-builders"
 import FastGlob from "fast-glob"
 import * as path from "node:path"
 import { DataSource, Driver, EntitySchema, LogLevel, MigrationInterface, MixedList } from "typeorm"
 import { DriverFactory } from "typeorm/driver/DriverFactory.js"
+import { checkIfExists } from "../files/local.js"
 import { SnakeNamingStrategy } from "./naming.js"
-import { DataSourceName, PathBuilderLike } from "./path-builder.js"
+import { DataSourceName } from "./path-builder.js"
 import {
 	SpatiaLiteDriver,
 	SQLitePragma,
@@ -58,7 +61,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	declare driver: SpatiaLiteDriver
 	#logger: IRuntimeLogger
 	public readonly pragmas: SQLitePragmaRecord
-	public readonly storagePath: string
+	public readonly storagePath: PathBuilder
 
 	constructor(options: NexusDataSourceConfig) {
 		const { storagePath, entities, migrations = [], logLevels } = options
@@ -81,11 +84,22 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 		this.#logger = logger
 
 		this.pragmas = options.pragmas || StrictSQlitePragmas
-		this.storagePath = storagePath.toString()
+		this.storagePath = PathBuilder.from(storagePath)
 	}
 
 	public async ready(): Promise<this> {
 		this.#logger.debug("Initializing...")
+
+		const storagePathDirectory = this.storagePath.dirname()
+
+		const storageDirectoryExists = await checkIfExists(storagePathDirectory)
+
+		if (!storageDirectoryExists) {
+			throw ResourceError.from(
+				417,
+				`Data Source (${this.#logger.prefixes.join(":")}) Storage directory does not exist: ${storagePathDirectory}`
+			)
+		}
 
 		await this.initialize()
 		await this.driver.loadSpatialiteExtension()

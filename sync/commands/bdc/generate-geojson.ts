@@ -11,27 +11,27 @@ import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { ProviderID } from "@isp.nexus/fcc"
 import { sanitizeOrganizationName } from "@isp.nexus/mailwoman"
-import { CommandHandler, createCLIProgressBar } from "@isp.nexus/sdk"
-import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { checkIfExists, CommandHandler, createCLIProgressBar } from "@isp.nexus/sdk"
+import { PathBuilder, repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
 import { collectBDCProviders } from "@isp.nexus/sync/fcc"
 import { AdminLevel1Code, AdminLevel1CodeToAbbreviation } from "@isp.nexus/tiger"
 import * as fs from "node:fs/promises"
-import path from "node:path"
 import { CommandBuilder } from "yargs"
 import { $ } from "zx"
-export const command = "generate-geojson [outputDirectory]"
+export const command = "generate-geojson [out-directory]"
 export const describe = "Generate GeoJSON for all broadband providers."
 
 interface CommandArgs {
-	outputDirectory: string
+	"out-directory": PathBuilder<"~out-directory">
 }
 
 export const builder: CommandBuilder<CommandArgs, CommandArgs> = {
-	outputDirectory: {
+	outDirectory: {
 		describe: "The output directory",
 		type: "string",
 		demandOption: true,
 		alias: "o",
+		coerce: (value: string) => PathBuilder.from(process.cwd(), value),
 		normalize: true,
 	},
 }
@@ -43,12 +43,12 @@ const SatelliteProviders = new Set<ProviderID>([
 	460087, //	UnWired Broadband Holding LLC
 ] as ProviderID[])
 
-export const handler: CommandHandler<CommandArgs> = async ({ outputDirectory }) => {
+export const handler: CommandHandler<CommandArgs> = async ({ outDirectory }) => {
 	const bdcProviders = await collectBDCProviders().then((providers) =>
 		providers.filter((provider) => !SatelliteProviders.has(provider.providerID))
 	)
 
-	await fs.mkdir(outputDirectory, { recursive: true })
+	await fs.mkdir(outDirectory, { recursive: true })
 
 	ConsoleLogger.info(`Generating GeoJSON for ${bdcProviders.length} providers...`)
 
@@ -76,12 +76,9 @@ export const handler: CommandHandler<CommandArgs> = async ({ outputDirectory }) 
 			const providerNameLabel = sanitizeOrganizationName(providerName).replace(/\s+/g, "_").toLowerCase()
 
 			const stateBatches = takeInParallel(Object.entries(stateRecordCount), 1, async ([stateCode, recordCount]) => {
-				const outputFile = path.join(outputDirectory, `${providerID}_${stateCode}_${providerNameLabel}.geojsons`)
+				const outputFile = outDirectory(`${providerID}_${stateCode}_${providerNameLabel}.geojsons`)
 
-				const exists = await fs
-					.access(outputFile)
-					.then(() => true)
-					.catch(() => false)
+				const exists = await checkIfExists(outputFile)
 
 				const increment = () => {
 					providerRecordsProgress.increment(recordCount)
@@ -105,7 +102,7 @@ export const handler: CommandHandler<CommandArgs> = async ({ outputDirectory }) 
 					}
 				)
 
-				await fs.mkdir(path.dirname(outputFile), { recursive: true })
+				await fs.mkdir(outputFile.dirname().toString(), { recursive: true })
 				const child = $`yarn nexus-sync generate-provider-geojson ${providerID} ${stateCode} ${outputFile}`
 
 				child.stdout.on("data", () => {

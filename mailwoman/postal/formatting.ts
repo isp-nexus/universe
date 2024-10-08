@@ -33,7 +33,10 @@ export const SecondaryAddressParts = [
 
 export type SecondaryAddressParts = (typeof SecondaryAddressParts)[number]
 
-const FormattedAddressParts = [
+/**
+ * The parts of a postal address that can be formatted into a human-readable string.
+ */
+export const FormattedAddressParts = [
 	[PostalAddressPart.POBox],
 	PrimaryAddressParts,
 	SecondaryAddressParts,

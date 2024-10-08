@@ -105,7 +105,10 @@ export function parseGoogleGeocodeResult(geocodeResult: GeocodeResult): PostalAd
 	const adminLevel1 = $.getShortName(PlaceType.administrative_area_level_1) as AdminLevel1Abbreviation
 	const locality = $.getLongName(PlaceType.locality) || $.getLongName(PlaceType.sublocality)
 	const postalCode = $.getLongName(PlaceType.postal_code)
-	const GEOM = new GeoPoint(geocodeResult.geometry.location)
+	const GEOM = new GeoPoint({
+		lat: parseFloat(geocodeResult.geometry.location.lat.toPrecision(9)),
+		lng: parseFloat(geocodeResult.geometry.location.lng.toPrecision(9)),
+	})
 	const cell = GEOM.toH3Cell()
 
 	const id = createPostalAddressID(cell, {

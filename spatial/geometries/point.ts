@@ -5,6 +5,8 @@
  */
 
 import { LatLng, LatLngLiteral } from "@googlemaps/google-maps-services-js"
+import { tryParsingJSON } from "@isp.nexus/core"
+import { convert as convertCoords } from "geo-coordinates-parser"
 import { latLngToCell } from "h3-js"
 import { BBox2DLiteral, BBox3DLiteral, GeoBoundingBox, isBBox } from "../bbox.js"
 import { H3Cell, shortenH3Cell } from "../h3/index.js"
@@ -14,7 +16,8 @@ import {
 	Coordinates2D as Point2DCoordinates,
 	Coordinates3D as Point3DCoordinates,
 	clampLatitude,
-	isGeoJSONPosition,
+	inferGeoJSONCoordOrder,
+	isCoordPairLiteral,
 	isGoogleMapsLatLngLiteral,
 	isInterpolatedCoordinates,
 	wrapLongitude,
@@ -60,7 +63,7 @@ export function isPointLiteral(input: PointLiteral | null | undefined | unknown)
 	if (!("coordinates" in input)) return false
 	if (input.type !== GeometryType.Point) return false
 
-	return isGeoJSONPosition(input.coordinates)
+	return isCoordPairLiteral(input.coordinates)
 }
 
 /**
@@ -248,8 +251,12 @@ export class GeoPoint implements PointLiteral {
 	 */
 	constructor(input: GeoPointInput, bbox?: BBox2DLiteral | BBox3DLiteral | GeoBoundingBox)
 	constructor(input?: GeoPointInput, bbox?: BBox2DLiteral | BBox3DLiteral | GeoBoundingBox) {
-		if (isGeoJSONPosition(input)) {
-			this.coordinates = [...input] as Point2DCoordinates | Point3DCoordinates
+		if (isCoordPairLiteral(input)) {
+			if (input.length === 2) {
+				this.coordinates = inferGeoJSONCoordOrder(input)
+			} else {
+				this.coordinates = input
+			}
 		} else if (isPointLiteral(input)) {
 			this.coordinates = [...input.coordinates]
 
@@ -280,6 +287,15 @@ export class GeoPoint implements PointLiteral {
 	 */
 	static from(input: unknown): GeoPoint | null {
 		if (!input) return null
+		if (input instanceof GeoPoint) return input
+
+		if (typeof input === "string") {
+			const coordinates = tryParsingJSON<GeoPointInput>(input) || tryParsingJSON<GeoPointInput>(`[${input}]`)
+
+			if (coordinates) {
+				input = coordinates
+			}
+		}
 
 		try {
 			const point = new GeoPoint(input as any)
@@ -344,6 +360,15 @@ export class GeoPoint implements PointLiteral {
 			lat: this.#latitude,
 			lng: this.#longitude,
 		}
+	}
+
+	/**
+	 * Converts the GeoPoint to DMS (Degrees, Minutes, Seconds) format.
+	 */
+	public toDMS(): string {
+		const converter = convertCoords(`${this.#latitude},${this.#longitude}`)
+
+		return converter.toCoordinateFormat("DMS")
 	}
 
 	/**

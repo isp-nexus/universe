@@ -235,18 +235,35 @@ export async function findSupplementalTIGERData(postalAddress: PostalAddress): P
 }
 
 /**
+ * Options for geocoding.
+ *
+ * @category Geocoding
+ */
+export interface GeocodeOptions {
+	skipCache?: boolean
+	skipSupplementalTIGERData?: boolean
+}
+
+/**
  * Given a geographic coordinate, Google Place ID, or formatted address, attempt to geocode the
  * address.
+ *
+ * @category Geocoding
  */
-export async function geocode(coordinate: GeoPointInput): Promise<PostalAddress[]>
-export async function geocode(placeID: GooglePlaceID): Promise<PostalAddress[]>
-export async function geocode(cell: H3Cell): Promise<PostalAddress[]>
-export async function geocode(formattedAddress: string): Promise<PostalAddress[]>
-export async function geocode(input: unknown): Promise<PostalAddress[]>
-export async function geocode(input: unknown): Promise<PostalAddress[]> {
+export async function geocode(coordinate: GeoPointInput, options?: GeocodeOptions): Promise<PostalAddress[]>
+export async function geocode(placeID: GooglePlaceID, options?: GeocodeOptions): Promise<PostalAddress[]>
+export async function geocode(cell: H3Cell, options?: GeocodeOptions): Promise<PostalAddress[]>
+export async function geocode(formattedAddress: string, options?: GeocodeOptions): Promise<PostalAddress[]>
+export async function geocode(input: unknown, options?: GeocodeOptions): Promise<PostalAddress[]>
+export async function geocode(input: unknown, options?: GeocodeOptions): Promise<PostalAddress[]> {
 	const geocoder = await $GoogleGeocoder
 
 	const baseAddresses = await geocoder.geocode(input)
+
+	if (options?.skipSupplementalTIGERData) {
+		return baseAddresses
+	}
+
 	const postalAddresses = await Promise.all(
 		baseAddresses.map(async (address) => {
 			return findSupplementalTIGERData(address).then((supplementedTIGERData) => ({

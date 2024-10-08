@@ -83,7 +83,7 @@ class RedisManager implements AsyncDisposable, AsyncInitializable {
 	}
 }
 
-export const $RedisManager = ServiceRepository.register(() => new RedisManager())
+export const $RedisManager = ServiceRepository.register(RedisManager)
 
 export const handler: CommandHandler<CommandArgs> = async () => {
 	const stateCodes = new Set<AdminLevel1Code>()

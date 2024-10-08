@@ -5,11 +5,10 @@
  */
 
 import { formatPlanIdentifier, ParsedPlanIdentifier, pluckUniquePlanID } from "@isp.nexus/fcc"
-import { cleanDirectory, createCLIProgressBar, runScript } from "@isp.nexus/sdk"
+import { checkIfExists, cleanDirectory, createCLIProgressBar, runScript } from "@isp.nexus/sdk"
 import { createOpenAIClient } from "@isp.nexus/sdk/llm"
 import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
 import * as fs from "node:fs/promises"
-import * as path from "node:path"
 import { zodResponseFormat } from "openai/helpers/zod"
 import TurndownService from "turndown"
 import { z } from "zod"
@@ -453,14 +452,11 @@ function toSQL(value: string | number | string[] | number[] | null | boolean): s
 }
 
 async function fetchPlan(planPath: string): Promise<string> {
-	const cachedFilePath = fileCacheDirectory(planPath, "index.html").toString()
+	const cachedFilePath = fileCacheDirectory(planPath, "index.html")
 
-	await fs.mkdir(path.dirname(cachedFilePath), { recursive: true })
+	await fs.mkdir(cachedFilePath.dirname().toString(), { recursive: true })
 
-	const exists = await fs
-		.stat(cachedFilePath)
-		.then(() => true)
-		.catch(() => false)
+	const exists = await checkIfExists(cachedFilePath)
 
 	if (exists) {
 		return fs.readFile(cachedFilePath, "utf8")

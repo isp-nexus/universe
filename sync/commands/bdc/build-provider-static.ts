@@ -18,7 +18,7 @@ export const command = "build-provider-static [outDirectory]"
 export const describe = "Generate static files for each broadband provider."
 
 interface CommandArgs {
-	outDirectory: PathBuilder<"~outDirectory"> & string
+	"out-directory": PathBuilder<"~out-directory">
 }
 
 export const builder: CommandBuilder<CommandArgs, CommandArgs> = {
@@ -211,10 +211,7 @@ export const handler: CommandHandler<CommandArgs> = async ({ outDirectory }) => 
 	}
 }
 
-async function writeProviderFiles(
-	provider: BroadbandProvider,
-	outDirectory: PathBuilder<"~outDirectory">
-): Promise<void> {
+async function writeProviderFiles(provider: BroadbandProvider, outDirectory: PathBuilder): Promise<void> {
 	const providerDirectory = outDirectory("by", "id", provider.id)
 	const outFilename = `${provider.id}.json`
 	const serializedProvider = JSON.stringify(provider, null, "\t")

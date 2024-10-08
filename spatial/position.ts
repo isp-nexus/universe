@@ -37,6 +37,9 @@ export type Coordinates2D = [
  * Orders the given coordinates as [longitude, latitude].
  *
  * This is useful when converting into GeoJSON format.
+ *
+ * @category GeoJSON
+ * @category Position
  */
 export function orderCoordPairToGeoJSON([latitude, longitude]: [number, number]): Coordinates2D {
 	return [longitude, latitude]
@@ -46,9 +49,41 @@ export function orderCoordPairToGeoJSON([latitude, longitude]: [number, number])
  * Orders the given coordinates as [latitude, longitude].
  *
  * This is useful when converting into Google Maps format.
+ *
+ * @category GeoJSON
+ * @category Position
  */
 export function orderGeoJSONToCoordPair([longitude, latitude]: Coordinates2D): [number, number] {
 	return [latitude, longitude]
+}
+
+/**
+ * Given an input which appears to be reversed GeoJSON coordinates (i.e. [latitude, longitude]),
+ * returns the coordinates in the correct order of [longitude, latitude].
+ *
+ * Note that this is a heuristic and is only accurate for North American coordinates.
+ *
+ * @category GeoJSON
+ * @category Position
+ */
+export function inferGeoJSONCoordOrder([coordA, coordB]: [number, number]): Coordinates2D {
+	// Latitude values typically range from -90 to 90
+	const isCoordALat = coordA >= -90 && coordA <= 90
+	const isCoordBLat = coordB >= -90 && coordB <= 90
+
+	if (isCoordALat && !isCoordBLat) {
+		// coordA is latitude, coordB is longitude
+		return [coordB, coordA]
+	}
+
+	if (!isCoordALat && isCoordBLat) {
+		// coordB is latitude, coordA is longitude
+		return [coordA, coordB]
+	}
+
+	// In case both appear to be latitudes (unlikely) or longitudes (out of range for US),
+	// assume coordA is longitude and coordB is latitude as default.
+	return [coordA, coordB]
 }
 
 /**
@@ -100,7 +135,7 @@ export type InternalPointCoordinates = {
 /**
  * Type-predicate to determine if the given input is a GeoJSON Point geometry.
  */
-export function isGeoJSONPosition(input: unknown): input is Coordinates2D | Coordinates3D {
+export function isCoordPairLiteral(input: unknown): input is [number, number] | [number, number, number] {
 	if (!Array.isArray(input)) return false
 
 	if (input.length !== 2 && input.length !== 3) return false

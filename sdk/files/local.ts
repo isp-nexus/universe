@@ -14,6 +14,19 @@ import * as path from "node:path"
 const logger = ConsoleLogger.withPrefix("Files")
 
 /**
+ * Check if a file exists at the given path.
+ *
+ * @category Node
+ * @category Files
+ */
+export function checkIfExists(pathBuilderLike: PathBuilderLike): Promise<boolean> {
+	return fs
+		.stat(pathBuilderLike.toString())
+		.then(() => true)
+		.catch(() => false)
+}
+
+/**
  * Read a local text file from the repository.
  *
  * @category Node

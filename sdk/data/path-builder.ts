@@ -14,7 +14,17 @@ import { execSync } from "node:child_process"
 import { existsSync, statSync } from "node:fs"
 import * as path from "node:path"
 
-export { type PathBuilder, type PathBuilderLike }
+export {
+	/**
+	 * @internal
+	 */
+	type PathBuilder,
+
+	/**
+	 * @internal
+	 */
+	type PathBuilderLike,
+}
 
 /**
  * Valid data source package names.

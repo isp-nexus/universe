@@ -8,7 +8,7 @@
 
 import { URLRoutePattern } from "@isp.nexus/core/routing"
 import { ProviderID } from "@isp.nexus/fcc"
-import { createCLIProgressBar, extractSingleFileZip, ParquetReader, ParquetWriter } from "@isp.nexus/sdk"
+import { checkIfExists, createCLIProgressBar, extractSingleFileZip, ParquetReader, ParquetWriter } from "@isp.nexus/sdk"
 import { PathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import * as fs from "node:fs/promises"
 import { CensusBlockAvailabilityRecord, CensusBlockAvailabilitySchema } from "./block-aggregator.js"
@@ -31,10 +31,8 @@ export async function checkIfBFCFileCached({
 	fileExtension,
 }: BDCFileCacheCheckParams): Promise<boolean> {
 	const cachedFilePath = PathBuilder.from(fileCacheDirectory, fileName + fileExtension)
-	return fs
-		.stat(cachedFilePath)
-		.then(() => true)
-		.catch(() => false)
+
+	return checkIfExists(cachedFilePath)
 }
 
 export interface BDCFileParquetCheckParams {
@@ -55,10 +53,7 @@ export async function checkBDCFileParquetValid({
 }: BDCFileParquetCheckParams): Promise<boolean> {
 	const cachedFilePath = PathBuilder.from(fileCacheDirectory, fileName + ".parquet")
 
-	const exists = await fs
-		.stat(cachedFilePath)
-		.then(() => true)
-		.catch(() => false)
+	const exists = await checkIfExists(cachedFilePath)
 
 	if (!exists) return false
 

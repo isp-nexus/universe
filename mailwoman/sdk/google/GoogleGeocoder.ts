@@ -6,8 +6,13 @@
  *   Google Geocoding schema.
  */
 
-import { GeocodeResponseData, Client as GoogleMapsClient } from "@googlemaps/google-maps-services-js"
-import { pluckResponseData } from "@isp.nexus/core"
+import {
+	GeocodeResponseData,
+	Status as GoogleAPIResponseStatus,
+	Client as GoogleMapsClient,
+	PlaceData,
+} from "@googlemaps/google-maps-services-js"
+import { pick, pluckResponseData } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
@@ -38,10 +43,6 @@ export function pluckGeocodeResult(data: GeocodeResponseData): PostalAddress[] {
 	return data.results.map(parseGoogleGeocodeResult)
 }
 
-export const $GoogleGeocoder = ServiceRepository.register(() => {
-	return new GoogleGeocoder()
-})
-
 /**
  * A Google Geocoder client.
  */
@@ -69,6 +70,56 @@ export class GoogleGeocoder implements AsyncDisposable {
 
 	public toString(): string {
 		return "Google Geocoder"
+	}
+
+	/**
+	 * Fetch place details by Google Place ID.
+	 *
+	 * @param input - The Google Place ID.
+	 *
+	 * @returns The place details.
+	 */
+	public placeDetails(input: GooglePlaceID | string): Promise<Partial<PlaceData>> {
+		if (!isGooglePlaceID(input))
+			throw ResourceError.from(400, `Invalid input ${input}`, "google", "geocoder", "geocodePlaceID")
+
+		logger.info(`⛳️🕵️‍♀️ Fetching place details (${input})...`)
+
+		return this.#client
+			.placeDetails({
+				params: {
+					key: this.#apiKey,
+					place_id: input,
+				},
+			})
+			.then(pluckResponseData)
+			.then((data) => {
+				if (data.status !== GoogleAPIResponseStatus.OK) {
+					throw ResourceError.from(400, data.error_message, "google", "geocoder", "placeDetails")
+				}
+
+				const refined = pick<Partial<PlaceData>>(data.result, [
+					"business_status",
+					"editorial_summary",
+					"international_phone_number",
+					"name",
+					"opening_hours",
+					"permanently_closed",
+					"price_level",
+					"rating",
+					"types",
+					"url",
+					"user_ratings_total",
+					"utc_offset",
+					"vicinity",
+					"website",
+				])
+
+				return refined
+			})
+			.catch((error: unknown) => {
+				throw ResourceError.wrap(error, `Failed to fetch place details for ID "${input}"`)
+			})
 	}
 
 	/**
@@ -144,17 +195,19 @@ export class GoogleGeocoder implements AsyncDisposable {
 	public async geocode(input: unknown): Promise<PostalAddress[]> {
 		if (!input) throw ResourceError.from(400, "Input must be present", "geocoding", "geocode")
 
-		if (typeof input === "string") {
-			if (isH3Cell(input)) {
-				return this.geocodePoint(cellToPointLiteral(input))
-			}
-
-			if (isGooglePlaceID(input)) return this.geocodePlaceID(input)
-
-			return this.geocodeAddress(input)
+		if (typeof input !== "string") {
+			throw ResourceError.from(400, `Invalid input ${input}`, "geocoding", "geocode")
+		}
+		if (isH3Cell(input)) {
+			return this.geocodePoint(cellToPointLiteral(input))
 		}
 
-		return this.geocodePoint(input)
+		if (isGooglePlaceID(input)) return this.geocodePlaceID(input)
+
+		const point = GeoPoint.from(input)
+		if (point) return this.geocodePoint(input)
+
+		return this.geocodeAddress(input)
 	}
 
 	[Symbol.asyncDispose](): Promise<void> {
@@ -163,3 +216,13 @@ export class GoogleGeocoder implements AsyncDisposable {
 		return Promise.resolve()
 	}
 }
+
+/**
+ * Google Geocoder service, pre-configured with a runtime Google Maps API key.
+ *
+ * Note that while this instance may be used directly, higher-level operations are available via
+ * `@isp.nexus/mailwoman/sdk`
+ *
+ * @singleton
+ */
+export const $GoogleGeocoder = ServiceRepository.register(GoogleGeocoder)

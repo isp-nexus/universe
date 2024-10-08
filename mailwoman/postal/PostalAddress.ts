@@ -7,6 +7,7 @@
  */
 
 import { JSONSchemaID, TemporalProperties } from "@isp.nexus/core"
+import { ResourceError } from "@isp.nexus/core/errors"
 import type { GeometryLiteral, GooglePlaceID, H3Cell, MultiPolygonLiteral, PointLiteral } from "@isp.nexus/spatial"
 import type { AdminLevel1Abbreviation, ParsedGeoID } from "@isp.nexus/tiger"
 import type { PointOfContact } from "../contacts/PointOfContact.js"
@@ -367,7 +368,7 @@ export interface PostalAddressFeature {
 export function castToPostalAddressFeature(postalAddress: PostalAddress): PostalAddressFeature {
 	const { id, GEOM, ...properties } = postalAddress
 
-	if (!GEOM) throw new Error(`Postal address ${id} must have a geometry.`)
+	if (!GEOM) throw ResourceError.from(400, `Postal address ${id} must have a geometry.`)
 
 	const postalFeature: PostalAddressFeature = {
 		type: "Feature",

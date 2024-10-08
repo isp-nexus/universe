@@ -15,11 +15,6 @@ import { $ } from "zx"
 export const command = "geojson-seq <shape-file-path> [output-file-path]"
 export const describe = "Convert a ShapeFile to GeoJSON."
 
-// enum GDalDriver {
-// 	GeoJSONSeq = "ndjson",
-// 	GeoJSON = "json",
-// }
-
 interface CommandArgs {
 	"shape-file-path": string
 	"output-file-path"?: string
