@@ -64,12 +64,12 @@ type RepoRootAbsolutePath = RepoRootAlias
 /**
  * Path builder relative to the repo root.
  */
-export function repoRootPathBuilder<P1 extends string, PN extends string[]>(
+export function repoRootPathBuilder<P1 extends string, Pn extends string[]>(
 	pathSegment1?: P1,
-	...pathSegmentN: PN
+	...pathSegmentN: Pn
 ): P1 extends "/"
-	? PathBuilder<`/${Join<PN, "/">}`> & string
-	: PathBuilder<Join<[RepoRootAlias, P1, ...PN], "/">> & string {
+	? PathBuilder<`/${Join<Pn, "/">}`> & string
+	: PathBuilder<Join<[RepoRootAlias, P1, ...Pn], "/">> & string {
 	const root = pathSegment1?.startsWith("/") ? "" : RepoRootAbsolutePath
 
 	return PathBuilder.from(root, pathSegment1 || "", ...pathSegmentN) as any

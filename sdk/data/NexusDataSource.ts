@@ -11,7 +11,7 @@ import * as path from "node:path"
 import { DataSource, Driver, EntitySchema, LogLevel, MigrationInterface, MixedList } from "typeorm"
 import { DriverFactory } from "typeorm/driver/DriverFactory.js"
 import { SnakeNamingStrategy } from "./naming.js"
-import { DataSourceName } from "./path-builder.js"
+import { DataSourceName, PathBuilderLike } from "./path-builder.js"
 import {
 	SpatiaLiteDriver,
 	SQLitePragma,
@@ -43,7 +43,7 @@ export type MigrationInterfaceConstructor = new () => MigrationInterface
 
 export interface NexusDataSourceConfig {
 	displayName: IRuntimeLogger | string
-	storagePath: string
+	storagePath: PathBuilderLike
 	migrations?: string | MigrationInterfaceConstructor[]
 	entities?: MixedList<EntitySchema>
 	logLevels?: LogLevel[]
@@ -67,7 +67,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 		super({
 			type: "sqlite",
 			synchronize: false,
-			database: storagePath,
+			database: storagePath.toString(),
 			logger: new TypeORMLogger(logger, logLevels),
 			entities,
 			migrations: typeof migrations === "string" ? FastGlob.sync(path.join(migrations, "*.js")) : migrations,
@@ -81,7 +81,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 		this.#logger = logger
 
 		this.pragmas = options.pragmas || StrictSQlitePragmas
-		this.storagePath = storagePath
+		this.storagePath = storagePath.toString()
 	}
 
 	public async ready(): Promise<this> {

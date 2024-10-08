@@ -49,7 +49,7 @@ export async function parseProvidersCSV(bdcProviderListFilePath: string) {
 export async function parseBDCProvidersFiles() {
 	const pattern = dataSourcePathBuilder("fcc", "bdc", "bdc_us_provider_list_*.csv")
 	ConsoleLogger.info(`Reading provider list files from ${pattern}...`)
-	const bdcProviderListFilePaths = await FastGlob.async(pattern)
+	const bdcProviderListFilePaths = await FastGlob.async(pattern.toString())
 
 	bdcProviderListFilePaths.sort((a, b) => a.localeCompare(b))
 

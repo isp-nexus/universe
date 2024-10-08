@@ -11,6 +11,7 @@ import "@isp.nexus/core/polyfills/promises/withResolvers"
 import { ParquetReader as BaseParquetReader } from "@dsnp/parquetjs"
 import { BufferReaderOptions } from "@dsnp/parquetjs/dist/lib/bufferReader.js"
 import { ParquetEnvelopeReader } from "@dsnp/parquetjs/dist/lib/reader.js"
+import { PathBuilderLike } from "../reflection/path-builders.js"
 import { ParquetRecordLike, ParquetSchema } from "./schema.js"
 
 /**
@@ -20,10 +21,10 @@ export class ParquetReader<T extends ParquetRecordLike> extends BaseParquetReade
 	declare schema: ParquetSchema<T>
 
 	static override async openFile<T extends ParquetRecordLike>(
-		filePath: string,
+		filePath: PathBuilderLike,
 		options?: BufferReaderOptions
 	): Promise<ParquetReader<T>> {
-		const envelopeReader = await ParquetEnvelopeReader.openFile(filePath, options)
+		const envelopeReader = await ParquetEnvelopeReader.openFile(filePath.toString(), options)
 
 		return ParquetReader.openEnvelopeReader<T>(envelopeReader, options)
 	}

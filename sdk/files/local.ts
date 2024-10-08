@@ -7,7 +7,7 @@
  */
 
 import { ConsoleLogger } from "@isp.nexus/core/logging"
-import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { PathBuilderLike, repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
 
@@ -48,9 +48,12 @@ export function readLocalJSONFile<T = Record<string, unknown>, S extends string[
  * @category Node
  * @category Files
  */
-export function writeLocalTextFile<S extends string[]>(content: string, ...pathSegments: S): Promise<void>
-export function writeLocalTextFile<S extends string>(content: string, filePath: S): Promise<void>
-export async function writeLocalTextFile<S extends string[]>(content: string, ...pathSegments: S): Promise<void> {
+export function writeLocalTextFile<S extends PathBuilderLike[]>(content: string, ...pathSegments: S): Promise<void>
+export function writeLocalTextFile<S extends PathBuilderLike>(content: string, filePath: S): Promise<void>
+export async function writeLocalTextFile<S extends PathBuilderLike[]>(
+	content: string,
+	...pathSegments: S
+): Promise<void> {
 	if (pathSegments.length === 0) {
 		throw new Error("No file path segments provided.")
 	}
@@ -59,7 +62,7 @@ export async function writeLocalTextFile<S extends string[]>(content: string, ..
 		logger.warn("Attempted to write an empty file.")
 	}
 
-	const filePath = repoRootPathBuilder(...pathSegments).toString()
+	const filePath = repoRootPathBuilder(pathSegments.toString()).toString()
 	const dirName = path.dirname(filePath)
 
 	await fs.mkdir(dirName, { recursive: true })

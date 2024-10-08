@@ -6,7 +6,7 @@
 
 import { ProviderID } from "@isp.nexus/fcc"
 import { dataSourcePathBuilder } from "@isp.nexus/sdk"
-import { packagePathBuilder } from "@isp.nexus/sdk/reflection"
+import { packagePathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import { AdminLevel1Code } from "@isp.nexus/tiger"
 import { BDCFile } from "./common.js"
 
@@ -41,7 +41,7 @@ export function BDCFileCacheDirectoryBuilder<P extends BDCFileCacheDirectoryBuil
  * usage low.
  */
 export function buildFileCacheDirectoryMap(fileParamCollection: Iterable<BDCFileCacheDirectoryBuilderParams>) {
-	const fileCacheDirectoryMap = new WeakMap<BDCFileCacheDirectoryBuilderParams, string>()
+	const fileCacheDirectoryMap = new WeakMap<BDCFileCacheDirectoryBuilderParams, PathBuilderLike>()
 
 	for (const file of fileParamCollection) {
 		const fileCacheDirectory = BDCFileCacheDirectoryBuilder(file)

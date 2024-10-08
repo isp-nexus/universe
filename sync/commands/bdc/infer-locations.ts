@@ -8,6 +8,7 @@ import { iterateInParallel, takeInParallel } from "@isp.nexus/core"
 import { AsyncInitializable, ServiceRepository, ServiceSymbol } from "@isp.nexus/core/lifecycle"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { CommandHandler, createCLIProgressBar, ParquetReader } from "@isp.nexus/sdk"
+import { PathBuilder } from "@isp.nexus/sdk/reflection"
 import {
 	$FabricDataSource,
 	BDCFileCategory,
@@ -20,7 +21,6 @@ import {
 import { AdminLevel1Code, AdminLevel1CodeToAbbreviation, FIPSBlockGeoID } from "@isp.nexus/tiger"
 import { bold, cyanBright, reset } from "colorette"
 import * as fs from "node:fs/promises"
-import * as path from "node:path"
 import { createClient, RedisClientType } from "redis"
 import { CommandBuilder } from "yargs"
 
@@ -93,7 +93,7 @@ export const handler: CommandHandler<CommandArgs> = async () => {
 	ConsoleLogger.info("Clearing existing data")
 
 	await fs.rm(FabricDataSourcePath, { recursive: true, force: true })
-	await fs.mkdir(path.dirname(FabricDataSourcePath), { recursive: true })
+	await fs.mkdir(FabricDataSourcePath.dirname(), { recursive: true })
 
 	const fabricDataSource = await $FabricDataSource
 
@@ -133,7 +133,7 @@ export const handler: CommandHandler<CommandArgs> = async () => {
 
 	const batchedCounters = takeInParallel(files.values(), 10, async (file) => {
 		const fileCacheDirectory = fileCacheDirectoryMap.get(file)!
-		const parquetFilePath = path.join(fileCacheDirectory, file.fileName + ".parquet")
+		const parquetFilePath = PathBuilder.from(fileCacheDirectory, file.fileName + ".parquet")
 
 		const reader = await ParquetReader.openFile<CensusBlockAvailabilityRecord>(parquetFilePath)
 		const recordCount = reader.getRowCount().toNumber()
@@ -179,7 +179,7 @@ export const handler: CommandHandler<CommandArgs> = async () => {
 			const displayName = cyanBright(bold([stateAbbreviation, providerName].join(" - "))) + reset("")
 
 			const fileCacheDirectory = fileCacheDirectoryMap.get(file)!
-			const parquetFilePath = path.join(fileCacheDirectory, fileName + ".parquet")
+			const parquetFilePath = PathBuilder.from(fileCacheDirectory, fileName + ".parquet")
 
 			const reader = await ParquetReader.openFile<CensusBlockAvailabilityRecord>(parquetFilePath)
 

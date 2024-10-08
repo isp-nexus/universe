@@ -7,7 +7,7 @@
 import { iterateInParallel, takeInParallel } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { createCLIProgressBar, DataSourceFile, dataSourcePathBuilder, NexusDataSource, runScript } from "@isp.nexus/sdk"
-import { packagePathBuilder } from "@isp.nexus/sdk/reflection"
+import { packagePathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import {
 	AdminLevel1Code,
 	AdminLevel1CodeToAbbreviation,
@@ -66,9 +66,9 @@ const TIGERLevelToSQL = {
 	[TIGERLevel.County]: /* sql */ `SELECT * FROM ${TIGERLevel.State}`,
 } as const satisfies Record<TIGERLevel, string>
 
-const cachedFeatureCount = new Map<string, number>()
+const cachedFeatureCount = new Map<PathBuilderLike, number>()
 
-async function pluckFeatureCount(shapeFilePath: string): Promise<number> {
+async function pluckFeatureCount(shapeFilePath: PathBuilderLike): Promise<number> {
 	if (cachedFeatureCount.has(shapeFilePath)) {
 		return cachedFeatureCount.get(shapeFilePath)!
 	}
@@ -98,7 +98,7 @@ type PreparationFn = (level: TIGERLevel, stateCode: AdminLevel1Code) => Promise<
 
 const convertWithGDAL: PreparationFn = async (level, stateCode) => {
 	const sqlQuery = TIGERLevelToSQL[level]
-	const shapeFilePath = path.join(baseCacheDirectory, stateCode, `${level}.shp`)
+	const shapeFilePath = baseCacheDirectory(stateCode, `${level}.shp`)
 	const featureCount = await pluckFeatureCount(shapeFilePath)
 	const increment = Math.floor(10 / featureCount)
 

@@ -9,9 +9,8 @@
 import { URLRoutePattern } from "@isp.nexus/core/routing"
 import { ProviderID } from "@isp.nexus/fcc"
 import { createCLIProgressBar, extractSingleFileZip, ParquetReader, ParquetWriter } from "@isp.nexus/sdk"
-import { PathBuilderLike } from "@isp.nexus/sdk/reflection"
+import { PathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import * as fs from "node:fs/promises"
-import * as path from "node:path"
 import { CensusBlockAvailabilityRecord, CensusBlockAvailabilitySchema } from "./block-aggregator.js"
 import { $BCDClient } from "./client.js"
 import { BDCFilingDataType } from "./common.js"
@@ -31,7 +30,7 @@ export async function checkIfBFCFileCached({
 	fileName,
 	fileExtension,
 }: BDCFileCacheCheckParams): Promise<boolean> {
-	const cachedFilePath = path.join(fileCacheDirectory, fileName + fileExtension)
+	const cachedFilePath = PathBuilder.from(fileCacheDirectory, fileName + fileExtension)
 	return fs
 		.stat(cachedFilePath)
 		.then(() => true)
@@ -39,8 +38,8 @@ export async function checkIfBFCFileCached({
 }
 
 export interface BDCFileParquetCheckParams {
-	fileCacheDirectory: string
-	fileName: string
+	fileCacheDirectory: PathBuilderLike
+	fileName: PathBuilderLike
 	expectedRowCount: number
 }
 
@@ -54,7 +53,7 @@ export async function checkBDCFileParquetValid({
 	fileName,
 	expectedRowCount,
 }: BDCFileParquetCheckParams): Promise<boolean> {
-	const cachedFilePath = path.join(fileCacheDirectory, fileName + ".parquet")
+	const cachedFilePath = PathBuilder.from(fileCacheDirectory, fileName + ".parquet")
 
 	const exists = await fs
 		.stat(cachedFilePath)
@@ -112,7 +111,7 @@ export async function downloadBDCFile({
 			}))
 	)
 
-	const cachedFilePath = path.join(fileCacheDirectory, fileName + ".zip")
+	const cachedFilePath = PathBuilder.from(fileCacheDirectory, fileName + ".zip")
 
 	if (archiveCached) {
 		return fs.readFile(cachedFilePath)
@@ -155,10 +154,10 @@ export async function downloadBDCFile({
 
 export interface WriteProviderAvailabilityOptions {
 	zippedCSVBuffer: Buffer
-	fileName: string
+	fileName: PathBuilderLike
 	providerID: ProviderID
 	recordCount: number
-	fileCacheDirectory: string
+	fileCacheDirectory: PathBuilderLike
 	skipCache?: boolean
 }
 
@@ -177,11 +176,7 @@ export async function writeProviderAvailability({
 		}
 	)
 
-	const cachedFilePath = path.join(
-		// ---
-		fileCacheDirectory,
-		fileName + ".parquet"
-	)
+	const cachedFilePath = PathBuilder.from(fileCacheDirectory, fileName + ".parquet")
 
 	if (!skipCache) {
 		const validParquet = await checkBDCFileParquetValid({

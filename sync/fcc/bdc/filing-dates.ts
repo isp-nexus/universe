@@ -75,7 +75,7 @@ export async function retrieveFilingDates({ filingType, skipCache = false }: Ret
 			.then(async (data) => {
 				const dates = pluckAvailableDates(filingType, data)
 
-				await fs.mkdir(path.dirname(cachedFilePath), { recursive: true })
+				await fs.mkdir(path.dirname(cachedFilePath.toString()), { recursive: true })
 				await fs.writeFile(cachedFilePath, JSON.stringify(dates, null, "\t"))
 
 				return dates

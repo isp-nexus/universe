@@ -23,6 +23,7 @@
 		"./data": "./out/data/index.js",
 		"./llm": "./out/llm/index.js",
 		"./reflection": "./out/reflection/index.js",
+		"./repl": "./out/reflection/repl.js",
 		".": "./out/index.js",
 		"./*": "./out/*.js"
 	},

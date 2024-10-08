@@ -6,10 +6,32 @@
  *   Path reflection utilities for the ISP Nexus mono-repo.
  */
 
+/* eslint-disable @typescript-eslint/no-wrapper-object-types */
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
 
-import { join } from "node:path"
-import type { Join } from "type-fest"
+import { basename, dirname, join } from "node:path"
+import type { Join, Split } from "type-fest"
+
+// Expected output: "/data-store/fabric/foo/bar"
+export type Foobar = Dirname<"data-store/fabric/foo/bar/index.sqlite3">
+
+/**
+ * Pluck the directory name from a path.
+ */
+export type Dirname<T extends string> =
+	Split<T, "/"> extends [...infer Head, infer _Tail]
+		? Head extends string[]
+			? Join<Head, "/">
+			: Head extends string
+				? Head
+				: never
+		: never
+
+/**
+ * Pluck the base name from a path.
+ */
+export type Basename<T extends string> =
+	Split<T, "/"> extends [...infer _Head, infer Tail] ? (Tail extends string ? Tail : never) : never
 
 /**
  * Type-safe path builder.
@@ -17,17 +39,32 @@ import type { Join } from "type-fest"
  * @external URL - The URL class.
  * @template S - The type of the path string.
  */
-export interface PathBuilder<S extends string> extends URL, Omit<string, keyof URL> {
+export interface PathBuilder<S extends string> extends URL, Omit<String, keyof URL> {
 	/**
 	 * Append additional path segments to the current path.
 	 */
-	<T extends Array<string | number>>(...additionalPathSegments: T): PathBuilder<Join<[S, ...T], "/">> & string
+	// Note: We shadow PathBuilder to allow instances of PathBuilder to be used as a function.
+	<T extends Array<string | number>>(...additionalPathSegments: T): PathBuilder<Join<[S, ...T], "/">>
 }
 
 /**
  * Type-safe path builder.
  */
 export class PathBuilder<S extends string = string> extends URL implements PathBuilder<S> {
+	/**
+	 * Directory name of a path. Similar to the Unix dirname command.
+	 */
+	public dirname(): PathBuilder<Dirname<S>> {
+		return PathBuilder.from(dirname(this.toString())) as any
+	}
+
+	/**
+	 * Base name of a path. Similar to the Unix basename command.
+	 */
+	public basename(): PathBuilder<S> {
+		return PathBuilder.from(basename(this.toString())) as any
+	}
+
 	/**
 	 * Get the current path as a string.
 	 */
@@ -62,10 +99,43 @@ export class PathBuilder<S extends string = string> extends URL implements PathB
 	public declare port: string
 
 	/**
-	 * Create a type-safe path builder.
+	 * Normalize a path builder into a type-safe path builder.
+	 *
+	 * This is typical if your given path is {@linkcode PathBuilderLike}
 	 */
-	public static from<S extends Array<string | number>>(...pathSegments: S): PathBuilder<Join<S, "/">> & string {
-		const joinedPath = join(...pathSegments.map((pathSegment) => pathSegment.toString())) as Join<S, "/">
+	public static from<P1 extends string, Pn extends string[]>(
+		pathBuilder: PathBuilder<P1>,
+		...pathSegmentN: Pn
+	): PathBuilder<Join<[P1, ...Pn], "/">>
+
+	/**
+	 * Create a new path builder from a string.
+	 */
+	public static from<P1 extends string, Pn extends string[]>(
+		pathSegment1: P1,
+		...pathSegmentN: Pn
+	): PathBuilder<Join<[P1, ...Pn], "/">>
+
+	/**
+	 * Normalize a path builder or string into a type-safe path builder.
+	 *
+	 * This is typical if your given path is {@linkcode PathBuilderLike}
+	 */
+	public static from<P extends PathBuilder | string, Pn extends string[]>(
+		pathBuilderLike: P,
+		...pathSegmentN: Pn
+	): PathBuilder<Join<[P extends PathBuilder<infer T> ? T : P, ...Pn], "/">>
+
+	public static from<P extends PathBuilder | string, Pn extends string[]>(
+		pathBuilderLike: P,
+		...pathSegmentN: Pn
+	): PathBuilder<Join<[P extends PathBuilder<infer T> ? T : P, ...Pn], "/">> {
+		const joinedPath = join(
+			// ---
+			pathBuilderLike.toString(),
+			...pathSegmentN.map((pathSegment) => pathSegment.toString())
+		)
+
 		const pathBuilderInstance = new PathBuilder(joinedPath)
 		const toString = pathBuilderInstance.toString.bind(pathBuilderInstance)
 
@@ -129,4 +199,5 @@ for (const [propertyName, propertyDescriptor] of Object.entries(Object.getOwnPro
 /**
  * Type-safe path builder or string.
  */
-export type PathBuilderLike<S extends string = string> = S | (PathBuilder<S> & string)
+export type PathBuilderLike<T = string | PathBuilder> =
+	T extends PathBuilder<infer S> ? PathBuilder<S> : T extends string ? T : never

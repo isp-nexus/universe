@@ -7,6 +7,7 @@
 import { ServiceRepository, ServiceSymbol } from "@isp.nexus/core/lifecycle"
 import { MultiBar, SingleBar } from "cli-progress"
 import { argv } from "node:process"
+import { PathBuilderLike } from "../reflection/path-builders.js"
 
 const prefersJSONLogging = argv.includes("--json")
 
@@ -174,7 +175,7 @@ export interface CreateCLIProgressBarOptions {
 	/**
 	 * The display name of the progress bar.
 	 */
-	displayName?: string | null
+	displayName?: PathBuilderLike | null
 
 	/**
 	 * Whether to show the duration of the progress bar.
@@ -232,7 +233,7 @@ export async function createCLIProgressBar<P extends object | unknown = unknown>
 
 				showCount ? "{value}/{total}" : "",
 
-				displayName || "",
+				displayName?.toString() || "",
 
 				...Object.keys(payload || {}).map((key) => `{${key}}`),
 				showPerformance ? `{performance}/min` : "",

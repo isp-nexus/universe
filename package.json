@@ -29,6 +29,7 @@
 		"site"
 	],
 	"scripts": {
+		"repl": "node -i --import @isp.nexus/sdk/repl",
 		"compile": "NODE_OPTIONS=\"--max-old-space-size=3000\" tsc -b",
 		"compile:clean": "node ./sdk/out/scripts/clean.js",
 		"lint": "run-s lint:prettier:check lint:eslint:check",
