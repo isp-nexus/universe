@@ -43,9 +43,15 @@ DriverFactory.prototype.create = function (connection: DataSource): Driver {
 
 export type MigrationInterfaceConstructor = new () => MigrationInterface
 
+/**
+ * Virtual path for an in-memory SQLite database.
+ */
+export const MemoryDBStoragePath = ":memory:"
+export type MemoryDBStoragePath = typeof MemoryDBStoragePath
+
 export interface NexusDataSourceConfig {
 	displayName: IRuntimeLogger | string
-	storagePath: PathBuilderLike
+	storagePath: PathBuilderLike | MemoryDBStoragePath
 	synchronize?: boolean
 	migrations?: string | MigrationInterfaceConstructor[]
 	entities?: MixedList<EntitySchema>
@@ -61,7 +67,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	declare driver: SpatiaLiteDriver
 	#logger: IRuntimeLogger
 	public readonly pragmas: SQLitePragmaRecord
-	public readonly storagePath: PathBuilder
+	public readonly storagePath: PathBuilder | MemoryDBStoragePath
 	static kInit = Symbol.for("nexus.data-source.init")
 
 	constructor(options: NexusDataSourceConfig) {
@@ -100,15 +106,16 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	public async ready(): Promise<this> {
 		this.#logger.debug("Initializing...")
 
-		const storagePathDirectory = this.storagePath.dirname()
+		if (this.storagePath !== MemoryDBStoragePath) {
+			const storagePathDirectory = this.storagePath.dirname()
+			const storageDirectoryExists = await checkIfExists(storagePathDirectory)
 
-		const storageDirectoryExists = await checkIfExists(storagePathDirectory)
-
-		if (!storageDirectoryExists) {
-			throw ResourceError.from(
-				417,
-				`Data Source (${this.#logger.prefixes.join(":")}) Storage directory does not exist: ${storagePathDirectory}`
-			)
+			if (!storageDirectoryExists) {
+				throw ResourceError.from(
+					417,
+					`Data Source (${this.#logger.prefixes.join(":")}) Storage directory does not exist: ${storagePathDirectory}`
+				)
+			}
 		}
 
 		await this.initialize(NexusDataSource.kInit)
@@ -119,6 +126,20 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 		}
 
 		return this
+	}
+
+	/**
+	 * Attach a database to the current connection.
+	 */
+	public async attach(
+		databasePath: PathBuilderLike,
+		schemaName: PathBuilderLike,
+		mode: "ro" | "rw" | "rwc" = "ro"
+	): Promise<void> {
+		this.#logger.info(`Attaching database: ${databasePath} as ${schemaName}...`)
+		await this.query(/* sql */ `
+			ATTACH DATABASE 'file:${databasePath}?mode=${mode}' AS ${schemaName};
+		`)
 	}
 
 	public async dispose(): Promise<void> {

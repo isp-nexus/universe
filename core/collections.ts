@@ -4,8 +4,6 @@
  * @author Teffen Ellis, et al.
  */
 
-import { ResourceError } from "./errors/schema.js"
-
 /**
  * Extracts the property keys of an object that are of type `number`.
  */
@@ -145,36 +143,3 @@ export interface IndexedIterable<T = unknown> extends Iterable<T> {
 export function isIndexedIterable<T>(value: Iterable<T>): value is IndexedIterable<T> {
 	return value && typeof (value as IndexedIterable).has === "function"
 }
-
-//#region Assertions
-
-/**
- * Runtime assertion that a file extension is one of the expected values.
- */
-export function assertExpectedFileExtension<Expected extends string>(
-	/**
-	 * The expected file extension or an iterable of expected file extensions.
-	 */
-	expectedExtension: Expected | Iterable<Expected>,
-	/**
-	 * The actual file extension, provided during runtime.
-	 */
-	actualExtension: string | undefined | null
-): asserts actualExtension is Expected {
-	if (!actualExtension) throw new Error("Assertion failed: fileExtension is falsy")
-
-	if (typeof expectedExtension === "string") {
-		if (actualExtension !== expectedExtension)
-			throw ResourceError.from(417, `Assertion failed: fileExtension is not ${expectedExtension}`)
-	} else {
-		const expectedSet = isIndexedIterable(expectedExtension) ? expectedExtension : new Set(expectedExtension)
-
-		if (!expectedSet.has(actualExtension as Expected))
-			throw ResourceError.from(
-				417,
-				`Assertion failed: fileExtension is not one of ${Array.from(expectedExtension).join(", ")}`
-			)
-	}
-}
-
-//#endregion

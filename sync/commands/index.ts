@@ -17,12 +17,14 @@ import * as BFCInferLocations from "./bdc/infer-locations.js"
 import * as BDCSync from "./bdc/sync.js"
 
 import * as geocode from "./geocoder/geocode.js"
+import * as recodeDataSource from "./geocoder/recode-data-source.js"
 import * as inferCSVSchema from "./infer-csv-schema.js"
 import * as shapeToGeoJSONSeq from "./shape-to-geojson.js"
 import * as TileFetch from "./tiles/tile-fetch.js"
 
 export const CLICommands = [
 	// ---
+	recodeDataSource,
 	geocode,
 	inferCSVSchema,
 	shapeToGeoJSONSeq,

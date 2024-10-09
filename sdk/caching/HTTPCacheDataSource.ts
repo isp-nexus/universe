@@ -6,7 +6,7 @@
 
 import { smartSnakeCase, tryParsingJSON } from "@isp.nexus/core"
 import { ServiceSymbol } from "@isp.nexus/core/lifecycle"
-import { NexusDataSource } from "@isp.nexus/sdk"
+import { MemoryDBStoragePath, NexusDataSource } from "@isp.nexus/sdk"
 import { PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import {
 	AxiosStorage,
@@ -66,7 +66,10 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 	}
 
 	public override async ready(): Promise<this> {
-		await fs.mkdir(this.storagePath.dirname(), { recursive: true })
+		if (this.storagePath !== MemoryDBStoragePath) {
+			await fs.mkdir(this.storagePath.dirname(), { recursive: true })
+		}
+
 		await super.ready()
 
 		await this.query(/* sql */ `

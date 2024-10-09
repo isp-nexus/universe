@@ -355,10 +355,8 @@ export interface PostalAddressFeature {
 
 	/**
 	 * UUID derived from the address components.
-	 *
-	 * @format uuid
 	 */
-	id: string
+	id: string | number
 
 	properties: Omit<PostalAddress, "id" | "GEOM"> & Partial<NonNullable<ParsedGeoID>>
 

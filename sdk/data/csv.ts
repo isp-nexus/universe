@@ -111,6 +111,7 @@ export type SQLiteColumnTypeViaCSV = "TEXT" | "INTEGER" | "REAL"
 export type SQLiteColumnFormatViaCSV = "date" | "time" | "datetime" | "email" | "phone" | "url"
 export interface SQLiteColumnInference {
 	columnName: string
+	primary?: boolean
 	type: SQLiteColumnTypeViaCSV
 	nullable?: boolean
 	caseSensitive?: boolean
@@ -214,7 +215,7 @@ export function inferSQLiteFieldType(
 /**
  * Given a set of column names and field content samples, infer the SQLite field types.
  */
-export function inferSQLiteFieldTypes(columnNames: string[], fieldContentSamples: string[][]) {
+export function inferSQLiteFieldTypes(columnNames: string[], fieldContentSamples: string[][]): SQLiteColumnInference[] {
 	const inferences = columnNames.map((columnName, i) => {
 		return inferSQLiteFieldType(columnName, fieldContentSamples.map((fields) => fields[i]!).flat())
 	})
@@ -233,8 +234,8 @@ export function tableSchemaFromInferences(tableName: string, columnInferences: S
 	})
 
 	return /* sql */ `
-
 		CREATE TABLE IF NOT EXISTS '${tableName}' (
+			"idx" INTEGER PRIMARY KEY AUTOINCREMENT,
 			${columnDefinitions.join(", \n\t")}
 		);
 	`
@@ -283,23 +284,34 @@ export function csvImportCommand({
 }: CSVImportCommandOptions): string {
 	const normalizedCSVFilePath = "./" + path.basename(csvFilePath)
 
-	let sql = /* sql */ `
-		-- Import CSV data into SQLite table.
+	const columnDefinitions = columnInferences.map((inference) => {
+		const columnDefinition = `'${inference.columnName}' ${inference.type}`
+
+		return columnDefinition
+	})
+
+	const sql = /* sql */ `
+	CREATE TEMP TABLE '${tableName}_source' (
+		${columnDefinitions.join(", \n\t")}
+	);
+
+	-- Import CSV data into SQLite table.
 		.mode csv
 		.separator "${fieldSeparator}"
 
-		.import --csv --skip ${skip} "${normalizedCSVFilePath}" ${tableName}
+		.import --csv --skip ${skip} "${normalizedCSVFilePath}" --schema temp ${tableName}_source
 
-		-- Nullify empty strings.
+		CREATE TEMP VIEW ${tableName}_source_normalized AS
+		SELECT ${columnInferences
+			.map((inference) => {
+				return `NULLIF("${inference.columnName}", '') AS "${inference.columnName}"`
+			})
+			.join(", ")}
+		FROM temp.${tableName}_source;
+
+		INSERT INTO ${tableName} (${columnInferences.map((inference) => inference.columnName).join(", ")})
+		SELECT * FROM ${tableName}_source_normalized;
 	`
-
-	for (const columnInference of columnInferences) {
-		sql += /* sql */ `
-			UPDATE ${tableName}
-			SET ${columnInference.columnName} = NULL
-			WHERE ${columnInference.columnName} = '';
-		`
-	}
 
 	return sql
 }

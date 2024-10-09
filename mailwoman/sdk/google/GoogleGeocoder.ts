@@ -107,7 +107,7 @@ export class GoogleGeocoder extends APIClient {
 					"editorial_summary",
 					"international_phone_number",
 					"name",
-					"opening_hours",
+					// "opening_hours",
 					"permanently_closed",
 					"price_level",
 					"rating",
