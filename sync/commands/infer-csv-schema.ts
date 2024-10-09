@@ -11,11 +11,9 @@ import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { changeFileExtension, cleanDirectory, cleanFile, CommandHandler, takeReadStreamLines } from "@isp.nexus/sdk"
 import {
 	collectPendingMigrationFiles,
-	inferSQLPaths,
 	prepareMigrationsTable,
 	runMigration,
 	spatialiteInitTemplate,
-	SQLiteFileExtension,
 	writeMigrationFile,
 } from "@isp.nexus/sdk/data"
 import {
@@ -25,6 +23,7 @@ import {
 	splitByFieldSeparator,
 	tableSchemaFromInferences,
 } from "@isp.nexus/sdk/data/csv"
+import { inferSQLPaths, SQLiteFileExtension } from "@isp.nexus/sdk/reflection"
 import { CommandBuilder } from "yargs"
 
 export const command = "infer-csv-schema [source-file-path]"

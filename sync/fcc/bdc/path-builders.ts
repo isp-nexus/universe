@@ -5,8 +5,7 @@
  */
 
 import { ProviderID } from "@isp.nexus/fcc"
-import { dataSourcePathBuilder } from "@isp.nexus/sdk"
-import { packagePathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
+import { dataSourcePathBuilder, packagePathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import { AdminLevel1Code } from "@isp.nexus/tiger"
 import { BDCFile } from "./common.js"
 

@@ -5,7 +5,7 @@
  */
 
 import { ExtractResponseBodyData, pluckResponseData } from "@isp.nexus/core"
-import { dataSourcePathBuilder } from "@isp.nexus/sdk"
+import { dataSourcePathBuilder } from "@isp.nexus/sdk/reflection"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
 import { $BCDClient } from "./client.js"

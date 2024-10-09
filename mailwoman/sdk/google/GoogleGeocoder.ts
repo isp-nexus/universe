@@ -12,11 +12,12 @@ import {
 	Client as GoogleMapsClient,
 	PlaceData,
 } from "@googlemaps/google-maps-services-js"
-import { pick, pluckResponseData } from "@isp.nexus/core"
+import { APIClient, APIClientConfig, pick, pluckResponseData } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
-import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { PostalAddress, formatAddressFromParts, sanitizePostalAddress } from "@isp.nexus/mailwoman"
+import { HTTPCacheDataSource } from "@isp.nexus/sdk/caching/HTTPCacheDataSource"
+import { DataSourceFile, PathBuilder } from "@isp.nexus/sdk/reflection"
 import { $private, assertOptionalKeyPresent } from "@isp.nexus/sdk/runtime"
 import {
 	GeoPoint,
@@ -29,47 +30,50 @@ import {
 } from "@isp.nexus/spatial"
 import { parseGoogleGeocodeResult } from "./parser.js"
 
-const logger = ConsoleLogger.withPrefix("Google Geocoder")
-
-/**
- * @internal
- */
-export function pluckGeocodeResult(data: GeocodeResponseData): PostalAddress[] {
-	logger.info(`Found ${data.results.length} results.`)
-
-	if (!data.results.length)
-		throw ResourceError.from(404, "No results found", "google", "geocoder", "pluckGeocodeResult")
-
-	return data.results.map(parseGoogleGeocodeResult)
+export interface GoogleGeocoderOptions extends APIClientConfig {
+	/**
+	 * The Google Maps API key.
+	 */
+	apiKey: string
 }
 
 /**
  * A Google Geocoder client.
  */
-export class GoogleGeocoder implements AsyncDisposable {
-	#abortionController = new AbortController()
-
+export class GoogleGeocoder extends APIClient {
 	/**
 	 * The Google Maps API client.
 	 */
 	#client: GoogleMapsClient
+
 	/**
 	 * The Google Maps API key.
 	 */
 	#apiKey: string
 
-	constructor() {
-		assertOptionalKeyPresent($private, "SDK_GOOGLE_MAPS_API_KEY")
-		this.#apiKey = $private.SDK_GOOGLE_MAPS_API_KEY
+	constructor(options: GoogleGeocoderOptions) {
+		super(options)
+		this.#apiKey = options.apiKey
+
 		this.#client = new GoogleMapsClient({
-			config: {
-				signal: this.#abortionController.signal,
-			},
+			axiosInstance: this.axios as any, // Fixes outdated type definitions
 		})
 	}
 
-	public toString(): string {
+	public override toString(): string {
 		return "Google Geocoder"
+	}
+
+	/**
+	 * @internal
+	 */
+	protected pluckGeocodeResult = (data: GeocodeResponseData): PostalAddress[] => {
+		this.logger.info(`Found ${data.results.length} results.`)
+
+		if (!data.results.length)
+			throw ResourceError.from(404, "No results found", "google", "geocoder", "pluckGeocodeResult")
+
+		return data.results.map(parseGoogleGeocodeResult)
 	}
 
 	/**
@@ -83,7 +87,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 		if (!isGooglePlaceID(input))
 			throw ResourceError.from(400, `Invalid input ${input}`, "google", "geocoder", "geocodePlaceID")
 
-		logger.info(`⛳️🕵️‍♀️ Fetching place details (${input})...`)
+		this.logger.info(`⛳️🕵️‍♀️ Fetching place details (${input})...`)
 
 		return this.#client
 			.placeDetails({
@@ -129,7 +133,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 		if (!isGooglePlaceID(input))
 			throw ResourceError.from(400, `Invalid input ${input}`, "google", "geocoder", "geocodePlaceID")
 
-		logger.info(`⛳️ Geocoding place ID (${input})...`)
+		this.logger.info(`⛳️ Geocoding place ID (${input})...`)
 
 		return this.#client
 			.geocode({
@@ -139,7 +143,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 				},
 			})
 			.then(pluckResponseData)
-			.then(pluckGeocodeResult)
+			.then(this.pluckGeocodeResult)
 			.catch((error: unknown) => {
 				throw ResourceError.wrap(error, `Failed to geocode place ID ${input}`)
 			})
@@ -152,7 +156,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 
 		if (!geoPoint) throw ResourceError.from(400, `Invalid input ${input}`)
 
-		logger.info(`🌐 Geocoding point (${geoPoint})...`)
+		this.logger.info(`🌐 Geocoding point (${geoPoint})...`)
 
 		return this.#client
 			.reverseGeocode({
@@ -162,7 +166,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 				},
 			})
 			.then(pluckResponseData)
-			.then(pluckGeocodeResult)
+			.then(this.pluckGeocodeResult)
 			.catch((error: unknown) => {
 				throw ResourceError.wrap(error, `Failed to geocode point ${geoPoint}`)
 			})
@@ -171,7 +175,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 	public geocodeAddress(input: string | PostalAddress): Promise<PostalAddress[]> {
 		const formattedAddress = typeof input === "string" ? sanitizePostalAddress(input) : formatAddressFromParts(input)
 
-		logger.info(`🌎 Geocoding address (${formattedAddress})...`)
+		this.logger.info(`🌎 Geocoding address (${formattedAddress})...`)
 
 		return this.#client
 			.geocode({
@@ -181,7 +185,7 @@ export class GoogleGeocoder implements AsyncDisposable {
 				},
 			})
 			.then(pluckResponseData)
-			.then(pluckGeocodeResult)
+			.then(this.pluckGeocodeResult)
 			.catch((error: unknown) => {
 				throw ResourceError.wrap(error, `Failed to geocode address ${formattedAddress}`)
 			})
@@ -209,12 +213,6 @@ export class GoogleGeocoder implements AsyncDisposable {
 
 		return this.geocodeAddress(input)
 	}
-
-	[Symbol.asyncDispose](): Promise<void> {
-		this.#abortionController.abort()
-
-		return Promise.resolve()
-	}
 }
 
 /**
@@ -225,4 +223,25 @@ export class GoogleGeocoder implements AsyncDisposable {
  *
  * @singleton
  */
-export const $GoogleGeocoder = ServiceRepository.register(GoogleGeocoder)
+export const $GoogleGeocoder = ServiceRepository.register(async () => {
+	assertOptionalKeyPresent($private, "SDK_GOOGLE_MAPS_API_KEY")
+	assertOptionalKeyPresent($private, "NEXUS_HTTP_CACHE_PATH")
+
+	const httpCacheDataSource = await new HTTPCacheDataSource({
+		storagePath: PathBuilder.from($private.NEXUS_HTTP_CACHE_PATH, DataSourceFile.SQLite3),
+		namespace: "google_geocoder",
+	}).ready()
+
+	return new GoogleGeocoder({
+		displayName: "Google Geocoder Service",
+		apiKey: $private.SDK_GOOGLE_MAPS_API_KEY,
+		caching: {
+			storage: httpCacheDataSource.toAxiosStorage(),
+			// We don't need to interpret the header, as we're using the cache for our own purposes.
+			interpretHeader: false,
+			// Addresses are unlikely to change while we're working with them,
+			// so we can cache them for a week in milliseconds.
+			ttl: 1000 * 60 * 60 * 24 * 7,
+		},
+	})
+})

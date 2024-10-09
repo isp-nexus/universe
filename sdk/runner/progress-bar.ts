@@ -5,9 +5,9 @@
  */
 
 import { ServiceRepository, ServiceSymbol } from "@isp.nexus/core/lifecycle"
+import { PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import { MultiBar, SingleBar } from "cli-progress"
 import { argv } from "node:process"
-import { PathBuilderLike } from "../reflection/path-builders.js"
 
 const prefersJSONLogging = argv.includes("--json")
 

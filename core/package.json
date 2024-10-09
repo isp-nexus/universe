@@ -41,7 +41,10 @@
 	"devDependencies": {
 		"@types/cli-progress": "^3.11.5",
 		"@types/core-js": "^2.5.8",
-		"axios": "^1.7.2"
+		"axios": "^1.7.7 "
+	},
+	"optionalDependencies": {
+		"axios": "^1.7.7"
 	},
 	"engines": {
 		"node": ">=22.5.1"

@@ -166,12 +166,14 @@ export function omitNullable<T extends object>(input: T): NonNullableObject<T> {
 /**
  * Given serialized JSON, attempt to parse it.
  */
-export function tryParsingJSON<T = unknown>(input: unknown): T | null {
-	if (typeof input !== "string") return null
+export function tryParsingJSON<T = unknown>(input: unknown, fallback?: undefined): T | undefined
+export function tryParsingJSON<T = unknown>(input: unknown, fallback: null): T | null
+export function tryParsingJSON<T = unknown, F = null>(input: unknown, fallback?: F): T | F {
+	if (typeof input !== "string") return (fallback ?? null) as F
 
 	try {
 		return JSON.parse(input)
 	} catch {
-		return null
+		return (fallback ?? null) as F
 	}
 }

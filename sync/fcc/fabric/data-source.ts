@@ -5,8 +5,8 @@
  */
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
-import { DataSourceFile, dataSourcePathBuilder, NexusDataSource } from "@isp.nexus/sdk"
-import { packageOutPathBuilder } from "@isp.nexus/sdk/reflection"
+import { NexusDataSource } from "@isp.nexus/sdk/data"
+import { DataSourceFile, dataSourcePathBuilder, packageOutPathBuilder } from "@isp.nexus/sdk/reflection"
 
 export const FabricDataSourcePath = dataSourcePathBuilder("fabric", DataSourceFile.SQLite3)
 

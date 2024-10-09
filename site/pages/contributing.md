@@ -69,55 +69,6 @@ Please remember to do the following:
 
 Once submitted, your reported issue will be triaged by a Nexus maintainer as soon as possible.
 
-## How can I contribute code to Nexus?
-
-We deeply appreciate community contributions to Nexus.
-To get started, you'll need a compatible development environment,
-and an understanding of TypeScript, Deno, and Node.
-
-## Requirements
-
-- MacOS or \*nix
-- Node (>= 22.5.1), preferrably [via NVM](https://github.com/nvm-sh/nvm)
-- [Yarn](https://yarnpkg.com/getting-started) (>= 3)
-
-After [forking Nexus](https://github.com/isp-nexus/universe/fork) and cloning your repo,
-you can start development via Yarn.
-
-## Yarn Commands
-
-### `install`
-
-#### (Installs Node dependencies)
-
-```shell title="Run in the root of your cloned repo."
-yarn install
-```
-
-### `build:check`
-
-This command Checks your development environment and ensures you can build Nexus.
-
-```shell
-yarn build:check
-```
-
-### `build`
-
-This command builds all Nexus modules and formats the output.
-
-```shell
-yarn build
-```
-
-### `test`
-
-#### (Run tests)
-
-```shell
-yarn test
-```
-
 ## Thank You! 💞
 
 Your contributions to open source, large or small, make great projects like this possible.

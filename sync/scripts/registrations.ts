@@ -8,7 +8,8 @@ import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { BroadbandProvider, FRN, ProviderID } from "@isp.nexus/fcc"
 import { formatOrganizationName, Organization } from "@isp.nexus/mailwoman"
 import { upsertOrganization } from "@isp.nexus/mailwoman/sdk"
-import { dataSourcePathBuilder, writeLocalTextFile } from "@isp.nexus/sdk"
+import { writeLocalTextFile } from "@isp.nexus/sdk/files"
+import { dataSourcePathBuilder } from "@isp.nexus/sdk/reflection"
 import { runScript } from "@isp.nexus/sdk/runner"
 import {
 	$UniversalServiceFundCache,

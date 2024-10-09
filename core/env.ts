@@ -207,13 +207,13 @@ export interface OptionalEnvironment {
 	SENTRY_AUTH_TOKEN: string
 
 	/**
-	 * Connection string to the ISP Nexus database.
+	 * Path to a request/response cache. This is used to reduce the number of requests made to
+	 * external services.
 	 *
 	 * @private
 	 * @category ISP Nexus
-	 * @format url
 	 */
-	OPEN_ISP_DATABASE_URL: string
+	NEXUS_HTTP_CACHE_PATH: string
 
 	/**
 	 * FCC Map API key.
@@ -330,7 +330,7 @@ export const OptionalEnvironmentKey = tuple<OptionalEnvironment>({
 	AIM_JWT_SECRET: true,
 	SENTRY_NODE_DSN: true,
 	SENTRY_AUTH_TOKEN: true,
-	OPEN_ISP_DATABASE_URL: true,
+	NEXUS_HTTP_CACHE_PATH: true,
 	FCC_MAP_API_KEY: true,
 	FCC_MAP_USERNAME: true,
 	DATA_SOURCE_PATH: true,

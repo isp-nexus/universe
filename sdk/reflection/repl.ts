@@ -45,4 +45,7 @@ if (!process.env["REPL_ID"]) {
 	})
 
 	Object.assign(globalThis, { nexus })
+
+	console.log("\n✨ ISP Nexus loaded into REPL environment.")
+	console.log("\n✨ Type `nexus` to see available modules.\n")
 }

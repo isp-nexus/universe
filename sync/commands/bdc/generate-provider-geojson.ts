@@ -6,7 +6,8 @@
 
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
-import { CommandHandler, findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk"
+import { CommandHandler } from "@isp.nexus/sdk"
+import { findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk/reflection"
 import { BDCDataSourcePath, FabricDataSourcePath } from "@isp.nexus/sync/fcc"
 import { AdminLevel1Code, TIGERLevel } from "@isp.nexus/tiger"
 import { TIGERDataSourcePath } from "@isp.nexus/tiger/sdk"

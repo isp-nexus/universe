@@ -4,5 +4,6 @@
  * @author Teffen Ellis, et al.
  */
 
+export * from "./data-paths.js"
 export * from "./monorepo.js"
-export * from "./path-builders.js"
+export * from "./PathBuilder.js"

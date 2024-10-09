@@ -33,6 +33,7 @@
 		"@sinclair/typebox": "^0.32.30",
 		"@sinclair/typebox-codegen": "^0.10.2",
 		"@types/json-to-pretty-yaml": "^1.2.1",
+		"axios-cache-interceptor": "^1.6.0",
 		"change-case": "^5.4.4",
 		"cheerio": "^1.0.0",
 		"dotenv": "^16.4.5",

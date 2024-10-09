@@ -28,7 +28,7 @@ import {
 	sanitizePostalAddress,
 } from "@isp.nexus/mailwoman"
 import { findPostalAddress } from "@isp.nexus/mailwoman/sdk"
-import { dataSourcePathBuilder } from "@isp.nexus/sdk"
+import { dataSourcePathBuilder } from "@isp.nexus/sdk/reflection"
 import { StateName } from "@isp.nexus/tiger"
 import { isAxiosError } from "axios"
 import { camelCase, capitalCase } from "change-case"

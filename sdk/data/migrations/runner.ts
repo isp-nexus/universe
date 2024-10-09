@@ -8,11 +8,11 @@
 
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { formatSQLite } from "@isp.nexus/sdk/files/sql"
+import { DataSourceName, SQLPathConfig } from "@isp.nexus/sdk/reflection"
 import FastGlob from "fast-glob"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
 import { $, ProcessPromise } from "zx"
-import { DataSourceName, SQLPathConfig } from "../path-builder.js"
 import { migrationIDToFileName, MigrationOptions, parseMigrationFileName } from "./templating.js"
 
 export type WriteMigrationOptions = {

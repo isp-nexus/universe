@@ -8,23 +8,11 @@
 
 import { smartSnakeCase, supressErrors } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
-import { PathBuilder, type PathBuilderLike } from "@isp.nexus/sdk/reflection"
 import { $private, assertOptionalKeyPresent } from "@isp.nexus/sdk/runtime"
 import { execSync } from "node:child_process"
 import { existsSync, statSync } from "node:fs"
 import * as path from "node:path"
-
-export {
-	/**
-	 * @internal
-	 */
-	type PathBuilder,
-
-	/**
-	 * @internal
-	 */
-	type PathBuilderLike,
-}
+import { PathBuilder } from "./PathBuilder.js"
 
 /**
  * Valid data source package names.

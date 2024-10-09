@@ -8,6 +8,8 @@ import "@isp.nexus/core/polyfills/promises/withResolvers"
 
 import { ConsoleLogger, type IRuntimeLogger } from "@isp.nexus/core/logging"
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from "axios"
+import { CacheAxiosResponse, CacheOptions, setupCache } from "axios-cache-interceptor"
+import { ServiceSymbol } from "../lifecycle/ServiceSymbol.js"
 import { delegateAxiosError } from "./responses.js"
 
 export type { IRuntimeLogger }
@@ -21,10 +23,7 @@ export interface APIClientConfig {
 	 */
 	displayName: string
 
-	/**
-	 * The path a local cache directory.
-	 */
-	localCachePath?: string
+	caching?: CacheOptions
 
 	/**
 	 * How many requests to make per minute before enforcing a cooldown.
@@ -34,13 +33,13 @@ export interface APIClientConfig {
 	/**
 	 * Axios configuration.
 	 */
-	axios: CreateAxiosDefaults
+	axios?: CreateAxiosDefaults
 }
 
 /**
  * A base class for API clients used in ISP Nexus.
  */
-export class APIClient<C extends APIClientConfig> extends EventTarget implements AsyncDisposable {
+export class APIClient<C extends APIClientConfig = APIClientConfig> extends EventTarget implements AsyncDisposable {
 	public readonly config: C
 
 	#cooldownWithResolvers: PromiseWithResolvers<void> | null = null
@@ -61,14 +60,6 @@ export class APIClient<C extends APIClientConfig> extends EventTarget implements
 	 */
 	public readonly axios: AxiosInstance
 
-	public get baseURL(): string | undefined {
-		return this.config.axios.baseURL
-	}
-
-	public get localCachePath(): C["localCachePath"] {
-		return this.config.localCachePath
-	}
-
 	constructor(config: C) {
 		super()
 
@@ -79,6 +70,25 @@ export class APIClient<C extends APIClientConfig> extends EventTarget implements
 			...config.axios,
 		})
 
+		if (config.caching) {
+			setupCache(this.axios, {
+				debug: (msg) => {
+					this.logger.info(msg)
+				},
+				ttl: 60 * 60 * 1000, // 1 hour
+				...config.caching,
+			})
+		}
+
+		this.axios.interceptors.response.use((response) => {
+			const cachedLabel = (response as CacheAxiosResponse).cached ? " (cached)" : "(uncached)"
+
+			this.logger.info(
+				`${response.status} ${cachedLabel} ${response.config.method?.toUpperCase()}: ${response.config.url}`
+			)
+
+			return response
+		})
 		this.axios.interceptors.response.use(undefined, delegateAxiosError)
 
 		this.#requestInterval = typeof config.requestsPerMinute === "number" ? 60000 / config.requestsPerMinute : 0
@@ -130,8 +140,15 @@ export class APIClient<C extends APIClientConfig> extends EventTarget implements
 		return response
 	}
 
-	public [Symbol.asyncDispose](): Promise<void> {
+	public async [Symbol.asyncDispose](): Promise<void> {
 		this.#cooldownWithResolvers?.resolve()
+
+		const storedCache = this.config.caching?.storage
+
+		if (ServiceSymbol.isAsyncDisposable(storedCache)) {
+			await storedCache[Symbol.asyncDispose]()
+		}
+
 		return Promise.resolve()
 	}
 

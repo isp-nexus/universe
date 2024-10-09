@@ -78,6 +78,16 @@ export class ServiceSymbol {
 		return ServiceSymbol.asyncInit in input && typeof input[ServiceSymbol.asyncInit] === "function"
 	}
 
+	/**
+	 * Type-predicate to determine if a given input is an object which implements the
+	 * `AsyncDisposable` interface.
+	 */
+	public static isAsyncDisposable<T>(input: T): input is T & AsyncDisposable {
+		if (!input || typeof input !== "object") return false
+
+		return Object.hasOwn(input, Symbol.asyncDispose)
+	}
+
 	public static toString() {
 		return "ServiceSymbol"
 	}
