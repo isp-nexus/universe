@@ -7,8 +7,8 @@
 import { ISPNexusPackage, ISPNexusPackages } from "@isp.nexus/core"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
+import { PathBuilder } from "path-ts"
 import type { Join } from "type-fest"
-import { PathBuilder } from "./PathBuilder.js"
 
 //#region Type Constants
 

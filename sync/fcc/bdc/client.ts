@@ -4,9 +4,9 @@
  * @author Teffen Ellis, et al.
  */
 
-import { APIClient, APIClientConfig } from "@isp.nexus/core"
+import { APIClient, APIClientConfig, assertOptionalKeyPresent } from "@isp.nexus/core"
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
-import { $private, assertOptionalKeyPresent } from "@isp.nexus/sdk/runtime"
+import { $private } from "@isp.nexus/sdk/runtime"
 
 /**
  * Options for creating a FCC Broadband Data Collection API client.

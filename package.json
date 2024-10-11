@@ -15,6 +15,7 @@
 	],
 	"type": "module",
 	"workspaces": [
+		"path-ts",
 		"core",
 		"spatial",
 		"tiger",

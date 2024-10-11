@@ -7,7 +7,8 @@
 import { iterateInParallel, takeInParallel } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { createCLIProgressBar, NexusDataSource, runScript } from "@isp.nexus/sdk"
-import { DataSourceFile, dataSourcePathBuilder, packagePathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
+import { DataSourceFile, dataSourcePathBuilder } from "@isp.nexus/sdk/runtime/data-paths"
+import { packagePathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import {
 	AdminLevel1Code,
 	AdminLevel1CodeToAbbreviation,
@@ -18,6 +19,7 @@ import {
 } from "@isp.nexus/tiger"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
+import { PathBuilderLike } from "path-ts"
 import { $ } from "zx"
 
 const TIGERLevelToSQL = {

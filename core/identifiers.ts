@@ -18,6 +18,7 @@ const jsSHA3 = jsSHA3Mod as unknown as (typeof import("jssha/sha3"))["default"]
  * @internal
  */
 export type SHA3Seed = string | number | boolean | null | Date | undefined
+
 /**
  * @internal
  */

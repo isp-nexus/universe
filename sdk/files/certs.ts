@@ -6,7 +6,7 @@
  *   Utilities for working with SSL certificates.
  */
 
-import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
 import * as fs from "node:fs/promises"
 import type { TlsOptions } from "node:tls"
 

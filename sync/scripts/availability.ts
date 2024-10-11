@@ -7,7 +7,7 @@
 // import { take } from "@isp.nexus/core"
 // import { ConsoleLogger } from "@isp.nexus/core/logging"
 // import { createCLIProgressBar } from "@isp.nexus/sdk"
-// import { runIfScript } from "@isp.nexus/sdk/reflection"
+// import { runIfScript } from "@isp.nexus/sdk/runtime"
 // import {
 // 	$BCDClient,
 // 	BCDFileCache,

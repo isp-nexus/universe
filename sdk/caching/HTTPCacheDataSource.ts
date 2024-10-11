@@ -4,10 +4,10 @@
  * @author Teffen Ellis, et al.
  */
 
-import { smartSnakeCase, tryParsingJSON } from "@isp.nexus/core"
+import { SetLike, simpleSHA3, smartSnakeCase, tryParsingJSON } from "@isp.nexus/core"
 import { ServiceSymbol } from "@isp.nexus/core/lifecycle"
 import { MemoryDBStoragePath, NexusDataSource } from "@isp.nexus/sdk"
-import { PathBuilderLike } from "@isp.nexus/sdk/reflection"
+import { Method } from "axios"
 import {
 	AxiosStorage,
 	buildStorage,
@@ -18,14 +18,29 @@ import {
 	StorageValue,
 } from "axios-cache-interceptor"
 import * as fs from "node:fs/promises"
-import { Stringified } from "type-fest"
+import { PathBuilderLike } from "path-ts"
+import { configure as createStringifier } from "safe-stable-stringify"
+import { JsonObject, JsonPrimitive, JsonValue, Stringified } from "type-fest"
 
-interface HTTPRequestCacheEntry {
+/**
+ * Serialized Axios request.
+ *
+ * @category API
+ */
+export interface SerializedAxiosRequest {
+	method: Method
+	url?: string
+	params?: JsonObject
+	data?: JsonValue
+}
+
+export interface HTTPRequestCacheEntry {
 	cache_key: string
 	storage_value: StorageValue
 	expires_at: number | null
 	created_at: number
 	ttl: number
+	request: SerializedAxiosRequest | null
 }
 
 export interface HTTPCacheDataSourceOptions {
@@ -41,15 +56,69 @@ export interface HTTPCacheDataSourceOptions {
 	 * Set to -1 to disable eviction.
 	 */
 	evictionInterval?: number
+
+	/**
+	 * A set of values to omit from the serialization, such as sensitive data.
+	 */
+	omissions?: SetLike<JsonPrimitive>
 }
 
 export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage {
+	protected static readonly stringifyJSON = createStringifier({
+		bigint: false,
+	})
+	/**
+	 * Generate a cache key for a request.
+	 */
+	public static generateCacheKey<R = unknown, D = unknown>(config: CacheRequestConfig<R, D>): string {
+		if (config.id) return config.id
+
+		return simpleSHA3([HTTPCacheDataSource.stringifyJSON(config)])
+	}
+
+	/**
+	 * Serialize a request configuration into a string.
+	 */
+	protected serializeRequest<R = unknown, D = unknown>(
+		config?: CacheRequestConfig<R, D>
+	): SerializedAxiosRequest | null {
+		if (!config) return null
+
+		let url: URL | undefined
+
+		if (config.baseURL) {
+			url = config.url ? new URL(config.url, config.baseURL) : new URL(config.baseURL)
+		} else if (config.url) {
+			url = config.url.startsWith("http") ? new URL(config.url) : new URL(config.url, "http://localhost")
+		}
+
+		const method = (config.method?.toLowerCase() || "GET") as Method
+
+		let params: JsonObject | undefined
+
+		if (config.params && typeof config.params === "object") {
+			params = {}
+
+			for (const [key, value] of Object.entries(config.params)) {
+				params[key] = this.#omissions?.has(value) ? "[REDACTED]" : (value as JsonPrimitive)
+			}
+		}
+
+		return {
+			url: url?.toString(),
+			params,
+			method,
+			data: config.data as any,
+		}
+	}
+
 	#evictionTimeout: NodeJS.Timeout | undefined
 	#evictionInterval: number
+	#omissions: SetLike<JsonPrimitive> | null
 
-	#tableName: string
+	protected tableName: string
 
-	constructor({ storagePath, namespace, evictionInterval = 60_000 }: HTTPCacheDataSourceOptions) {
+	constructor({ storagePath, namespace, omissions, evictionInterval = 60_000 }: HTTPCacheDataSourceOptions) {
 		super({
 			displayName: "HTTP Cache",
 			storagePath,
@@ -61,8 +130,9 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 			},
 		})
 
-		this.#tableName = smartSnakeCase(`${namespace}_http_requests`)
+		this.tableName = smartSnakeCase(`${namespace}_http_requests`)
 		this.#evictionInterval = evictionInterval
+		this.#omissions = omissions ?? null
 	}
 
 	public override async ready(): Promise<this> {
@@ -72,23 +142,25 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 
 		await super.ready()
 
-		await this.query(/* sql */ `
-			CREATE TABLE IF NOT EXISTS ${this.#tableName} (
-				'cache_key' text PRIMARY KEY NOT NULL,
-				'storage_value' blob NOT NULL,
-				'expires_at' integer,
-				'created_at' integer AS (storage_value -> 'createdAt') VIRTUAL,
-				'ttl' integer AS (storage_value -> 'ttl') VIRTUAL
-			)`)
+		const { tableName } = this
 
 		await this.query(/* sql */ `
-			CREATE INDEX IF NOT EXISTS "${this.#tableName}_http_requests_created_at_idx" ON
-			${this.#tableName} (created_at)
-		`)
+			CREATE TABLE IF NOT EXISTS ${tableName} (
+				'cache_key'				TEXT PRIMARY KEY NOT NULL,
+				'expires_at'			INTEGER,
+				'storage_value' 	BLOB NOT NULL,
+				'request'					BLOB,
+				'created_at'			INTEGER	AS (storage_value -> 'createdAt') VIRTUAL,
+				'ttl'							INTEGER	AS (storage_value -> 'ttl') VIRTUAL,
+				'request_method'	TEXT 		AS (request -> 'method') VIRTUAL,
+				'request_url'			TEXT 		AS (request -> 'url') VIRTUAL,
+				'request_params'	TEXT 		AS (request -> 'params') VIRTUAL,
+				'response_body'		TEXT 		AS (storage_value -> 'data' -> 'data') VIRTUAL
+			);
 
-		await this.query(/* sql */ `
-			CREATE INDEX IF NOT EXISTS "${this.#tableName}_http_requests_expires_at_idx" ON
-			${this.#tableName} (expires_at)
+			CREATE INDEX IF NOT EXISTS "${tableName}_created_at_idx" 			ON ${tableName} (created_at);
+			CREATE INDEX IF NOT EXISTS "${tableName}_request_params_idx"	ON ${tableName} (request_params);
+			CREATE INDEX IF NOT EXISTS "${tableName}_response_body_idx"		ON ${tableName} (response_body);
 		`)
 
 		this.#startEvictionInterval(this.#evictionInterval)
@@ -109,14 +181,14 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 
 		await this.query(
 			/* sql */ `
-			DELETE FROM ${this.#tableName}
+			DELETE FROM ${this.tableName}
 			WHERE expires_at < :now;
 		`,
 			[Date.now()]
 		)
 	}
 
-	public find = async (cacheKey: string, _currentRequest?: CacheRequestConfig): Promise<StorageValue | undefined> => {
+	public find = async (cacheKey: string, _config?: CacheRequestConfig): Promise<StorageValue | undefined> => {
 		// Note that we have to use the query builder to perform a jsonb select.
 
 		const query = await this.query<Stringified<HTTPRequestCacheEntry>[]>(
@@ -125,7 +197,7 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 				cache_key,
 				expires_at,
 				json(storage_value) as storage_value
-			FROM ${this.#tableName}
+			FROM ${this.tableName}
 			WHERE cache_key = :cache_key
 			LIMIT 1;
 			`,
@@ -140,44 +212,57 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 	}
 	public clear = async (): Promise<void> => {
 		await this.query(/* sql */ `
-			DELETE FROM ${this.#tableName};
+			DELETE FROM ${this.tableName};
 			DELETE FROM SQLITE_SEQUENCE WHERE name='TableName';
 		`)
 	}
 
-	public set = async (cacheKey: string, value: NotEmptyStorageValue, req?: CacheRequestConfig): Promise<void> => {
+	public set = async (
+		cacheKey: string,
+		storageValue: NotEmptyStorageValue,
+		config?: CacheRequestConfig
+	): Promise<void> => {
 		// Note that we have to use the query builder to perform a jsonb upsert.
 		const now = Date.now()
 		let expiresAt: number | null = null
 
-		if (value.state === "loading") {
-			const ttl = req?.cache && typeof req.cache.ttl === "number" ? req.cache.ttl : 60_000
+		if (storageValue.state === "loading") {
+			const ttl = config?.cache && typeof config.cache.ttl === "number" ? config.cache.ttl : 60_000
 			expiresAt = now + ttl
-		} else if ((value.state === "stale" && value.ttl) || (value.state === "cached" && !canStale(value))) {
+		} else if (
+			(storageValue.state === "stale" && storageValue.ttl) ||
+			(storageValue.state === "cached" && !canStale(storageValue))
+		) {
 			// When a stale state has a determined value to expire, we can use it.
 			// Or if the cached value cannot enter in stale state...
 
-			expiresAt = value.createdAt + value.ttl!
+			expiresAt = storageValue.createdAt + storageValue.ttl!
 			// otherwise, we can't determine when it should expire, so we keep it indefinitely.
 		}
 
 		await this.query(
 			/* sql */ `
-			INSERT INTO ${this.#tableName} (cache_key, expires_at, storage_value)
-			VALUES (:cache_key, :expires_at, jsonb(:storage_value))
+			INSERT INTO ${this.tableName} (cache_key, expires_at, storage_value, request)
+			VALUES (:cache_key, :expires_at, jsonb(:storage_value), jsonb(:request))
 			ON CONFLICT (cache_key)
 			DO UPDATE SET
 				expires_at = EXCLUDED.expires_at,
-				storage_value = EXCLUDED.storage_value;
+				storage_value = EXCLUDED.storage_value,
+				request = EXCLUDED.request;
 			`,
-			[cacheKey, expiresAt, JSON.stringify(value)]
+			[
+				cacheKey,
+				expiresAt,
+				HTTPCacheDataSource.stringifyJSON(storageValue),
+				HTTPCacheDataSource.stringifyJSON(this.serializeRequest(config)),
+			]
 		)
 	}
 
-	public remove = async (cacheKey: string, _currentRequest?: CacheRequestConfig): Promise<void> => {
+	public remove = async (cacheKey: string, _config?: CacheRequestConfig): Promise<void> => {
 		await this.query(
 			/* sql */ `
-			DELETE FROM ${this.#tableName}
+			DELETE FROM ${this.tableName}
 			WHERE cache_key = :cache_key;
 		`,
 			[cacheKey]

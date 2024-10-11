@@ -6,13 +6,13 @@
  *   Data archive path utilities.
  */
 
-import { smartSnakeCase, supressErrors } from "@isp.nexus/core"
+import { assertOptionalKeyPresent, smartSnakeCase, supressErrors } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
-import { $private, assertOptionalKeyPresent } from "@isp.nexus/sdk/runtime"
 import { execSync } from "node:child_process"
 import { existsSync, statSync } from "node:fs"
 import * as path from "node:path"
-import { PathBuilder } from "./PathBuilder.js"
+import { PathBuilder } from "path-ts"
+import { $private } from "./main.entrypoint.js"
 
 /**
  * Valid data source package names.

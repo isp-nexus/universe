@@ -13,6 +13,7 @@
 	"exclude": ["./out/**/*"],
 	"references": [
 		// ---
+		{ "path": "../path-ts" },
 		{ "path": "../core" },
 		{ "path": "../spatial" },
 		{ "path": "../tiger" },

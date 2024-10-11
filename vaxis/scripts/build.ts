@@ -6,7 +6,7 @@
 
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill"
 import { cleanDirectory } from "@isp.nexus/sdk"
-import { packagePathBuilder } from "@isp.nexus/sdk/reflection"
+import { packagePathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import esbuild from "esbuild"
 import FastGlob from "fast-glob"
 import path from "node:path"

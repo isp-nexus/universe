@@ -8,7 +8,7 @@ import "@isp.nexus/core/polyfills/promises/withResolvers"
 
 import { ConsoleLogger, type IRuntimeLogger } from "@isp.nexus/core/logging"
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, CreateAxiosDefaults } from "axios"
-import { CacheAxiosResponse, CacheOptions, setupCache } from "axios-cache-interceptor"
+import { AxiosCacheInstance, CacheAxiosResponse, CacheOptions, setupCache } from "axios-cache-interceptor"
 import { ServiceSymbol } from "../lifecycle/ServiceSymbol.js"
 import { delegateAxiosError } from "./responses.js"
 
@@ -23,6 +23,9 @@ export interface APIClientConfig {
 	 */
 	displayName: string
 
+	/**
+	 * Options for caching responses.
+	 */
 	caching?: CacheOptions
 
 	/**
@@ -58,7 +61,7 @@ export class APIClient<C extends APIClientConfig = APIClientConfig> extends Even
 	/**
 	 * The Axios instance for the API client.
 	 */
-	public readonly axios: AxiosInstance
+	public readonly axios: AxiosInstance | AxiosCacheInstance
 
 	constructor(config: C) {
 		super()
@@ -83,7 +86,7 @@ export class APIClient<C extends APIClientConfig = APIClientConfig> extends Even
 		this.axios.interceptors.response.use((response) => {
 			const cachedLabel = (response as CacheAxiosResponse).cached ? " (cached)" : "(uncached)"
 
-			this.logger.info(
+			this.logger.debug(
 				`${response.status} ${cachedLabel} ${response.config.method?.toUpperCase()}: ${response.config.url}`
 			)
 

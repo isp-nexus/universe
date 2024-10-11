@@ -9,10 +9,10 @@
 import { pick } from "@isp.nexus/core"
 import { ConsoleLogger, printJSONAsTable } from "@isp.nexus/core/logging"
 import { castToPostalAddressFeature, PostalAddressPart } from "@isp.nexus/mailwoman"
-import { $GoogleGeocoder, printGeoFeatureAsTable } from "@isp.nexus/mailwoman/sdk"
+import { $GoogleGeocoder } from "@isp.nexus/mailwoman/sdk"
 import { CommandHandler, NexusDataSource, StrictArgKeys } from "@isp.nexus/sdk"
-import { PathBuilder } from "@isp.nexus/sdk/reflection"
 import { resolve } from "path"
+import { PathBuilder } from "path-ts"
 import { CommandBuilder } from "yargs"
 
 //---
@@ -74,7 +74,7 @@ export const builder: CommandBuilder<CommandArgs, CommandArgs> = {
 
 	"batch-size": {
 		describe: "Number of records to geocode at a time.",
-		default: 10,
+		default: 50,
 		type: "number",
 		alias: ["batch", "b"],
 	},
@@ -196,7 +196,7 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 			feature.id = idx
 			Object.assign(feature.properties, placeDetails)
 
-			ConsoleLogger.info(printGeoFeatureAsTable(feature), "GeoJSON")
+			// ConsoleLogger.info(printGeoFeatureAsTable(feature), "GeoJSON")
 		}
 	}
 

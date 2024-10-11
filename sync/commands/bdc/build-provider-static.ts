@@ -7,10 +7,10 @@
 import { ResourceError } from "@isp.nexus/core/errors"
 import { BroadbandProvider } from "@isp.nexus/fcc"
 import { cleanDirectory, CommandHandler, takeBufferLines } from "@isp.nexus/sdk"
-import { PathBuilder } from "@isp.nexus/sdk/reflection"
 import { BDCDataSourcePath } from "@isp.nexus/sync/fcc"
 import { StateName } from "@isp.nexus/tiger"
 import * as fs from "node:fs/promises"
+import { PathBuilder } from "path-ts"
 import { CommandBuilder } from "yargs"
 import { $ } from "zx"
 

@@ -6,7 +6,7 @@
  *   Utilities for working with version control, such as Git.
  */
 
-import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
 import { execSync } from "node:child_process"
 import { existsSync } from "node:fs"
 

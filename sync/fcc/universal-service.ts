@@ -19,7 +19,7 @@ import {
 	sanitizeOrganizationName,
 } from "@isp.nexus/mailwoman"
 import { findPostalAddress } from "@isp.nexus/mailwoman/sdk"
-import { dataSourcePathBuilder } from "@isp.nexus/sdk/reflection"
+import { dataSourcePathBuilder } from "@isp.nexus/sdk/runtime"
 import * as csv from "csv"
 import * as fs from "node:fs/promises"
 import { normalizeDataCell } from "./CORESClient.js"

@@ -12,6 +12,9 @@
 	"type": "module",
 	"exports": {
 		"./package.json": "./package.json",
+		"./repl": "./out/runtime/repl.entrypoint.js",
+		"./repo-paths": "./out/runtime/repo-paths.js",
+		"./data-paths": "./out/runtime/data-paths.js",
 		"./runtime": "./out/runtime/index.js",
 		"./runner": "./out/runner/index.js",
 		"./schema/*.json": "./dist/schema/*.json",
@@ -23,7 +26,6 @@
 		"./data": "./out/data/index.js",
 		"./llm": "./out/llm/index.js",
 		"./reflection": "./out/reflection/index.js",
-		"./repl": "./out/reflection/repl.js",
 		".": "./out/index.js",
 		"./*": "./out/*.js"
 	},
@@ -33,6 +35,7 @@
 		"@sinclair/typebox": "^0.32.30",
 		"@sinclair/typebox-codegen": "^0.10.2",
 		"@types/json-to-pretty-yaml": "^1.2.1",
+		"axios": "^1.7.7",
 		"axios-cache-interceptor": "^1.6.0",
 		"change-case": "^5.4.4",
 		"cheerio": "^1.0.0",
@@ -44,11 +47,16 @@
 		"json-to-pretty-yaml": "^1.2.2",
 		"memfs": "^4.9.4",
 		"openai": "^4.67.1",
+		"path-ts": "^1.0.0",
 		"sqlite3": "^5.1.7",
 		"tileserver-gl-light": "^4.11.1",
 		"type-fest": "^4.26.1",
 		"typeorm": "^0.3.20",
-		"urlpattern-polyfill": "^10.0.0"
+		"urlpattern-polyfill": "^10.0.0",
+		"uuid": "^10.0.0"
+	},
+	"devDependencies": {
+		"@types/uuid": "^10.0.0"
 	},
 	"engines": {
 		"node": ">=22.5.1"

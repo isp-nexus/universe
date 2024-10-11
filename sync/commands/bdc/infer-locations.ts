@@ -8,7 +8,6 @@ import { iterateInParallel, takeInParallel } from "@isp.nexus/core"
 import { AsyncInitializable, ServiceRepository, ServiceSymbol } from "@isp.nexus/core/lifecycle"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { CommandHandler, createCLIProgressBar, ParquetReader } from "@isp.nexus/sdk"
-import { PathBuilder } from "@isp.nexus/sdk/reflection"
 import {
 	$FabricDataSource,
 	BDCFileCategory,
@@ -21,6 +20,7 @@ import {
 import { AdminLevel1Code, AdminLevel1CodeToAbbreviation, FIPSBlockGeoID } from "@isp.nexus/tiger"
 import { bold, cyanBright, reset } from "colorette"
 import * as fs from "node:fs/promises"
+import { PathBuilder } from "path-ts"
 import { createClient, RedisClientType } from "redis"
 import { CommandBuilder } from "yargs"
 

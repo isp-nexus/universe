@@ -7,18 +7,18 @@
  */
 
 import {
+	GeocodeRequest,
 	GeocodeResponseData,
 	Status as GoogleAPIResponseStatus,
 	Client as GoogleMapsClient,
 	PlaceData,
 } from "@googlemaps/google-maps-services-js"
-import { APIClient, APIClientConfig, pick, pluckResponseData } from "@isp.nexus/core"
+import { APIClient, APIClientConfig, assertOptionalKeyPresent, pick, pluckResponseData } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
-import { PostalAddress, formatAddressFromParts, sanitizePostalAddress } from "@isp.nexus/mailwoman"
+import { PostalAddress, formatAddressFromParts } from "@isp.nexus/mailwoman"
 import { HTTPCacheDataSource } from "@isp.nexus/sdk/caching/HTTPCacheDataSource"
-import { DataSourceFile, PathBuilder } from "@isp.nexus/sdk/reflection"
-import { $private, assertOptionalKeyPresent } from "@isp.nexus/sdk/runtime"
+import { $private, DataSourceFile } from "@isp.nexus/sdk/runtime"
 import {
 	GeoPoint,
 	GeoPointInput,
@@ -28,6 +28,8 @@ import {
 	isGooglePlaceID,
 	isH3Cell,
 } from "@isp.nexus/spatial"
+import { PathBuilder } from "path-ts"
+import { GoogleHTTPCache } from "./GoogleGeocoderCache.js"
 import { parseGoogleGeocodeResult } from "./parser.js"
 
 export interface GoogleGeocoderOptions extends APIClientConfig {
@@ -172,8 +174,8 @@ export class GoogleGeocoder extends APIClient {
 			})
 	}
 
-	public geocodeAddress(input: string | PostalAddress): Promise<PostalAddress[]> {
-		const formattedAddress = typeof input === "string" ? sanitizePostalAddress(input) : formatAddressFromParts(input)
+	public geocodeAddress(input: string | PostalAddress, requestOptions?: GeocodeRequest): Promise<PostalAddress[]> {
+		const formattedAddress = typeof input === "string" ? input : formatAddressFromParts(input)
 
 		this.logger.info(`🌎 Geocoding address (${formattedAddress})...`)
 
@@ -182,6 +184,19 @@ export class GoogleGeocoder extends APIClient {
 				params: {
 					key: this.#apiKey,
 					address: formattedAddress,
+					bounds: {
+						// A rough bounding box around the contiguous United States.
+						northeast: {
+							lng: -64.13086408320487,
+							lat: 49.53178728159759,
+						},
+						southwest: {
+							lng: -124.82956037316481,
+							lat: 25.341844536880345,
+						},
+					},
+					language: "en-US",
+					...requestOptions,
 				},
 			})
 			.then(pluckResponseData)
@@ -224,18 +239,23 @@ export class GoogleGeocoder extends APIClient {
  * @singleton
  */
 export const $GoogleGeocoder = ServiceRepository.register(async () => {
+	const omissions = new Set(Object.values($private))
+
 	assertOptionalKeyPresent($private, "SDK_GOOGLE_MAPS_API_KEY")
 	assertOptionalKeyPresent($private, "NEXUS_HTTP_CACHE_PATH")
 
-	const httpCacheDataSource = await new HTTPCacheDataSource({
+	const httpCacheDataSource = await new GoogleHTTPCache({
 		storagePath: PathBuilder.from($private.NEXUS_HTTP_CACHE_PATH, DataSourceFile.SQLite3),
 		namespace: "google_geocoder",
+		omissions,
 	}).ready()
 
 	return new GoogleGeocoder({
 		displayName: "Google Geocoder Service",
 		apiKey: $private.SDK_GOOGLE_MAPS_API_KEY,
 		caching: {
+			generateKey: HTTPCacheDataSource.generateCacheKey,
+
 			storage: httpCacheDataSource.toAxiosStorage(),
 			// We don't need to interpret the header, as we're using the cache for our own purposes.
 			interpretHeader: false,

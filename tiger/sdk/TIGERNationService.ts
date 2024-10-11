@@ -6,7 +6,7 @@
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { NexusDataSource, readLocalJSONFile } from "@isp.nexus/sdk"
-import { repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
 import { GeometryCollection, GeometryLiteral } from "@isp.nexus/spatial"
 import { geometryToEWKH, geometryToWKT } from "@isp.nexus/spatial/sdk"
 

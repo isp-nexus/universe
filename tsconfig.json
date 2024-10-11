@@ -18,6 +18,7 @@
 	"files": [],
 	"references": [
 		// Note that references are in the order we want them to be built.
+		{ "path": "./path-ts" },
 		{ "path": "./core" },
 		{ "path": "./spatial" },
 		{ "path": "./tiger" },

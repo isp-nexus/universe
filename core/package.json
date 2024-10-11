@@ -31,6 +31,7 @@
 		"jssha": "^3.3.1",
 		"pino": "^9.4.0",
 		"pino-pretty": "^11.2.2",
+		"safe-stable-stringify": "^2.5.0",
 		"table": "^6.8.2",
 		"type-fest": "^4.26.1",
 		"typeorm": "^0.3.20",
@@ -41,6 +42,7 @@
 	"devDependencies": {
 		"@types/cli-progress": "^3.11.5",
 		"@types/core-js": "^2.5.8",
+		"@types/uuid": "^10.0.0",
 		"axios": "^1.7.7 "
 	},
 	"optionalDependencies": {

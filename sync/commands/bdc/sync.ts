@@ -11,7 +11,6 @@ import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { ProviderID } from "@isp.nexus/fcc"
 import { CommandHandler, createCLIProgressBar, ParquetReader } from "@isp.nexus/sdk"
-import { PathBuilder } from "@isp.nexus/sdk/reflection"
 import {
 	$BCDClient,
 	$BDCDataSource,
@@ -26,6 +25,7 @@ import {
 } from "@isp.nexus/sync/fcc"
 import { AdminLevel1CodeToAbbreviation } from "@isp.nexus/tiger"
 import { bold, cyanBright, reset } from "colorette"
+import { PathBuilder } from "path-ts"
 
 export const command = "bdc-sync"
 export const describe = "Synchronize available filings from the FCC Broadband Data Collection API."

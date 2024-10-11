@@ -10,28 +10,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-declaration-merging */
 
 import { basename, dirname, join } from "node:path"
-import type { Join, Split } from "type-fest"
-
-// Expected output: "/data-store/fabric/foo/bar"
-export type Foobar = Dirname<"data-store/fabric/foo/bar/index.sqlite3">
-
-/**
- * Pluck the directory name from a path.
- */
-export type Dirname<T extends string> =
-	Split<T, "/"> extends [...infer Head, infer _Tail]
-		? Head extends string[]
-			? Join<Head, "/">
-			: Head extends string
-				? Head
-				: never
-		: never
-
-/**
- * Pluck the base name from a path.
- */
-export type Basename<T extends string> =
-	Split<T, "/"> extends [...infer _Head, infer Tail] ? (Tail extends string ? Tail : never) : never
+import type { Join } from "type-fest"
+import type { Basename } from "./basename.js"
+import type { Dirname } from "./dirname.js"
 
 /**
  * Type-safe path builder.
@@ -61,7 +42,7 @@ export class PathBuilder<S extends string = string> extends URL implements PathB
 	/**
 	 * Base name of a path. Similar to the Unix basename command.
 	 */
-	public basename(): PathBuilder<S> {
+	public basename(): PathBuilder<Basename<S>> {
 		return PathBuilder.from(basename(this.toString())) as any
 	}
 

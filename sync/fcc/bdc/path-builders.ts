@@ -5,8 +5,10 @@
  */
 
 import { ProviderID } from "@isp.nexus/fcc"
-import { dataSourcePathBuilder, packagePathBuilder, PathBuilderLike } from "@isp.nexus/sdk/reflection"
+import { dataSourcePathBuilder } from "@isp.nexus/sdk/runtime/data-paths"
+import { packagePathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import { AdminLevel1Code } from "@isp.nexus/tiger"
+import { PathBuilderLike } from "path-ts"
 import { BDCFile } from "./common.js"
 
 export type BDCFileCacheDirectoryBuilderParams = Pick<BDCFile, "stateCode" | "providerID" | "category" | "subcategory">

@@ -6,7 +6,7 @@
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { NexusDataSource } from "@isp.nexus/sdk/data"
-import { DataSourceFile, dataSourcePathBuilder } from "@isp.nexus/sdk/reflection"
+import { DataSourceFile, dataSourcePathBuilder } from "@isp.nexus/sdk/runtime"
 import { TIGERTabulatedBlockSchema } from "./TIGERTabulatedBlockEntity.js"
 
 export const TIGERDataSourcePath = dataSourcePathBuilder("tiger", DataSourceFile.SQLite3)

@@ -8,7 +8,8 @@
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { NexusDataSource } from "@isp.nexus/sdk/data"
-import { DataSourceFile, dataSourcePathBuilder, packageOutPathBuilder } from "@isp.nexus/sdk/reflection"
+import { DataSourceFile, dataSourcePathBuilder } from "@isp.nexus/sdk/runtime/data-paths"
+import { packageOutPathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import { OrganizationSchema } from "../org/OrganizationSchema.js"
 import { EmailContactSchema } from "./EmailContactSchema.js"
 import { PhoneContactSchema } from "./PhoneContactEntity.js"

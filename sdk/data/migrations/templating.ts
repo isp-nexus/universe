@@ -7,7 +7,7 @@
  */
 
 import { smartSnakeCase } from "@isp.nexus/core"
-import { findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk/reflection"
+import { findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk/runtime"
 
 export type MigrationDirection = "up" | "down"
 

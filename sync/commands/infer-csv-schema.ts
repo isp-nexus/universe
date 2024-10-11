@@ -23,7 +23,7 @@ import {
 	splitByFieldSeparator,
 	tableSchemaFromInferences,
 } from "@isp.nexus/sdk/data/csv"
-import { inferSQLPaths, SQLiteFileExtension } from "@isp.nexus/sdk/reflection"
+import { inferSQLPaths, SQLiteFileExtension } from "@isp.nexus/sdk/runtime"
 import { CommandBuilder } from "yargs"
 
 export const command = "infer-csv-schema [source-file-path]"

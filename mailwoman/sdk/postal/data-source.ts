@@ -6,7 +6,8 @@
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { NexusDataSource } from "@isp.nexus/sdk/data"
-import { DataSourceFile, dataSourcePathBuilder, packageOutPathBuilder } from "@isp.nexus/sdk/reflection"
+import { DataSourceFile, dataSourcePathBuilder } from "@isp.nexus/sdk/runtime"
+import { packageOutPathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import { PostalAddressSchema } from "./PostalAddressSchema.js"
 
 /**

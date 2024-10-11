@@ -11,7 +11,7 @@ import "@isp.nexus/core/polyfills/promises/withResolvers"
 import { ParquetReader as BaseParquetReader } from "@dsnp/parquetjs"
 import { BufferReaderOptions } from "@dsnp/parquetjs/dist/lib/bufferReader.js"
 import { ParquetEnvelopeReader } from "@dsnp/parquetjs/dist/lib/reader.js"
-import { PathBuilderLike } from "@isp.nexus/sdk/reflection"
+import { PathBuilderLike } from "path-ts"
 import { ParquetRecordLike, ParquetSchema } from "./schema.js"
 
 /**

@@ -9,6 +9,7 @@
  *   the monorepo.
  */
 
+import { StringKeyOf } from "type-fest"
 import { InferTupleMember, tuple } from "./sets.js"
 
 /**
@@ -55,6 +56,25 @@ export function assertEnvironmentRecordPresent(input: Partial<EnvironmentRecord>
 
 			throw new Error(`Missing required environment key "${key}"`)
 		}
+	}
+}
+
+/**
+ * Runtime assertion that an optional key is present.
+ *
+ * This is useful for ensuring that optional environment variables are present before use, while
+ * still allowing us to omit them for un-related tasks.
+ */
+export function assertOptionalKeyPresent<
+	E extends Partial<OptionalEnvironment>,
+	K extends StringKeyOf<OptionalEnvironment>,
+>(
+	record: E,
+	key: K,
+	message = `Optional environment key \`${key}\` assertion failed.`
+): asserts record is E & Record<K, NonNullable<E[K]>> {
+	if (!Object.hasOwn(record, key)) {
+		throw new Error(message)
 	}
 }
 

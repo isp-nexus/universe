@@ -7,9 +7,10 @@
  */
 
 import { ConsoleLogger } from "@isp.nexus/core/logging"
-import { PathBuilderLike, repoRootPathBuilder } from "@isp.nexus/sdk/reflection"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
+import { PathBuilderLike } from "path-ts"
 
 const logger = ConsoleLogger.withPrefix("Files")
 

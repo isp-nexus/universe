@@ -3866,6 +3866,7 @@ __metadata:
   dependencies:
     "@types/cli-progress": "npm:^3.11.5"
     "@types/core-js": "npm:^2.5.8"
+    "@types/uuid": "npm:^10.0.0"
     axios: "npm:^1.7.7 "
     cli-progress: "npm:^3.12.0"
     core-js: "npm:^3.37.1"
@@ -3874,6 +3875,7 @@ __metadata:
     jssha: "npm:^3.3.1"
     pino: "npm:^9.4.0"
     pino-pretty: "npm:^11.2.2"
+    safe-stable-stringify: "npm:^2.5.0"
     table: "npm:^6.8.2"
     type-fest: "npm:^4.26.1"
     typeorm: "npm:^0.3.20"
@@ -3909,6 +3911,7 @@ __metadata:
     "@types/open-location-code": "npm:^1.0.0"
     lru-cache: "npm:^11.0.0"
     open-location-code: "npm:^1.0.3"
+    path-ts: "npm:^1.0.0"
     phone: "npm:^3.1.43"
     type-fest: "npm:^4.26.1"
     typeorm: "npm:^0.3.20"
@@ -3933,6 +3936,8 @@ __metadata:
     "@sinclair/typebox": "npm:^0.32.30"
     "@sinclair/typebox-codegen": "npm:^0.10.2"
     "@types/json-to-pretty-yaml": "npm:^1.2.1"
+    "@types/uuid": "npm:^10.0.0"
+    axios: "npm:^1.7.7"
     axios-cache-interceptor: "npm:^1.6.0"
     change-case: "npm:^5.4.4"
     cheerio: "npm:^1.0.0"
@@ -3944,11 +3949,13 @@ __metadata:
     json-to-pretty-yaml: "npm:^1.2.2"
     memfs: "npm:^4.9.4"
     openai: "npm:^4.67.1"
+    path-ts: "npm:^1.0.0"
     sqlite3: "npm:^5.1.7"
     tileserver-gl-light: "npm:^4.11.1"
     type-fest: "npm:^4.26.1"
     typeorm: "npm:^0.3.20"
     urlpattern-polyfill: "npm:^10.0.0"
+    uuid: "npm:^10.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4020,6 +4027,7 @@ __metadata:
     deepmerge-ts: "npm:^7.1.0"
     fixed-width-parser: "npm:^3.0.0"
     nodejs-polars: "npm:^0.15.0"
+    path-ts: "npm:^1.0.0"
     redis: "npm:^4.7.0"
     sql-formatter: "npm:^15.4.2"
     turndown: "npm:^7.2.0"
@@ -7016,6 +7024,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
+  checksum: 10/e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
+  languageName: node
+  linkType: hard
+
 "@types/vscode@npm:^1.93.0":
   version: 1.93.0
   resolution: "@types/vscode@npm:1.93.0"
@@ -8163,7 +8178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.7.7 ":
+"axios@npm:^1.7.7, axios@npm:^1.7.7 ":
   version: 1.7.7
   resolution: "axios@npm:1.7.7"
   dependencies:
@@ -18363,6 +18378,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"path-ts@npm:^1.0.0, path-ts@workspace:path-ts":
+  version: 0.0.0-use.local
+  resolution: "path-ts@workspace:path-ts"
+  dependencies:
+    type-fest: "npm:^4.26.1"
+  dependenciesMeta:
+    type-fest:
+      optional: true
+  languageName: unknown
+  linkType: soft
+
 "path-type@npm:^3.0.0":
   version: 3.0.0
   resolution: "path-type@npm:3.0.0"
@@ -20781,6 +20807,13 @@ __metadata:
   version: 2.4.3
   resolution: "safe-stable-stringify@npm:2.4.3"
   checksum: 10/a6c192bbefe47770a11072b51b500ed29be7b1c15095371c1ee1dc13e45ce48ee3c80330214c56764d006c485b88bd0b24940d868948170dddc16eed312582d8
+  languageName: node
+  linkType: hard
+
+"safe-stable-stringify@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "safe-stable-stringify@npm:2.5.0"
+  checksum: 10/2697fa186c17c38c3ca5309637b4ac6de2f1c3d282da27cd5e1e3c88eca0fb1f9aea568a6aabdf284111592c8782b94ee07176f17126031be72ab1313ed46c5c
   languageName: node
   linkType: hard
 

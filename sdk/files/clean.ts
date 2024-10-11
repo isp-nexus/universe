@@ -13,12 +13,12 @@ import {
 	packageDistPathBuilder,
 	packageOutPathBuilder,
 	packagePathBuilder,
-	PathBuilderLike,
 	repoRootPathBuilder,
-} from "@isp.nexus/sdk/reflection"
+} from "@isp.nexus/sdk/repo-paths"
 import { Stats } from "node:fs"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"
+import { PathBuilderLike } from "path-ts"
 
 /**
  * Cleans the compiled TypeScript artifacts for the given package.

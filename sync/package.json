@@ -45,6 +45,7 @@
 		"deepmerge-ts": "^7.1.0",
 		"fixed-width-parser": "^3.0.0",
 		"nodejs-polars": "^0.15.0",
+		"path-ts": "^1.0.0",
 		"redis": "^4.7.0",
 		"sql-formatter": "^15.4.2",
 		"turndown": "^7.2.0",

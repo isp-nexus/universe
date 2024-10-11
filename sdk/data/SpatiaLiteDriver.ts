@@ -5,7 +5,7 @@
  */
 
 import { ConsoleLogger, IRuntimeLogger } from "@isp.nexus/core/logging"
-import { findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk/reflection"
+import { findCachedSpatialiteExtensionPath } from "@isp.nexus/sdk/runtime"
 import { Database as SQLiteDatabase } from "sqlite3"
 import { DataSource, QueryRunner } from "typeorm"
 import { SqliteDriver } from "typeorm/driver/sqlite/SqliteDriver.js"

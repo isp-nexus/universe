@@ -1,0 +1,23 @@
+{
+	"name": "path-ts",
+	"version": "1.0.0",
+	"description": "Isomorphic type-safe path utilities.",
+	"license": "AGPL-3.0-only",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		".": "./out/index.js"
+	},
+	"devDependencies": {
+		"type-fest": "^4.26.1"
+	},
+	"optionalDependencies": {
+		"type-fest": "^4.26.1"
+	}
+}
