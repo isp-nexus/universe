@@ -63,7 +63,7 @@ export const handler: CommandHandler<CommandArgs> = async ({ outDirectory }) => 
 		displayName: "Records Remaining",
 	})
 
-	$.cwd = repoRootPathBuilder()
+	$.cwd = repoRootPathBuilder().toString()
 
 	const providerBatches = takeInParallel(
 		bdcProviders,

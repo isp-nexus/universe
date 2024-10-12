@@ -7,3 +7,4 @@
 export * from "./basename.js"
 export * from "./dirname.js"
 export * from "./path-builder.js"
+export * from "./resolve.js"

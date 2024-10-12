@@ -6,7 +6,6 @@
 
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { NexusDataSource, readLocalJSONFile } from "@isp.nexus/sdk"
-import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
 import { GeometryCollection, GeometryLiteral } from "@isp.nexus/spatial"
 import { geometryToEWKH, geometryToWKT } from "@isp.nexus/spatial/sdk"
 
@@ -84,9 +83,7 @@ export const $TIGERNation = ServiceRepository.register(async () => {
 
 	await dataSource.driver.queryRunner.addSpatialColumn(TIGERLevel.State, "GEOM", "MultiPolygon")
 
-	const collection: GeometryCollection = await readLocalJSONFile(
-		repoRootPathBuilder("tiger", "sdk", "data", "nation", "index.json")
-	)
+	const collection: GeometryCollection = await readLocalJSONFile("tiger", "sdk", "data", "nation", "index.json")
 
 	for (const geometry of collection.geometries) {
 		await dataSource.query(/* sql */ `

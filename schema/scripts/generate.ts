@@ -14,7 +14,9 @@ import { cleanGeneratedArtifacts, createETag, writeLocalJSONFile, writeLocalText
 import { ISPNexusPackagePath, packagePathBuilder, repoRootPathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import { JSONSchema7 } from "json-schema"
 import YAML from "json-to-pretty-yaml"
+import { basename } from "node:path"
 import ts from "typescript"
+
 type DocTagMap = Map<string, ts.SymbolDisplayPart[]>
 
 type SignatureLike = ts.Type &
@@ -251,10 +253,26 @@ await runScript(async () => {
 		schemaETags.set(schemaID.name + ".yaml", yamlETag)
 
 		await Promise.all([
-			writeLocalTextFile(serializedJSON, packagePathBuilder("schema", "generated", schemaID.pathname)),
-			writeLocalTextFile(serializedJSON, packagePathBuilder("schema", "generated", schemaID.pathname + ".json")),
-			writeLocalTextFile(declarationFile, packagePathBuilder("schema", "generated", schemaID.pathname + ".json.d.ts")),
-			writeLocalTextFile(serializedYAML, packagePathBuilder("schema", "generated", schemaID.pathname + ".yaml")),
+			writeLocalTextFile(
+				// ---
+				serializedJSON,
+				packagePathBuilder("schema", "generated", basename(schemaID.pathname))
+			),
+			writeLocalTextFile(
+				// ---
+				serializedJSON,
+				packagePathBuilder("schema", "generated", basename(schemaID.pathname + ".json"))
+			),
+			writeLocalTextFile(
+				// ---
+				declarationFile,
+				packagePathBuilder("schema", "generated", basename(schemaID.pathname + ".json.d.ts"))
+			),
+			writeLocalTextFile(
+				// ---
+				serializedYAML,
+				packagePathBuilder("schema", "generated", basename(schemaID.pathname + ".yaml"))
+			),
 		])
 
 		generationBar.increment()

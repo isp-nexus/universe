@@ -27,3 +27,5 @@ export function basename<T extends PathBuilder | string>(
 ): T extends PathBuilder<infer U> ? PathBuilder<Basename<U>> : T extends string ? PathBuilder<Basename<T>> : never {
 	return PathBuilder.from(_basename(path.toString())) as any
 }
+
+export { basename as pathBuilderBasename }

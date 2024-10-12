@@ -30,3 +30,5 @@ export function dirname<T extends PathBuilder | string>(
 ): T extends PathBuilder<infer U> ? PathBuilder<Dirname<U>> : T extends string ? PathBuilder<Dirname<T>> : never {
 	return PathBuilder.from(_dirname(path.toString())) as any
 }
+
+export { dirname as pathBuilderDirname }

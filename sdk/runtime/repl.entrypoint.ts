@@ -20,9 +20,8 @@ if (!process.env["REPL_ID"]) {
 	process.env["REPL_ID"] = crypto.randomUUID()
 
 	const { readLocalJSONFile } = await import("@isp.nexus/sdk/files")
-	const { repoRootPathBuilder } = await import("@isp.nexus/sdk/runtime/repo-paths")
 
-	const monorepoPackageJSON = await readLocalJSONFile<MonorepoPackageJSON>(repoRootPathBuilder("package.json"))
+	const monorepoPackageJSON = await readLocalJSONFile<MonorepoPackageJSON>("package.json")
 	const workspaces = monorepoPackageJSON.workspaces as ISPNexusPackage[]
 
 	const nexus: NexusREPL = {} as NexusREPL

@@ -7,7 +7,7 @@
 import { ISPNexusPackage, ISPNexusPackages } from "@isp.nexus/core"
 import { dirname, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
-import { PathBuilder } from "path-ts"
+import { PathBuilder, createPathBuilderResolver } from "path-ts"
 import type { Join } from "type-fest"
 
 //#region Type Constants
@@ -64,16 +64,7 @@ type RepoRootAbsolutePath = RepoRootAlias
 /**
  * Path builder relative to the repo root.
  */
-export function repoRootPathBuilder<P1 extends string, Pn extends string[]>(
-	pathSegment1?: P1,
-	...pathSegmentN: Pn
-): P1 extends "/"
-	? PathBuilder<`/${Join<Pn, "/">}`> & string
-	: PathBuilder<Join<[RepoRootAlias, P1, ...Pn], "/">> & string {
-	const root = pathSegment1?.startsWith("/") ? "" : RepoRootAbsolutePath
-
-	return PathBuilder.from(root, pathSegment1 || "", ...pathSegmentN) as any
-}
+export const repoRootPathBuilder = createPathBuilderResolver<RepoRootAlias>(RepoRootAbsolutePath)
 
 /**
  * Path builder relative to the package root.

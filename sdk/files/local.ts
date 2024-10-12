@@ -9,7 +9,6 @@
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
 import * as fs from "node:fs/promises"
-import * as path from "node:path"
 import { PathBuilderLike } from "path-ts"
 
 const logger = ConsoleLogger.withPrefix("Files")
@@ -22,7 +21,7 @@ const logger = ConsoleLogger.withPrefix("Files")
  */
 export function checkIfExists(pathBuilderLike: PathBuilderLike): Promise<boolean> {
 	return fs
-		.stat(pathBuilderLike.toString())
+		.stat(pathBuilderLike)
 		.then(() => true)
 		.catch(() => false)
 }
@@ -33,7 +32,7 @@ export function checkIfExists(pathBuilderLike: PathBuilderLike): Promise<boolean
  * @category Node
  * @category Files
  */
-export function readLocalTextFile<S extends string[]>(...pathSegments: S) {
+export function readLocalTextFile<S extends PathBuilderLike[]>(...pathSegments: S) {
 	if (pathSegments.length === 0) {
 		throw new Error("No file path segments provided.")
 	}
@@ -50,7 +49,7 @@ export function readLocalTextFile<S extends string[]>(...pathSegments: S) {
  * @category Node
  * @category Files
  */
-export function readLocalJSONFile<T = Record<string, unknown>, S extends string[] = string[]>(
+export function readLocalJSONFile<T = Record<string, unknown>, S extends PathBuilderLike[] = PathBuilderLike[]>(
 	...pathSegments: S
 ): Promise<T> {
 	return readLocalTextFile(...pathSegments).then(JSON.parse)
@@ -62,8 +61,6 @@ export function readLocalJSONFile<T = Record<string, unknown>, S extends string[
  * @category Node
  * @category Files
  */
-export function writeLocalTextFile<S extends PathBuilderLike[]>(content: string, ...pathSegments: S): Promise<void>
-export function writeLocalTextFile<S extends PathBuilderLike>(content: string, filePath: S): Promise<void>
 export async function writeLocalTextFile<S extends PathBuilderLike[]>(
 	content: string,
 	...pathSegments: S
@@ -76,10 +73,9 @@ export async function writeLocalTextFile<S extends PathBuilderLike[]>(
 		logger.warn("Attempted to write an empty file.")
 	}
 
-	const filePath = repoRootPathBuilder(pathSegments.toString()).toString()
-	const dirName = path.dirname(filePath)
+	const filePath = repoRootPathBuilder(...pathSegments)
 
-	await fs.mkdir(dirName, { recursive: true })
+	await fs.mkdir(filePath.dirname(), { recursive: true })
 
 	logger.debug(`Writing to file: ${filePath}`)
 	return fs.writeFile(filePath, content, "utf-8")
@@ -129,9 +125,8 @@ export async function writeLocalBuffer<S extends string[]>(content: BufferLike, 
 	}
 
 	const filePath = repoRootPathBuilder(...pathSegments)
-	const dirName = path.dirname(filePath)
 
-	await fs.mkdir(dirName, { recursive: true })
+	await fs.mkdir(filePath.dirname(), { recursive: true })
 
 	logger.debug(`Writing to file: ${filePath}`)
 	return fs.writeFile(filePath, content)

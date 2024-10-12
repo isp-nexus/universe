@@ -11,7 +11,7 @@ import { ResourceError } from "@isp.nexus/core/errors"
 import { execSync } from "node:child_process"
 import { existsSync, statSync } from "node:fs"
 import * as path from "node:path"
-import { PathBuilder } from "path-ts"
+import { PathBuilder, PathBuilderLike, resolvePathBuilder, ResolvePathBuilderLike } from "path-ts"
 import { $private } from "./main.entrypoint.js"
 
 /**
@@ -50,24 +50,32 @@ export enum DataSourceFile {
 	TSVSource = "source.tsv",
 }
 
+type DataSourceRootAlias = "~data-source"
+
 /**
  * Path builder relative to the package root.
  *
  * @internal
  */
-export function dataSourcePathBuilder<S extends string[]>(...pathSegments: S) {
+export function dataSourcePathBuilder<T extends PathBuilderLike, Pn extends string[]>(
+	p1: T,
+	...pathSegments: Pn
+): PathBuilder<ResolvePathBuilderLike<T, DataSourceRootAlias, Pn>> {
 	assertOptionalKeyPresent($private, "DATA_SOURCE_PATH")
 
-	if (pathSegments[0]?.startsWith("/")) {
+	const resolved = resolvePathBuilder(
+		$private.DATA_SOURCE_PATH,
+		DataSourceName.DataStore,
+		p1.toString(),
+		...pathSegments
+	)
+
+	if (!resolved.startsWith($private.DATA_SOURCE_PATH)) {
+		console.warn(`Resolved path ${resolved} is not within the data source root ${$private.DATA_SOURCE_PATH}`)
 		throw ResourceError.from(400, "Path segments must be relative to the data source root.")
 	}
 
-	return PathBuilder.from(
-		// ---
-		$private.DATA_SOURCE_PATH as "$DATA_SOURCE_PATH",
-		DataSourceName.DataStore,
-		...pathSegments
-	)
+	return resolved as any
 }
 
 /**

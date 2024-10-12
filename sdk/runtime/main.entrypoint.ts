@@ -51,7 +51,7 @@ export const developmentEnvironment = !productionEnvironment
  * The shared runtime environment record.
  */
 const sharedEnvironmentRecord = {
-	NEXUS_HTTP_CACHE_PATH: repoRootPathBuilder(".nexus", "http-cache"),
+	NEXUS_HTTP_CACHE_PATH: repoRootPathBuilder(".nexus", "http-cache").toString(),
 	ISP_NEXUS_WWW_URL: "https://isp.nexus",
 	SENTRY_NODE_DSN: "https://316c0f529e59bd17c593d60edf880452@o4507179325915136.ingest.us.sentry.io/4507179328077824",
 	ISP_NEXUS_APP_URL: "https://dev.isp.nexus:7777",

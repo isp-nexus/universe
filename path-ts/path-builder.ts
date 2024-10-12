@@ -180,5 +180,10 @@ for (const [propertyName, propertyDescriptor] of Object.entries(Object.getOwnPro
 /**
  * Type-safe path builder or string.
  */
-export type PathBuilderLike<T = string | PathBuilder> =
-	T extends PathBuilder<infer S> ? PathBuilder<S> : T extends string ? T : never
+export type PathBuilderLike = string | PathBuilder
+
+/**
+ * Unwraps a path builder or string to its core string type.
+ */
+export type UnwrapPathBuilder<T extends string | PathBuilder> =
+	T extends PathBuilder<infer U> ? U : T extends string ? T : never
