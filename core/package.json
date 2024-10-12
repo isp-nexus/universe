@@ -43,7 +43,7 @@
 		"@types/cli-progress": "^3.11.5",
 		"@types/core-js": "^2.5.8",
 		"@types/uuid": "^10.0.0",
-		"axios": "^1.7.7 "
+		"axios": "^1.7.7"
 	},
 	"optionalDependencies": {
 		"axios": "^1.7.7"

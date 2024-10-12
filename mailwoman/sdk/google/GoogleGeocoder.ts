@@ -7,7 +7,6 @@
  */
 
 import {
-	GeocodeRequest,
 	GeocodeResponseData,
 	Status as GoogleAPIResponseStatus,
 	Client as GoogleMapsClient,
@@ -28,6 +27,8 @@ import {
 	isGooglePlaceID,
 	isH3Cell,
 } from "@isp.nexus/spatial"
+import { AxiosRequestConfig } from "axios"
+import { CacheRequestConfig } from "axios-cache-interceptor"
 import { PathBuilder } from "path-ts"
 import { GoogleHTTPCache } from "./GoogleGeocoderCache.js"
 import { parseGoogleGeocodeResult } from "./parser.js"
@@ -53,9 +54,10 @@ export class GoogleGeocoder extends APIClient {
 	 */
 	#apiKey: string
 
-	constructor(options: GoogleGeocoderOptions) {
-		super(options)
-		this.#apiKey = options.apiKey
+	constructor({ apiKey, ...apiOptions }: GoogleGeocoderOptions) {
+		super(apiOptions)
+
+		this.#apiKey = apiKey
 
 		this.#client = new GoogleMapsClient({
 			axiosInstance: this.axios as any, // Fixes outdated type definitions
@@ -70,7 +72,7 @@ export class GoogleGeocoder extends APIClient {
 	 * @internal
 	 */
 	protected pluckGeocodeResult = (data: GeocodeResponseData): PostalAddress[] => {
-		this.logger.info(`Found ${data.results.length} results.`)
+		this.logger.debug(`Found ${data.results.length} results.`)
 
 		if (!data.results.length)
 			throw ResourceError.from(404, "No results found", "google", "geocoder", "pluckGeocodeResult")
@@ -89,7 +91,7 @@ export class GoogleGeocoder extends APIClient {
 		if (!isGooglePlaceID(input))
 			throw ResourceError.from(400, `Invalid input ${input}`, "google", "geocoder", "geocodePlaceID")
 
-		this.logger.info(`⛳️🕵️‍♀️ Fetching place details (${input})...`)
+		this.logger.debug(`⛳️🕵️‍♀️ Fetching place details (${input})...`)
 
 		return this.#client
 			.placeDetails({
@@ -131,7 +133,7 @@ export class GoogleGeocoder extends APIClient {
 	/**
 	 * Reverse geocode a Google Place ID.
 	 */
-	public geocodePlaceID(input: GooglePlaceID | string): Promise<PostalAddress[]> {
+	public geocodePlaceID(input: GooglePlaceID | string, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]> {
 		if (!isGooglePlaceID(input))
 			throw ResourceError.from(400, `Invalid input ${input}`, "google", "geocoder", "geocodePlaceID")
 
@@ -143,6 +145,7 @@ export class GoogleGeocoder extends APIClient {
 					key: this.#apiKey,
 					place_id: input,
 				},
+				...(requestConfig as any),
 			})
 			.then(pluckResponseData)
 			.then(this.pluckGeocodeResult)
@@ -153,7 +156,7 @@ export class GoogleGeocoder extends APIClient {
 	/**
 	 * Reverse geocode a geographic point, e.g. a latitude and longitude.
 	 */
-	public geocodePoint(input: unknown): Promise<PostalAddress[]> {
+	public geocodePoint(input: unknown, requestConfig?: Partial<AxiosRequestConfig>): Promise<PostalAddress[]> {
 		const geoPoint = GeoPoint.from(input)
 
 		if (!geoPoint) throw ResourceError.from(400, `Invalid input ${input}`)
@@ -166,6 +169,8 @@ export class GoogleGeocoder extends APIClient {
 					key: this.#apiKey,
 					latlng: geoPoint.toGoogleLatLngLiteral(),
 				},
+
+				...(requestConfig as any),
 			})
 			.then(pluckResponseData)
 			.then(this.pluckGeocodeResult)
@@ -174,10 +179,10 @@ export class GoogleGeocoder extends APIClient {
 			})
 	}
 
-	public geocodeAddress(input: string | PostalAddress, requestOptions?: GeocodeRequest): Promise<PostalAddress[]> {
+	public geocodeAddress(input: string | PostalAddress, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]> {
 		const formattedAddress = typeof input === "string" ? input : formatAddressFromParts(input)
 
-		this.logger.info(`🌎 Geocoding address (${formattedAddress})...`)
+		this.logger.debug(`🌎 Geocoding address (${formattedAddress})...`)
 
 		return this.#client
 			.geocode({
@@ -196,8 +201,8 @@ export class GoogleGeocoder extends APIClient {
 						},
 					},
 					language: "en-US",
-					...requestOptions,
 				},
+				...(requestConfig as any),
 			})
 			.then(pluckResponseData)
 			.then(this.pluckGeocodeResult)
@@ -206,27 +211,27 @@ export class GoogleGeocoder extends APIClient {
 			})
 	}
 
-	public async geocode(coordinate: GeoPointInput): Promise<PostalAddress[]>
-	public async geocode(placeID: GooglePlaceID): Promise<PostalAddress[]>
-	public async geocode(cell: H3Cell): Promise<PostalAddress[]>
-	public async geocode(formattedAddress: string): Promise<PostalAddress[]>
-	public async geocode(input: unknown): Promise<PostalAddress[]>
-	public async geocode(input: unknown): Promise<PostalAddress[]> {
+	public async geocode(coordinate: GeoPointInput, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]>
+	public async geocode(placeID: GooglePlaceID, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]>
+	public async geocode(cell: H3Cell, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]>
+	public async geocode(formattedAddress: string, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]>
+	public async geocode(input: unknown, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]>
+	public async geocode(input: unknown, requestConfig?: CacheRequestConfig): Promise<PostalAddress[]> {
 		if (!input) throw ResourceError.from(400, "Input must be present", "geocoding", "geocode")
 
 		if (typeof input !== "string") {
 			throw ResourceError.from(400, `Invalid input ${input}`, "geocoding", "geocode")
 		}
 		if (isH3Cell(input)) {
-			return this.geocodePoint(cellToPointLiteral(input))
+			return this.geocodePoint(cellToPointLiteral(input), requestConfig)
 		}
 
-		if (isGooglePlaceID(input)) return this.geocodePlaceID(input)
+		if (isGooglePlaceID(input)) return this.geocodePlaceID(input, requestConfig)
 
 		const point = GeoPoint.from(input)
-		if (point) return this.geocodePoint(input)
+		if (point) return this.geocodePoint(input, requestConfig)
 
-		return this.geocodeAddress(input)
+		return this.geocodeAddress(input, requestConfig)
 	}
 }
 
@@ -257,7 +262,8 @@ export const $GoogleGeocoder = ServiceRepository.register(async () => {
 			generateKey: HTTPCacheDataSource.generateCacheKey,
 
 			storage: httpCacheDataSource.toAxiosStorage(),
-			// We don't need to interpret the header, as we're using the cache for our own purposes.
+			// We don't need to interpret the header since our cache will automatically
+			// expire on outdated data.
 			interpretHeader: false,
 			// Addresses are unlikely to change while we're working with them,
 			// so we can cache them for a week in milliseconds.

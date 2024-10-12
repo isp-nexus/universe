@@ -69,21 +69,23 @@ export class APIClient<C extends APIClientConfig = APIClientConfig> extends Even
 		this.config = config
 		this.logger = ConsoleLogger.withPrefix(config.displayName)
 
-		this.axios = Axios.create({
+		const axiosInstance = Axios.create({
 			...config.axios,
 		})
 
 		if (config.caching) {
-			setupCache(this.axios, {
+			this.axios = setupCache(axiosInstance, {
 				debug: (msg) => {
 					this.logger.info(msg)
 				},
 				ttl: 60 * 60 * 1000, // 1 hour
 				...config.caching,
 			})
+		} else {
+			this.axios = axiosInstance
 		}
 
-		this.axios.interceptors.response.use((response) => {
+		this.axios.interceptors.response.use(((response: CacheAxiosResponse | AxiosResponse) => {
 			const cachedLabel = (response as CacheAxiosResponse).cached ? " (cached)" : "(uncached)"
 
 			this.logger.debug(
@@ -91,13 +93,14 @@ export class APIClient<C extends APIClientConfig = APIClientConfig> extends Even
 			)
 
 			return response
-		})
+		}) as any)
+
 		this.axios.interceptors.response.use(undefined, delegateAxiosError)
 
 		this.#requestInterval = typeof config.requestsPerMinute === "number" ? 60000 / config.requestsPerMinute : 0
 
 		if (this.#requestInterval) {
-			this.axios.interceptors.response.use(this.updateCooldownAfterResponse)
+			this.axios.interceptors.response.use(this.updateCooldownAfterResponse as any)
 		}
 	}
 
@@ -123,7 +126,9 @@ export class APIClient<C extends APIClientConfig = APIClientConfig> extends Even
 		this.dispatchEvent(new Event("cooldown_start"))
 	}
 
-	protected updateCooldownAfterResponse = (response: AxiosResponse): AxiosResponse<any, any> => {
+	protected updateCooldownAfterResponse = (
+		response: CacheAxiosResponse | AxiosResponse
+	): CacheAxiosResponse | AxiosResponse<any, any> => {
 		this.#cooldownWithResolvers?.resolve()
 		const now = Date.now()
 		const previousRequestTime = this.#lastRequestTime

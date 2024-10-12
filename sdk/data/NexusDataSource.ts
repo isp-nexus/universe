@@ -62,6 +62,36 @@ export interface NexusDataSourceConfig {
 }
 
 /**
+ * Information about a column in a table.
+ */
+export interface ColumnInfo<ColumnName extends string = string> {
+	/**
+	 * Column ID
+	 */
+	cid: number
+	/**
+	 * Column name
+	 */
+	name: ColumnName
+	/**
+	 * Column type
+	 */
+	type: "TEXT" | "INTEGER" | "REAL" | "BLOB"
+	/**
+	 * Whether the column may contain NULL values 0 = false, 1 = true
+	 */
+	notnull: number
+	/**
+	 * Default value for the column
+	 */
+	dflt_value: string | null
+	/**
+	 * Whether the column is part of the primary key
+	 */
+	pk: number
+}
+
+/**
  * A TypeORM data source for ISP Nexus modules.
  */
 export class NexusDataSource extends DataSource implements AsyncDisposable, AsyncInitializable {
@@ -127,6 +157,27 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 		}
 
 		return this
+	}
+
+	/**
+	 * Query the column information for a table.
+	 */
+	public async tableInfo<T extends string = string>(tableName: string): Promise<ColumnInfo<T>[]> {
+		const introspectionTableName = `${tableName}_introspection`
+
+		// We create a temporary view of the table to include virtual columns in the introspection.
+		await this.query(/* sql */ `
+			CREATE TEMP VIEW IF NOT EXISTS '${introspectionTableName}' AS
+			SELECT * FROM '${tableName}' LIMIT 0;
+		`)
+
+		const columnInfoRows = await this.query<ColumnInfo<T>[]>(/* sql*/ `
+			PRAGMA table_info(${introspectionTableName});
+		`)
+
+		await this.query(/* sql */ `DROP VIEW '${introspectionTableName}';`)
+
+		return columnInfoRows
 	}
 
 	/**

@@ -502,7 +502,7 @@ export class CensusGeocoder {
 	}
 
 	public lookupGeography = (input: CensusGeocoderInput) => {
-		this.#logger.info(`Geocoding address components...`)
+		this.#logger.debug(`Geocoding address components...`)
 
 		const params: LookupAddressParams = {
 			benchmark: SpatialBenchmarkName.Census2020,

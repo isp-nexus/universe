@@ -8,9 +8,9 @@
 
 import { pick } from "@isp.nexus/core"
 import { ConsoleLogger, printJSONAsTable } from "@isp.nexus/core/logging"
-import { castToPostalAddressFeature, PostalAddressPart } from "@isp.nexus/mailwoman"
+import { PostalAddressPart } from "@isp.nexus/mailwoman"
 import { $GoogleGeocoder } from "@isp.nexus/mailwoman/sdk"
-import { CommandHandler, NexusDataSource, StrictArgKeys } from "@isp.nexus/sdk"
+import { CommandHandler, createCLIProgressBar, NexusDataSource, StrictArgKeys } from "@isp.nexus/sdk"
 import { resolve } from "path"
 import { PathBuilder } from "path-ts"
 import { CommandBuilder } from "yargs"
@@ -133,6 +133,19 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 	await dataSource.attach(databasePath, schemaName)
 	const scopedTableName = `'${schemaName}'.'${tableName}'`
 
+	const recordCount = await dataSource
+		.query(
+			/* sql */ `
+		SELECT COUNT(*) as value FROM ${scopedTableName};
+	`
+		)
+		.then((rows) => rows[0].value as number)
+
+	const progress = await createCLIProgressBar({
+		displayName: "Geocoding Progress",
+		total: recordCount * 2,
+	})
+
 	async function* takeGeoRow(): AsyncGenerator<GeoRow[]> {
 		let cursor = 0
 		let currentRows: any[] = []
@@ -151,7 +164,7 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 	for await (const records of takeGeoRow()) {
 		ConsoleLogger.info(`Geocoding ${records.length} records...`)
 
-		const geocodedRecords = await Promise.all(
+		await Promise.all(
 			records.map(async (record) => {
 				const idx = record.rowIndexColumnName as number
 
@@ -167,7 +180,11 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 				}
 
 				const postalAddress = await geocoder
-					.geocode(criteria)
+					.geocode(criteria, {
+						headers: {
+							"x-nexus-cache-idx": idx,
+						},
+					})
 					.then((results) => results[0] || null)
 					.catch(() => null)
 
@@ -187,18 +204,9 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 			})
 		)
 
-		for (const result of geocodedRecords) {
-			if (!result) continue
-			const { idx, postalAddress, placeDetails } = result
-
-			const feature = castToPostalAddressFeature(postalAddress)
-
-			feature.id = idx
-			Object.assign(feature.properties, placeDetails)
-
-			// ConsoleLogger.info(printGeoFeatureAsTable(feature), "GeoJSON")
-		}
+		progress.increment(records.length)
 	}
 
+	await progress.dispose()
 	await dataSource.dispose()
 }

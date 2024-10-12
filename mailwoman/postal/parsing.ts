@@ -216,7 +216,7 @@ export function parseFormattedAddress(formattedAddress: SanitizedPostalAddress):
 	postalAddress[PostalAddressPart.RangeLast] = rangeLast
 
 	if (!postalAddress[PostalAddressPart.AdminLevel1]) {
-		ConsoleLogger.warn(`Could not determine US state abbreviation: ${formattedAddress}`)
+		ConsoleLogger.debug(`Could not determine US state abbreviation: ${formattedAddress}`)
 	}
 
 	return postalAddress

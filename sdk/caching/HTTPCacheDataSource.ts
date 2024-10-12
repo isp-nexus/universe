@@ -31,6 +31,7 @@ export interface SerializedAxiosRequest {
 	method: Method
 	url?: string
 	params?: JsonObject
+	headers?: JsonObject
 	data?: JsonValue
 }
 
@@ -104,10 +105,23 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 			}
 		}
 
+		let headers: JsonObject | undefined
+
+		if (config.headers && typeof config.headers === "object") {
+			headers = {}
+
+			for (const [key, value] of Object.entries(config.headers)) {
+				if (!key.startsWith("x-nexus-cache-")) continue
+
+				headers[key] = this.#omissions?.has(value) ? "[REDACTED]" : (value as JsonPrimitive)
+			}
+		}
+
 		return {
 			url: url?.toString(),
 			params,
 			method,
+			headers: headers && Object.keys(headers).length ? headers : undefined,
 			data: config.data as any,
 		}
 	}
@@ -116,6 +130,9 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 	#evictionInterval: number
 	#omissions: SetLike<JsonPrimitive> | null
 
+	/**
+	 * The name of the cache table in the database.
+	 */
 	protected tableName: string
 
 	constructor({ storagePath, namespace, omissions, evictionInterval = 60_000 }: HTTPCacheDataSourceOptions) {
@@ -150,11 +167,12 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 				'expires_at'			INTEGER,
 				'storage_value' 	BLOB NOT NULL,
 				'request'					BLOB,
-				'created_at'			INTEGER	AS (storage_value -> 'createdAt') VIRTUAL,
-				'ttl'							INTEGER	AS (storage_value -> 'ttl') VIRTUAL,
-				'request_method'	TEXT 		AS (request -> 'method') VIRTUAL,
-				'request_url'			TEXT 		AS (request -> 'url') VIRTUAL,
+				'created_at'			INTEGER	AS (storage_value ->> 'createdAt') VIRTUAL,
+				'ttl'							INTEGER	AS (storage_value ->> 'ttl') VIRTUAL,
+				'request_method'	TEXT 		AS (request ->> 'method') VIRTUAL,
+				'request_url'			TEXT 		AS (request ->> 'url') VIRTUAL,
 				'request_params'	TEXT 		AS (request -> 'params') VIRTUAL,
+				'request_headers'	TEXT 		AS (request -> 'headers') VIRTUAL,
 				'response_body'		TEXT 		AS (storage_value -> 'data' -> 'data') VIRTUAL
 			);
 
