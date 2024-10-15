@@ -7,7 +7,7 @@
 import { formatPlanIdentifier, ParsedPlanIdentifier, pluckUniquePlanID } from "@isp.nexus/fcc"
 import { checkIfExists, cleanDirectory, createCLIProgressBar, runScript } from "@isp.nexus/sdk"
 import { createOpenAIClient } from "@isp.nexus/sdk/llm"
-import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/monorepo"
 import * as fs from "node:fs/promises"
 import { zodResponseFormat } from "openai/helpers/zod"
 import TurndownService from "turndown"

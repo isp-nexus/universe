@@ -3716,6 +3716,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fragaria/address-formatter@npm:^6.3.0":
+  version: 6.3.0
+  resolution: "@fragaria/address-formatter@npm:6.3.0"
+  dependencies:
+    mustache: "npm:^4.0.0"
+  checksum: 10/4b5f66f7deee4c5e7e1bb278c5041178aa6e96ed33bceddaf4dd73ab6d4eed50b8c7f92b38eef5f91f42198cfc37182d5d09fdede70b7d2bf8398e78f82a91ac
+  languageName: node
+  linkType: hard
+
 "@gar/promisify@npm:^1.0.1":
   version: 1.1.3
   resolution: "@gar/promisify@npm:1.1.3"
@@ -3913,8 +3922,20 @@ __metadata:
     open-location-code: "npm:^1.0.3"
     path-ts: "npm:^1.0.0"
     phone: "npm:^3.1.43"
+    talisman: "npm:^1.1.4"
     type-fest: "npm:^4.26.1"
     typeorm: "npm:^0.3.20"
+  languageName: unknown
+  linkType: soft
+
+"@isp.nexus/pelias@workspace:pelias":
+  version: 0.0.0-use.local
+  resolution: "@isp.nexus/pelias@workspace:pelias"
+  dependencies:
+    "@fragaria/address-formatter": "npm:^6.3.0"
+    "@isp.nexus/core": "workspace:*"
+    "@isp.nexus/sdk": "workspace:*"
+    docker-compose: "npm:^1.1.0"
   languageName: unknown
   linkType: soft
 
@@ -3922,6 +3943,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@isp.nexus/schema@workspace:schema"
   dependencies:
+    "@isp.nexus/core": "workspace:*"
+    "@isp.nexus/sdk": "workspace:*"
     "@types/json-schema": "npm:^7.0.15"
     json-schema: "npm:^0.4.0"
   languageName: unknown
@@ -3941,6 +3964,7 @@ __metadata:
     axios-cache-interceptor: "npm:^1.6.0"
     change-case: "npm:^5.4.4"
     cheerio: "npm:^1.0.0"
+    docker-compose: "npm:^1.1.0"
     dotenv: "npm:^16.4.5"
     es-main: "npm:^1.3.0"
     fast-glob: "npm:^3.3.2"
@@ -3956,6 +3980,7 @@ __metadata:
     typeorm: "npm:^0.3.20"
     urlpattern-polyfill: "npm:^10.0.0"
     uuid: "npm:^10.0.0"
+    zx: "npm:^8.1.9"
   languageName: unknown
   linkType: soft
 
@@ -4032,6 +4057,7 @@ __metadata:
     sql-formatter: "npm:^15.4.2"
     turndown: "npm:^7.2.0"
     yargs: "npm:^17.7.2"
+    zx: "npm:^8.1.9"
   bin:
     nexus-sync: ./out/cli.js
   languageName: unknown
@@ -4061,6 +4087,7 @@ __metadata:
     "@sister.software/prettier-config": "npm:6.1.0"
     "@sister.software/tsconfig": "npm:6.1.0"
     "@types/adm-zip": "npm:^0.5.5"
+    "@types/eslint": "npm:^9.6.1"
     "@types/node": "npm:^22.7.4"
     adm-zip: "npm:^0.5.13"
     docusaurus-plugin-typedoc: "npm:^1.0.5"
@@ -4083,7 +4110,6 @@ __metadata:
     typescript: "npm:^5.6.2"
     typescript-eslint: "npm:^8.8.0"
     wrangler: "npm:^3.78.2"
-    zx: "npm:^8.1.2"
   languageName: unknown
   linkType: soft
 
@@ -6406,6 +6432,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/eslint@npm:^9.6.1":
+  version: 9.6.1
+  resolution: "@types/eslint@npm:9.6.1"
+  dependencies:
+    "@types/estree": "npm:*"
+    "@types/json-schema": "npm:*"
+  checksum: 10/719fcd255760168a43d0e306ef87548e1e15bffe361d5f4022b0f266575637acc0ecb85604ac97879ee8ae83c6a6d0613b0ed31d0209ddf22a0fe6d608fc56fe
+  languageName: node
+  linkType: hard
+
 "@types/estree-jsx@npm:^1.0.0":
   version: 1.0.5
   resolution: "@types/estree-jsx@npm:1.0.5"
@@ -6611,7 +6647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.15, @types/json-schema@npm:^7.0.4, @types/json-schema@npm:^7.0.5, @types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:*, @types/json-schema@npm:^7.0.15, @types/json-schema@npm:^7.0.4, @types/json-schema@npm:^7.0.5, @types/json-schema@npm:^7.0.8, @types/json-schema@npm:^7.0.9":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10/1a3c3e06236e4c4aab89499c428d585527ce50c24fe8259e8b3926d3df4cfbbbcf306cfc73ddfb66cbafc973116efd15967020b0f738f63e09e64c7d260519e7
@@ -10536,6 +10572,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"docker-compose@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "docker-compose@npm:1.1.0"
+  dependencies:
+    yaml: "npm:^2.2.2"
+  checksum: 10/59447ec147e8f6f693c5b1b6bb9f5efeb975d249945cc69a45f93b98c3258073a4d35bbcf10c94ba4c03ab7b566f4b82f0491e243c913999a4eb8250bc176e60
+  languageName: node
+  linkType: hard
+
 "doctrine@npm:^2.1.0":
   version: 2.1.0
   resolution: "doctrine@npm:2.1.0"
@@ -13312,6 +13357,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"html-entities@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "html-entities@npm:1.4.0"
+  checksum: 10/2ea72d26607d363b632c3981e213818a44d91c7465bb171cf4d449f9faf05ee32d2682b2b331989e03428c961761aab7d04ef33a5b24e5f50d6496896a816935
+  languageName: node
+  linkType: hard
+
 "html-entities@npm:^2.3.2":
   version: 2.5.2
   resolution: "html-entities@npm:2.5.2"
@@ -15429,6 +15481,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"long@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "long@npm:4.0.0"
+  checksum: 10/8296e2ba7bab30f9cfabb81ebccff89c819af6a7a78b4bb5a70ea411aa764ee0532f7441381549dfa6a1a98d72abe9138bfcf99f4fa41238629849bc035b845b
+  languageName: node
+  linkType: hard
+
 "long@npm:^5.2.3":
   version: 5.2.3
   resolution: "long@npm:5.2.3"
@@ -16966,6 +17025,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mnemonist@npm:^0.38.1":
+  version: 0.38.5
+  resolution: "mnemonist@npm:0.38.5"
+  dependencies:
+    obliterator: "npm:^2.0.0"
+  checksum: 10/2df34862567376acb8c2411d546ba9f109229acb2b7fe7593df6fe62194d98f124cf7ff7b2d6f457a3f0410d4d8b44389022ac853d5e5448a2603c4b12f733bf
+  languageName: node
+  linkType: hard
+
+"mnemonist@npm:^0.39.2":
+  version: 0.39.8
+  resolution: "mnemonist@npm:0.39.8"
+  dependencies:
+    obliterator: "npm:^2.0.1"
+  checksum: 10/7ef951abab440ba45a32e9501e3723164ef2d2e35b9152b258ea3d0d7fa790d1a5c05e1c576c158a70631e3bfbeba95cce2fef2f0e1de219c1d0bfeaef5a223e
+  languageName: node
+  linkType: hard
+
 "mocha@npm:^10.7.3":
   version: 10.7.3
   resolution: "mocha@npm:10.7.3"
@@ -17064,7 +17141,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4.2.0":
+"mustache@npm:^4.0.0, mustache@npm:^4.2.0":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
@@ -17638,6 +17715,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"obliterator@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "obliterator@npm:1.6.1"
+  checksum: 10/91d585ff3793207d814b44e5c6f48da04bf92e71f04b3c81e37fac3e7161697853e94ae29b58e0f29e08048092f17793e734dee474578f448ac80d7e99d01fc0
+  languageName: node
+  linkType: hard
+
+"obliterator@npm:^2.0.0, obliterator@npm:^2.0.1":
+  version: 2.0.4
+  resolution: "obliterator@npm:2.0.4"
+  checksum: 10/5a49ce3736aa9c8ae536e14e556e347b225c71215d3d3e0b191da0386284a804b9e22c09780645f2cea3981d4cecefaa394f59f4ffd6167fe6c2f2401777e1ae
+  languageName: node
+  linkType: hard
+
 "obuf@npm:^1.0.0, obuf@npm:^1.1.2":
   version: 1.1.2
   resolution: "obuf@npm:1.1.2"
@@ -18031,6 +18122,15 @@ __metadata:
   version: 0.2.9
   resolution: "pako@npm:0.2.9"
   checksum: 10/627c6842e90af0b3a9ee47345bd66485a589aff9514266f4fa9318557ad819c46fedf97510f2cef9b6224c57913777966a05cb46caf6a9b31177a5401a06fe15
+  languageName: node
+  linkType: hard
+
+"pandemonium@npm:^2.0.0":
+  version: 2.4.1
+  resolution: "pandemonium@npm:2.4.1"
+  dependencies:
+    mnemonist: "npm:^0.39.2"
+  checksum: 10/ef6dcc522850b4d323d79b0200ca5566f8bf523aa090f5c914d2c287ee99f6880c991641562e6f3821af20b6c9822f5c86050da330c23e7c7f49dfe7e169426f
   languageName: node
   linkType: hard
 
@@ -22148,6 +22248,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"talisman@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "talisman@npm:1.1.4"
+  dependencies:
+    html-entities: "npm:^1.4.0"
+    lodash: "npm:^4.17.20"
+    long: "npm:^4.0.0"
+    mnemonist: "npm:^0.38.1"
+    obliterator: "npm:^1.6.1"
+    pandemonium: "npm:^2.0.0"
+  checksum: 10/220383681b84492df103f1ef6288eb65c62651a26527fdc60a1c8ac64b1c34079cc90b2aaa7b4a83e51c5b4f4286f87637bdef08aed87d5cd72370ac14c0fceb
+  languageName: node
+  linkType: hard
+
 "tapable@npm:^1.0.0":
   version: 1.1.3
   resolution: "tapable@npm:1.1.3"
@@ -24256,6 +24370,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yaml@npm:^2.2.2":
+  version: 2.6.0
+  resolution: "yaml@npm:2.6.0"
+  bin:
+    yaml: bin.mjs
+  checksum: 10/f4369f667c7626c216ea81b5840fe9b530cdae4cff2d84d166ec1239e54bf332dbfac4a71bf60d121f8e85e175364a4e280a520292269b6cf9d074368309adf9
+  languageName: node
+  linkType: hard
+
 "yaml@npm:^2.5.1":
   version: 2.5.1
   resolution: "yaml@npm:2.5.1"
@@ -24393,9 +24516,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^8.1.2":
-  version: 8.1.4
-  resolution: "zx@npm:8.1.4"
+"zx@npm:^8.1.9":
+  version: 8.1.9
+  resolution: "zx@npm:8.1.9"
   dependencies:
     "@types/fs-extra": "npm:>=11"
     "@types/node": "npm:>=20"
@@ -24406,6 +24529,6 @@ __metadata:
       optional: true
   bin:
     zx: build/cli.js
-  checksum: 10/1ffa4c51a1edad25de0729d09667b3d1b7b4f9c8f6b4300e34d85f8f18c2e768f7e297b9bfad4d3b8a24792b3f14085f229933d0a224febba49ac2588ed155b1
+  checksum: 10/c8a09c774038cab5683205b901d1bbbac4466af06dd515ce6e7411674586ba7fc956fc65d07d9e9c92fd3a8c48fb905ea305c219c434f75a1a9e904ac6cd7e35
   languageName: node
   linkType: hard

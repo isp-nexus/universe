@@ -6,9 +6,9 @@
  *   ISP Nexus SDK clean script
  */
 
-import { ISPNexusPackages } from "@isp.nexus/core"
 import { cleanCompiledArtifacts, cleanDistributionArtifacts } from "@isp.nexus/sdk/files"
 import { runScript } from "@isp.nexus/sdk/runner"
+import { ISPNexusPackages } from "@isp.nexus/sdk/runtime/packages"
 
 await runScript(() => {
 	return Promise.all([

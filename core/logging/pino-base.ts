@@ -4,9 +4,9 @@
  * @author Teffen Ellis, et al.
  */
 
-import { ChildLoggerOptions, LoggerExtras, pino } from "pino"
+import { BaseLogger, Bindings, ChildLoggerOptions, Level, LoggerExtras, LoggerOptions, pino } from "pino"
 import type { PrettyOptions } from "pino-pretty"
-import { PrivateEnvironmentKeys } from "../env.js"
+import { PrivateEnvironmentKeys } from "../env/private.js"
 
 /**
  * Options for creating a Pino logger, compatible with Fastify.
@@ -14,7 +14,7 @@ import { PrivateEnvironmentKeys } from "../env.js"
  * @category Logger
  * @internal
  */
-export type ILoggerOptions = pino.LoggerOptions
+export type ILoggerOptions = LoggerOptions
 
 /**
  * Default options for creating a Pino logger.
@@ -40,7 +40,7 @@ export const DEFAULT_PINO_LOGGER_OPTIONS: ILoggerOptions = {
 /**
  * Logger with browser methods, as well as async disposability.
  */
-export interface IRuntimeLogger<Prefixes extends string[] = string[]> extends pino.BaseLogger {
+export interface IRuntimeLogger<Prefixes extends string[] = string[]> extends BaseLogger {
 	/**
 	 * The prefixes for the logger.
 	 */
@@ -51,7 +51,7 @@ export interface IRuntimeLogger<Prefixes extends string[] = string[]> extends pi
 	) => IRuntimeLogger<[...Prefixes, ...ChildPrefixes]>
 
 	child<ChildPrefixes extends string[]>(
-		bindings: pino.Bindings,
+		bindings: Bindings,
 		options?: ChildLoggerOptions<any>
 	): IRuntimeLogger<[...Prefixes, ...ChildPrefixes]>
 
@@ -89,7 +89,7 @@ export type PrefixedChildLoggerFn<Prefixes extends string[]> = (...prefixes: Pre
  *
  * @category Logger
  */
-export function createRuntimeLogger(options?: pino.LoggerOptions): IRuntimeLogger {
+export function createRuntimeLogger(options?: LoggerOptions): IRuntimeLogger {
 	// First, we create the Pino instance...
 	const baseLogger = pino({
 		...DEFAULT_PINO_LOGGER_OPTIONS,
@@ -136,10 +136,10 @@ export function createRuntimeLogger(options?: pino.LoggerOptions): IRuntimeLogge
 /**
  * Plucks the log level from the environment.
  */
-export function pluckLogLevel(): pino.Level {
+export function pluckLogLevel(): Level {
 	if (typeof process !== "object" || !process.env) return "info"
 
-	return (process.env.NEXUS_LOG_LEVEL as pino.Level) || "info"
+	return (process.env.NEXUS_LOG_LEVEL as Level) || "info"
 }
 
 /**

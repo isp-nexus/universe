@@ -156,5 +156,13 @@
 		"*": true,
 		"csv": false,
 		"scminput": false
-	}
+	},
+
+	"json.schemas": [
+		{
+			"fileMatch": ["docker-compose.json"],
+			"url": "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json",
+			"schema": false
+		}
+	]
 }

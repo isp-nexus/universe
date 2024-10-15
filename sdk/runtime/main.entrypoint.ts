@@ -94,6 +94,15 @@ export type ExtractESModuleDefault<T> = T extends ResolvedESModule<infer Default
  * Plucks the default export from an ES module.
  */
 export function pluckDefaultExport<DefaultExport>(module: ResolvedESModule<DefaultExport>): DefaultExport {
+	if (!module || typeof module.default !== "object") {
+		console.warn(module)
+		throw TypeError("Expected an ES module with a default export.")
+	}
+
+	if (typeof module.default !== "object") {
+		throw TypeError("Expected an ES module with a default export object.")
+	}
+
 	return module.default
 }
 
@@ -101,10 +110,11 @@ export function importEnvironmentModule(source: EnvironmentModuleSource): Promis
 	const filePath = packageOutPathBuilder("sdk", "runtime", `runtime.${source}.js`)
 
 	return (
-		import(filePath)
+		import(filePath.toString())
 			// ---
 			.then((module: ResolvedESModule<Partial<EnvironmentRecord>>) => pluckDefaultExport(module))
 			.catch(() => {
+				console.warn(`>>>Failed to import environment module from \`${filePath.name}\`.`)
 				ConsoleLogger.warn(`Failed to import environment module from \`${filePath}\`.`)
 				return {}
 			})
@@ -113,7 +123,7 @@ export function importEnvironmentModule(source: EnvironmentModuleSource): Promis
 
 const [matchedEnvironmentRecord, localEnvironmentRecord] = await Promise.all([
 	importEnvironmentModule(sharedEnvironmentRecord.NODE_ENV),
-	importEnvironmentModule("local").catch(() => ({})),
+	importEnvironmentModule("local"),
 ])
 
 const combinedRecord: Partial<EnvironmentRecord> = {

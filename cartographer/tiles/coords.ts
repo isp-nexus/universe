@@ -17,17 +17,12 @@ export function parseTileCoordParams({ z, x, y }: Record<string, string | undefi
 	return coords as TileCoords
 }
 
-const ConversionFactor = {
-	DegreesToRadians: Math.PI / 180,
-	RadiansToDegrees: 180 / Math.PI,
-} as const
-
 /*
  * Get the precise fractional tile location for a point at a zoom level
  *
  */
 export function pointToTileFraction(zoom: number, longitude: number, latitude: number): TileCoords {
-	const sin = Math.sin(latitude * ConversionFactor.DegreesToRadians)
+	const sin = Math.sin((latitude * Math.PI) / 180)
 	const z2 = Math.pow(2, zoom)
 	let x = z2 * (longitude / 360 + 0.5)
 

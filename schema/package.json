@@ -16,11 +16,14 @@
 	"exports": {
 		"./package.json": "./package.json",
 		"./*.json": "./generated/*.json",
-		"./sdk": "./out/sdk/index.js",
-		".": "./out/index.js"
+		"./sdk": "./out/sdk/index.js"
 	},
 	"scripts": {
 		"generate": "node ./out/scripts/generate.js"
+	},
+	"dependencies": {
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*"
 	},
 	"devDependencies": {
 		"@types/json-schema": "^7.0.15",

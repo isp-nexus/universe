@@ -7,7 +7,7 @@
  */
 
 import { ConsoleLogger } from "@isp.nexus/core/logging"
-import { repoRootPathBuilder } from "@isp.nexus/sdk/repo-paths"
+import { repoRootPathBuilder } from "@isp.nexus/sdk/monorepo"
 import * as fs from "node:fs/promises"
 import { PathBuilderLike } from "path-ts"
 

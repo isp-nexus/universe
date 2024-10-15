@@ -68,6 +68,7 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 	protected static readonly stringifyJSON = createStringifier({
 		bigint: false,
 	})
+
 	/**
 	 * Generate a cache key for a request.
 	 */
@@ -274,7 +275,9 @@ export class HTTPCacheDataSource extends NexusDataSource implements BuildStorage
 				HTTPCacheDataSource.stringifyJSON(storageValue),
 				HTTPCacheDataSource.stringifyJSON(this.serializeRequest(config)),
 			]
-		)
+		).catch((error) => {
+			this.logger.error("Failed to set cache entry", error)
+		})
 	}
 
 	public remove = async (cacheKey: string, _config?: CacheRequestConfig): Promise<void> => {

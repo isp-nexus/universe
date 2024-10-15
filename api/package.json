@@ -14,9 +14,7 @@
 	"exports": {
 		"./package.json": "./package.json",
 		"./schema/*.json": "./dist/schema/*.json",
-		"./scripts/*": "./out/scripts/*.js",
-		"./sdk": "./out/sdk/index.js",
-		".": "./out/index.js"
+		"./scripts/*": "./out/scripts/*.js"
 	},
 	"dependencies": {
 		"@cloudflare/workers-types": "^4.20240712.0",

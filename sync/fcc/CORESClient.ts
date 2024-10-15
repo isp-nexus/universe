@@ -92,7 +92,7 @@ export interface RawEntityRegistration {
 	contactFax: string | null
 }
 
-export const $CORESClient = ServiceRepository.register((abortController) => {
+export const $CORESClient = ServiceRepository.register(({ abortController }) => {
 	const clientConfig = {
 		displayName: "CORES",
 		axios: {

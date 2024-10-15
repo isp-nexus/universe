@@ -1,0 +1,33 @@
+{
+	"name": "@isp.nexus/pelias",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Pelias APIs and data processing.",
+	"license": "AGPL-3.0",
+	"contributors": [
+		{
+			"name": "Teffen Ellis",
+			"email": "teffen@sister.software"
+		}
+	],
+	"type": "module",
+	"exports": {
+		"./package.json": "./package.json",
+		"./*.json": "./generated/*.json",
+		"./services/*": "./out/services/*.js",
+		"./sdk": "./out/sdk/index.js",
+		".": "./out/index.js"
+	},
+	"scripts": {
+		"bootstrap": "node ./out/scripts/bootstrap.js"
+	},
+	"dependencies": {
+		"@fragaria/address-formatter": "^6.3.0",
+		"@isp.nexus/core": "workspace:*",
+		"@isp.nexus/sdk": "workspace:*",
+		"docker-compose": "^1.1.0"
+	},
+	"engines": {
+		"node": ">=22.5.1"
+	}
+}

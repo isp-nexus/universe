@@ -6,19 +6,55 @@
 
 import { IRuntimeLogger, pluckOrCreatePrefixedLogger } from "@isp.nexus/core/logging"
 import chalk from "chalk"
+import pino from "pino"
 import { AbstractLogger, LogLevel, LogMessage, QueryRunner } from "typeorm"
+
+const baseLoggerMethods = [
+	"level",
+	"fatal",
+	"error",
+	"warn",
+	"info",
+	"debug",
+	"trace",
+	"silent",
+	"prefixes",
+	"child",
+	"withPrefix",
+	"child",
+] as const satisfies Array<keyof IRuntimeLogger>
 
 /**
  * Performs logging of the events in TypeORM. This version of logger uses console to log events and
  * use syntax highlighting.
  */
-export class TypeORMLogger extends AbstractLogger {
+export class TypeORMLogger extends AbstractLogger implements IRuntimeLogger {
 	static DefaultLevels: LogLevel[] = ["warn", "error"] as const
 	private logger: IRuntimeLogger
+
 	constructor(logger: IRuntimeLogger | string, levels: LogLevel[] = TypeORMLogger.DefaultLevels) {
 		super(levels)
 		this.logger = pluckOrCreatePrefixedLogger(logger)
+
+		for (const method of baseLoggerMethods) {
+			const boundLoggerMethod =
+				typeof this.logger[method] === "function" ? this.logger[method].bind(this.logger) : this.logger[method]
+
+			this[method] = boundLoggerMethod as any
+		}
 	}
+	public level!: pino.LevelWithSilentOrString
+	public fatal!: pino.LogFn
+	public error!: pino.LogFn
+	public warn!: pino.LogFn
+	public info!: pino.LogFn
+	public debug!: pino.LogFn
+	public trace!: pino.LogFn
+	public silent!: pino.LogFn
+	public child!: IRuntimeLogger["child"]
+	public withPrefix!: IRuntimeLogger["withPrefix"]
+	public prefixes!: IRuntimeLogger["prefixes"]
+
 	/**
 	 * Logging functions needed by AdvancedConsoleLogger
 	 */
@@ -44,6 +80,10 @@ export class TypeORMLogger extends AbstractLogger {
 
 	#warn(message: string) {
 		return chalk.yellow(message)
+	}
+
+	public [Symbol.asyncDispose](): Promise<void> {
+		return this.logger[Symbol.asyncDispose]()
 	}
 
 	/**

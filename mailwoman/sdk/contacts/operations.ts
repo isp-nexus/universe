@@ -19,9 +19,7 @@ import { $ContactsDataSource } from "./data-source.js"
 //#region Email Operations
 
 export async function isKnownEmailContact({ id, deliversTo }: Partial<EmailContact>): Promise<boolean> {
-	const dataSource = await $ContactsDataSource
-
-	const emailRepository = dataSource.getRepository(EmailContactSchema)
+	const emailRepository = await $ContactsDataSource.getRepository(EmailContactSchema)
 
 	return emailRepository
 		.findOne({
@@ -47,8 +45,7 @@ export async function upsertEmailContact(nextEmailContact: EmailContact | null |
 	// 	"lastVerifiedByID",
 	// ] as const satisfies readonly (keyof EmailContact)[])
 
-	const dataSource = await $ContactsDataSource
-	const emailRepository = dataSource.getRepository(EmailContactSchema)
+	const emailRepository = await $ContactsDataSource.getRepository(EmailContactSchema)
 
 	nextEmailContact.id = pluckOrCreateEmailID(nextEmailContact)
 
@@ -68,9 +65,7 @@ export async function upsertEmailContact(nextEmailContact: EmailContact | null |
 //#region Phone Operations
 
 export async function isKnownPhoneContact({ id, subscriberNumber }: Partial<PhoneContact>): Promise<boolean> {
-	const dataSource = await $ContactsDataSource
-
-	const phoneRepository = dataSource.getRepository(PhoneContactSchema)
+	const phoneRepository = await $ContactsDataSource.getRepository(PhoneContactSchema)
 
 	return phoneRepository
 		.findOne({
@@ -99,8 +94,7 @@ export async function upsertPhoneContact(nextPhoneContact: PhoneContact | null |
 
 	columns.id = pluckOrCreatePhoneID(nextPhoneContact)
 
-	const dataSource = await $ContactsDataSource
-	const phoneRepository = dataSource.getRepository(PhoneContactSchema)
+	const phoneRepository = await $ContactsDataSource.getRepository(PhoneContactSchema)
 
 	const exists = await isKnownPhoneContact(columns)
 
@@ -120,9 +114,7 @@ export async function upsertPhoneContact(nextPhoneContact: PhoneContact | null |
 //#region Contact Operations
 
 export async function isKnownPointOfContact({ id }: Partial<PointOfContact>): Promise<boolean> {
-	const dataSource = await $ContactsDataSource
-
-	const pointOfContactRepository = dataSource.getRepository(PointOfContactSchema)
+	const pointOfContactRepository = await $ContactsDataSource.getRepository(PointOfContactSchema)
 
 	const where: FindOptionsWhere<PointOfContact>[] = []
 
@@ -152,8 +144,7 @@ export async function upsertPointOfContact(pointOfContact: PointOfContact | null
 		throw ResourceError.from(400, "Point of contact must have a data source", "upsertPointOfContact")
 	}
 
-	const dataSource = await $ContactsDataSource
-	const pointOfContactRepo = dataSource.getRepository(PointOfContactSchema)
+	const pointOfContactRepo = await $ContactsDataSource.getRepository(PointOfContactSchema)
 	const { emailContactMethods, phoneContactMethods, ...columns } = pointOfContact
 	await pointOfContactRepo.save(columns)
 

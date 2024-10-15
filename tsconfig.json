@@ -27,6 +27,7 @@
 		{ "path": "./cartographer" },
 		{ "path": "./sdk" },
 		{ "path": "./sync" },
+		{ "path": "./pelias" },
 		{ "path": "./api" },
 		{ "path": "./vaxis" }
 	]

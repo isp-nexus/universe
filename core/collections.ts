@@ -121,6 +121,51 @@ export async function iterateInParallel<T>(asyncIterable: AsyncIterable<T>): Pro
 }
 
 /**
+ * Given an iterable of values, maps each value to a record of the value and the result of the
+ * callback.
+ *
+ * This is a convenience function when an iterable needs mapping to an object-like structure.
+ *
+ * @category Collections
+ * @category Object
+ */
+export function pivot<T extends PropertyKey, C extends (value: T) => Promise<unknown> | unknown>(
+	/**
+	 * The iterable to pivot.
+	 */
+	iterable: Iterable<T>,
+	/**
+	 * The callback to transform each value.
+	 */
+	callback: C
+): ReturnType<C> extends Thenable<infer U> ? Promise<Record<T, U>> : Record<T, ReturnType<C>> {
+	const entries: Array<[T, ReturnType<C>]> = []
+	let foundThenable = false
+
+	for (const value of iterable) {
+		const result = callback(value)
+
+		if (result && typeof result === "object" && "then" in result) {
+			foundThenable = true
+		}
+
+		entries.push([value, result as any])
+	}
+
+	if (foundThenable) {
+		return Promise.all(
+			entries.map(([key, value]) => {
+				return Promise.resolve(value).then((resolvedValue) => [key, resolvedValue] as const)
+			})
+		).then(Object.fromEntries) as any
+	}
+
+	const pivotedRecord = Object.fromEntries(entries)
+
+	return pivotedRecord as any
+}
+
+/**
  * Type-predicate for checking if a value is iterable.
  *
  * @category Type Guard

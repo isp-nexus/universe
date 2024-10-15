@@ -8,7 +8,7 @@ import "reflect-metadata"
 
 export * from "./api/index.js"
 export * from "./collections.js"
-export * from "./env.js"
+export * from "./env/index.js"
 export * from "./identifiers.js"
 export * from "./models/index.js"
 export * from "./object.js"

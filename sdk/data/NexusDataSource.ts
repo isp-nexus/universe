@@ -9,7 +9,6 @@ import { AsyncInitializable, ServiceSymbol } from "@isp.nexus/core/lifecycle"
 import { IRuntimeLogger, pluckOrCreatePrefixedLogger } from "@isp.nexus/core/logging"
 import { DataSourceName } from "@isp.nexus/sdk/runtime"
 import FastGlob from "fast-glob"
-import * as path from "node:path"
 import { PathBuilder, PathBuilderLike } from "path-ts"
 import { DataSource, Driver, EntitySchema, LogLevel, MigrationInterface, MixedList } from "typeorm"
 import { DriverFactory } from "typeorm/driver/DriverFactory.js"
@@ -54,7 +53,7 @@ export interface NexusDataSourceConfig {
 	displayName: IRuntimeLogger | string
 	storagePath: PathBuilderLike | MemoryDBStoragePath
 	synchronize?: boolean
-	migrations?: string | MigrationInterfaceConstructor[]
+	migrations?: PathBuilderLike
 	entities?: MixedList<EntitySchema>
 	logLevels?: LogLevel[]
 	pragmas?: SQLitePragmaRecord
@@ -96,7 +95,8 @@ export interface ColumnInfo<ColumnName extends string = string> {
  */
 export class NexusDataSource extends DataSource implements AsyncDisposable, AsyncInitializable {
 	declare driver: SpatiaLiteDriver
-	#logger: IRuntimeLogger
+	declare logger: TypeORMLogger
+
 	public readonly pragmas: SQLitePragmaRecord
 	public readonly storagePath: PathBuilder | MemoryDBStoragePath
 	static kInit = Symbol.for("nexus.data-source.init")
@@ -110,14 +110,14 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 			database: storagePath.toString(),
 			logger: new TypeORMLogger(logger, logLevels),
 			entities,
-			migrations: typeof migrations === "string" ? FastGlob.sync(path.join(migrations, "*.js")) : migrations,
+			migrations: Array.isArray(migrations)
+				? migrations
+				: FastGlob.sync(PathBuilder.from(migrations, "*.js").toString()),
 			migrationsTableName: DataSourceName.MigrationsTableName,
 			namingStrategy: new SnakeNamingStrategy(),
 			enableWAL: options.wal,
 			name: logger.prefixes.join(":"),
 		})
-
-		this.#logger = logger
 
 		this.pragmas = options.pragmas || StrictSQlitePragmas
 		this.storagePath = PathBuilder.from(storagePath)
@@ -135,7 +135,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	}
 
 	public async ready(): Promise<this> {
-		this.#logger.debug("Initializing...")
+		this.logger.debug("Initializing...")
 
 		if (this.storagePath !== MemoryDBStoragePath) {
 			const storagePathDirectory = this.storagePath.dirname()
@@ -144,7 +144,7 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 			if (!storageDirectoryExists) {
 				throw ResourceError.from(
 					417,
-					`Data Source (${this.#logger.prefixes.join(":")}) Storage directory does not exist: ${storagePathDirectory}`
+					`Data Source (${this.logger.prefixes.join(":")}) Storage directory does not exist: ${storagePathDirectory}`
 				)
 			}
 		}
@@ -188,14 +188,14 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 		schemaName: PathBuilderLike,
 		mode: "ro" | "rw" | "rwc" = "ro"
 	): Promise<void> {
-		this.#logger.info(`Attaching database: ${databasePath} as ${schemaName}...`)
+		this.logger.info(`Attaching database: ${databasePath} as ${schemaName}...`)
 		await this.query(/* sql */ `
 			ATTACH DATABASE 'file:${databasePath}?mode=${mode}' AS ${schemaName};
 		`)
 	}
 
 	public async dispose(): Promise<void> {
-		this.#logger.debug("Disconnecting...")
+		this.logger.debug("Disconnecting...")
 		await this.query(/* sql */ `
 			BEGIN EXCLUSIVE;
 			SELECT NULL;
@@ -222,6 +222,6 @@ export class NexusDataSource extends DataSource implements AsyncDisposable, Asyn
 	}
 
 	public override toString(): string {
-		return this.#logger.prefixes.join(":")
+		return this.logger.prefixes.join(":")
 	}
 }

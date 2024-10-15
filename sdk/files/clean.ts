@@ -6,7 +6,6 @@
  *   Cleaning utilities for ISP Nexus.
  */
 
-import { ISPNexusPackageFn, ISPNexusPackages } from "@isp.nexus/core"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import {
@@ -14,7 +13,8 @@ import {
 	packageOutPathBuilder,
 	packagePathBuilder,
 	repoRootPathBuilder,
-} from "@isp.nexus/sdk/repo-paths"
+} from "@isp.nexus/sdk/monorepo"
+import { ISPNexusPackageFn, ISPNexusPackages } from "@isp.nexus/sdk/runtime/packages"
 import { Stats } from "node:fs"
 import * as fs from "node:fs/promises"
 import * as path from "node:path"

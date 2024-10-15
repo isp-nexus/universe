@@ -104,6 +104,9 @@ export class APIClient<C extends APIClientConfig = APIClientConfig> extends Even
 		}
 	}
 
+	/**
+	 * Perform a fetch operation using the API's Axios instance.
+	 */
 	public fetch = async <T>(options: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
 		await this.$cooldown
 

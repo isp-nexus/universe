@@ -36,7 +36,7 @@ export type AsyncInitializableConstructor<T> = T extends new (...args: any[]) =>
  */
 export class ServiceSymbol {
 	private constructor() {
-		throw new Error("Cannot instantiate static class.")
+		throw new TypeError("Cannot instantiate static class `ServiceSymbol`.")
 	}
 
 	/**

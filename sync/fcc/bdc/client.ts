@@ -21,7 +21,7 @@ export interface CreateBDCClientOptions {
  *
  * @internal
  */
-export const $BCDClient = ServiceRepository.register((abortController) => {
+export const $BCDClient = ServiceRepository.register(({ abortController }) => {
 	assertOptionalKeyPresent($private, "FCC_MAP_API_KEY")
 	assertOptionalKeyPresent($private, "FCC_MAP_USERNAME")
 

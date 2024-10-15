@@ -10,7 +10,7 @@ import { ResourceError } from "@isp.nexus/core/errors"
 import { ServiceRepository } from "@isp.nexus/core/lifecycle"
 import { ConsoleLogger, stringifyLoggedObject } from "@isp.nexus/core/logging"
 import esMain from "es-main"
-import { $public } from "../runtime/index.js"
+import { which } from "zx"
 
 /**
  * Logs an error that occurred while running a script.
@@ -34,7 +34,7 @@ export function logScriptError(error: unknown): void {
  *
  * @internal
  */
-export type ScriptCallback = (...args: any[]) => Promise<unknown>
+export type ScriptCallback = (...args: any[]) => unknown | Promise<unknown>
 
 /**
  * Cleans up services and exits the script cleanly.
@@ -72,7 +72,8 @@ export function runScript(scriptCallback: ScriptCallback): Promise<void> {
 	process.on("SIGINT", postScriptCleanup)
 	process.on("SIGTERM", postScriptCleanup)
 
-	return scriptCallback()
+	return Promise.resolve()
+		.then(() => scriptCallback())
 		.catch(logScriptError)
 		.then(() => postScriptCleanup())
 		.catch(() => postScriptCleanup("SIGTERM", 1))
@@ -92,6 +93,8 @@ export function runScript(scriptCallback: ScriptCallback): Promise<void> {
 export async function runIfScript(meta: ImportMeta, scriptCallback: ScriptCallback): Promise<void> {
 	if (!esMain(meta)) return
 
+	const { $public } = await import("@isp.nexus/sdk/runtime")
+
 	ConsoleLogger.info(
 		stringifyLoggedObject($public, {
 			description: "Public Environment",
@@ -100,4 +103,19 @@ export async function runIfScript(meta: ImportMeta, scriptCallback: ScriptCallba
 	)
 
 	return runScript(scriptCallback)
+}
+
+/**
+ * Asserts that a given shell command is present in the PATH.
+ *
+ * @param command - The command to check for, e.g. "git", "node", etc.
+ * @param options - Options to pass to ZX's `which` function.
+ * @throws ResourceError if the command is not found.
+ */
+export function assertShellResolvesPath(command: string, options?: which.Options): Promise<void> {
+	return which(command, options)
+		.then(() => void 0)
+		.catch(() => {
+			return Promise.reject(ResourceError.from(412, "Pelias command not found in PATH"))
+		})
 }

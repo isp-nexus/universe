@@ -7,6 +7,7 @@
  */
 
 import { LatLngLiteral } from "@googlemaps/google-maps-services-js"
+import { GeoPoint, GeoPointInput } from "@isp.nexus/spatial"
 
 /**
  * An ordered pair of coordinates in the form of [longitude, latitude].
@@ -14,6 +15,8 @@ import { LatLngLiteral } from "@googlemaps/google-maps-services-js"
  * Note that unlike the typical order, GeoJSON coordinates are in the order of [longitude, latitude]
  * to match the order of [x, y] in Cartesian coordinates.
  *
+ * @category Position
+ * @category GeoJSON
  * @see {@linkcode Coordinates3D} for 3D coordinates.
  */
 export type Coordinates2D = [
@@ -89,6 +92,8 @@ export function inferGeoJSONCoordOrder([coordA, coordB]: [number, number]): Coor
 /**
  * An ordered triple of coordinates in the form of [longitude, latitude, altitude].
  *
+ * @category Position
+ * @category GeoJSON
  * @see {@linkcode Coordinates2D} for 2D coordinates.
  */
 export type Coordinates3D = [
@@ -134,6 +139,9 @@ export type InternalPointCoordinates = {
 
 /**
  * Type-predicate to determine if the given input is a GeoJSON Point geometry.
+ *
+ * @category Type Predicates
+ * @category GeoJSON
  */
 export function isCoordPairLiteral(input: unknown): input is [number, number] | [number, number, number] {
 	if (!Array.isArray(input)) return false
@@ -146,6 +154,8 @@ export function isCoordPairLiteral(input: unknown): input is [number, number] | 
 /**
  * Type-predicate to determine if the given input is a {@linkcode LatLngLiteral} object.
  *
+ * @category Position
+ * @category Type Predicates
  * @see {@link https://developers.google.com/maps/documentation/javascript/reference/coordinates#LatLngLiteral Google Maps API Documentation}
  */
 export function isGoogleMapsLatLngLiteral(input: unknown): input is LatLngLiteral {
@@ -158,6 +168,9 @@ export function isGoogleMapsLatLngLiteral(input: unknown): input is LatLngLitera
 
 /**
  * Type-predicate to determine if the given input is a {@linkcode InternalPointCoordinates} object.
+ *
+ * @category Position
+ * @category Type Predicates
  */
 export function isInterpolatedCoordinates(input: unknown): input is InternalPointCoordinates {
 	if (!input || typeof input !== "object") return false
@@ -172,6 +185,9 @@ export function isInterpolatedCoordinates(input: unknown): input is InternalPoin
  * Given a longitude value, wraps it to the range of [-180, 180].
  *
  * This is useful when normalizing longitude values.
+ *
+ * @category Position
+ * @param longitude The longitude value to wrap.
  */
 export function wrapLongitude(longitude: number): number {
 	return ((((longitude + 180) % 360) + 360) % 360) - 180
@@ -181,7 +197,73 @@ export function wrapLongitude(longitude: number): number {
  * Given a latitude value, clamps it to the range of [-90, 90].
  *
  * This is useful when normalizing latitude values.
+ *
+ * @category Position
+ * @param value The latitude value to clamp.
  */
 export function clampLatitude(value: number): number {
 	return Math.min(90, Math.max(-90, value))
+}
+
+/**
+ * Conversion factors for converting between degrees and radians.
+ *
+ * @category Position
+ * @see {@link https://en.wikipedia.org/wiki/Radian Wikipedia: Radian}
+ * @see {@link https://en.wikipedia.org/wiki/Degree_(angle) Wikipedia: Degree (angle)}
+ */
+export const ConversionFactor = {
+	DegreesToRadians: (Math.PI / 180) as unknown as 0.01745329251,
+	RadiansToDegrees: (180 / Math.PI) as unknown as 57.2957795131,
+} as const
+
+/**
+ * Available conversion units for the radius of the Earth.
+ */
+export type EarthRadiusUnit = "km" | "miles" | "meters"
+
+/**
+ * Radius of the Earth in various units
+ */
+const RADII = {
+	km: 6371,
+	miles: 3958.8,
+	meters: 6371000,
+} as const satisfies Record<EarthRadiusUnit, number>
+
+/**
+ * Calculate the distance between two points on the Earth's surface.
+ *
+ * @category Position
+ * @param point1 The first point to calculate the distance from.
+ * @param point2 The second point to calculate the distance to.
+ * @param unit The unit of measurement to return the distance in.
+ *
+ * @returns The distance between the two points in the specified unit.
+ */
+export function haversine(point1: GeoPointInput, point2: GeoPointInput, unit: EarthRadiusUnit = "km"): number {
+	const p1 = GeoPoint.from(point1)
+	const p2 = GeoPoint.from(point2)
+
+	if (!p1 || !p2) return NaN
+
+	const lat1 = p1.latitude
+	const lon1 = p1.longitude
+	const lat2 = p2.latitude
+	const lon2 = p2.longitude
+
+	const dLat = (lat2 - lat1) * ConversionFactor.DegreesToRadians
+
+	const dLon = (lon2 - lon1) * ConversionFactor.DegreesToRadians
+
+	const a =
+		Math.pow(Math.sin(dLat / 2), 2) +
+		Math.cos(lat1 * ConversionFactor.DegreesToRadians) *
+			Math.cos(lat2 * ConversionFactor.DegreesToRadians) *
+			Math.pow(Math.sin(dLon / 2), 2)
+
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+	const radius = RADII[unit]
+
+	return radius * c
 }

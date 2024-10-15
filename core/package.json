@@ -19,9 +19,10 @@
 		"./logging/transport": "./out/logging/transport.js",
 		"./routing": "./out/routing/index.js",
 		"./lifecycle": "./out/lifecycle/index.js",
+		"./identifiers": "./out/identifiers.js",
 		"./errors": "./out/errors/index.js",
 		"./templates": "./out/templates.js",
-		"./env": "./out/env.js"
+		"./env": "./out/env/index.js"
 	},
 	"dependencies": {
 		"cli-progress": "^3.12.0",

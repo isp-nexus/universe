@@ -1,3 +1,5 @@
+# OpenSSL Configuration File
+
 nodejs_conf = openssl_init
 
 [openssl_init]
@@ -7,4 +9,6 @@ ssl_conf = ssl_sect
 system_default = system_default_sect
 
 [system_default_sect]
+
+# Allow legacy renegotiation due to some outdated clients
 Options = UnsafeLegacyRenegotiation

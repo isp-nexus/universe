@@ -5,12 +5,12 @@
  */
 
 import { ISPNexusSchemaURL, JSONSchemaID } from "@isp.nexus/core"
-import { ISPNexusPackage, ISPNexusPackages } from "@isp.nexus/core/env"
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { TJS, programFromConfig } from "@isp.nexus/schema/sdk"
 import { createCLIProgressBar, runScript } from "@isp.nexus/sdk"
 import { cleanGeneratedArtifacts, createETag, writeLocalJSONFile, writeLocalTextFile } from "@isp.nexus/sdk/files"
+import { ISPNexusPackage, ISPNexusPackages } from "@isp.nexus/sdk/runtime/packages"
 import { ISPNexusPackagePath, packagePathBuilder, repoRootPathBuilder } from "@isp.nexus/sdk/runtime/repo-paths"
 import { JSONSchema7 } from "json-schema"
 import YAML from "json-to-pretty-yaml"

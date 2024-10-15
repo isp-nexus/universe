@@ -8,7 +8,7 @@
 
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
-import { castToPostalAddressFeature, PostalAddressPart } from "@isp.nexus/mailwoman"
+import { castToPostalAddressFeature } from "@isp.nexus/mailwoman"
 import { $GoogleGeocoder, printGeoFeatureAsTable } from "@isp.nexus/mailwoman/sdk"
 import { CommandHandler, copyToClipboard } from "@isp.nexus/sdk"
 import { CommandBuilder } from "yargs"
@@ -32,7 +32,11 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 
 	ConsoleLogger.info(`Geocoding: ${args.geocoderInput}`)
 
-	const postalAddresses = await geocoder.geocode(args.geocoderInput)
+	const postalAddresses = await geocoder.geocode(args.geocoderInput, {
+		headers: {
+			"x-nexus-cache-idx": "-1",
+		},
+	})
 
 	const [postalAddress] = postalAddresses
 
@@ -42,14 +46,14 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 
 	const feature = castToPostalAddressFeature(postalAddress)
 
-	const placeID = postalAddress[PostalAddressPart.GooglePlaceID]
+	// const placeID = postalAddress[PostalAddressPart.GooglePlaceID]
 
-	if (placeID) {
-		ConsoleLogger.info(`Fetching place details for \`${placeID}\`...`)
-		const placeDetails = await geocoder.placeDetails(placeID)
+	// if (placeID) {
+	// 	ConsoleLogger.info(`Fetching place details for \`${placeID}\`...`)
+	// 	const placeDetails = await geocoder.placeDetails(placeID)
 
-		Object.assign(feature.properties, placeDetails)
-	}
+	// 	Object.assign(feature.properties, placeDetails)
+	// }
 
 	await copyToClipboard(feature)
 

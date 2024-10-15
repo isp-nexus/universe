@@ -29,9 +29,27 @@ export interface PathBuilder<S extends string> extends URL, Omit<String, keyof U
 }
 
 /**
+ * Runtime class identifier for the PathBuilder class.
+ *
+ * @internal
+ */
+export const kPathBuilder = Symbol.for("PathBuilder")
+
+/**
  * Type-safe path builder.
  */
 export class PathBuilder<S extends string = string> extends URL implements PathBuilder<S> {
+	/**
+	 * Runtime class identifier for the PathBuilder class.
+	 *
+	 * @internal
+	 */
+	public [kPathBuilder] = true
+
+	public [Symbol.hasInstance](instance: any): boolean {
+		return instance[kPathBuilder] === true
+	}
+
 	/**
 	 * Directory name of a path. Similar to the Unix dirname command.
 	 */
@@ -111,6 +129,10 @@ export class PathBuilder<S extends string = string> extends URL implements PathB
 		pathBuilderLike: P,
 		...pathSegmentN: Pn
 	): PathBuilder<Join<[P extends PathBuilder<infer T> ? T : P, ...Pn], "/">> {
+		if (pathSegmentN.length === 0 && pathBuilderLike instanceof PathBuilder) {
+			return pathBuilderLike as any
+		}
+
 		const joinedPath = join(
 			// ---
 			pathBuilderLike.toString(),

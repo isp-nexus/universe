@@ -91,7 +91,7 @@ export class GoogleHTTPCache extends HTTPCacheDataSource {
 		await super.ready()
 
 		const columnSchemas: [GoogleCacheColumnName, string][] = [
-			["input_idx", /* sql */ `CAST('request_headers' ->> 'x-nexus-cache-idx' as INTEGER)`],
+			["input_idx", /* sql */ `CAST(request_headers ->> 'x-nexus-cache-idx' as INTEGER)`],
 			["input_address", /* sql */ `request_params ->> 'address'`],
 			["input_place_id", /* sql */ `request_params ->> 'place_id'`],
 			["input_latitude", /* sql */ `request_params -> 'latlng' ->> 'lat'`],

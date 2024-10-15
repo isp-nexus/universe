@@ -14,5 +14,6 @@ import type { PublicEnvironment } from "@isp.nexus/core"
 export default {
 	ISP_NEXUS_APP_URL: "https://app.isp.nexus",
 	ISP_NEXUS_COOKIE_DOMAIN: ".app.isp.nexus",
+	GO_POSTAL_SERVICE_URL: "https://postal.isp.nexus",
 	NODE_ENV: "production",
 } as const satisfies Partial<PublicEnvironment>

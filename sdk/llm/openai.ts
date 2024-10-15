@@ -4,7 +4,7 @@
  * @author Teffen Ellis, et al.
  */
 
-import { $private } from "@isp.nexus/sdk"
+import { $private } from "@isp.nexus/sdk/runtime"
 import { OpenAI } from "openai"
 
 /**
