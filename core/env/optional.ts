@@ -121,13 +121,13 @@ export interface OptionalEnvironment {
 	PELIAS_DATA_PATH: string
 
 	/**
-	 * URL to the libpostal service, which providing address parsing.
+	 * URL to the Pelias service, which providing forward and reverse geocoding, and address parsing.
 	 *
 	 * @private
 	 * @category Geocoding
 	 * @format url
 	 */
-	GO_POSTAL_SERVICE_URL: string
+	PELIAS_SERVICE_URL: string
 
 	/**
 	 * FCC Map API key.
@@ -257,7 +257,7 @@ export const OptionalEnvironmentKey = tuple<OptionalEnvironment>({
 	OPENAI_ORGANIZATION_ID: true,
 	OPENAI_PROJECT_ID: true,
 	PELIAS_DATA_PATH: true,
-	GO_POSTAL_SERVICE_URL: true,
+	PELIAS_SERVICE_URL: true,
 	SDK_GOOGLE_MAPS_API_KEY: true,
 	SENTRY_AUTH_TOKEN: true,
 	SENTRY_NODE_DSN: true,

@@ -13,19 +13,20 @@ import {
 	OpenVenuesAddressCollection,
 	OpenVenuesAddressRecord,
 } from "./address.js"
+
 /**
  * Libpostal REST API client service.
  *
  * @singleton
  */
 export const $GoPostalClient = ServiceRepository.register(({ abortController }) => {
-	assertOptionalKeyPresent($private, "GO_POSTAL_SERVICE_URL")
+	assertOptionalKeyPresent($private, "PELIAS_SERVICE_URL")
 
 	return new APIClient({
 		displayName: "Pelias (libpostal)",
 		axios: {
 			signal: abortController.signal,
-			baseURL: $private.GO_POSTAL_SERVICE_URL,
+			baseURL: $private.PELIAS_SERVICE_URL,
 		},
 	} satisfies APIClientConfig as APIClientConfig)
 })
@@ -58,7 +59,3 @@ export async function compareAddresses(leftInput: string, rightInput: string): P
 		measure: calculateAddressSimilarity(parsedLeft, parsedRight),
 	}
 }
-
-// export async function compareMedianAddresses(...inputs: string[]): Promise<OpenVenuesAddressCollection[]> {
-// 	const parsedRecords = await Promise.all(inputs.map(parseAddress))
-// }

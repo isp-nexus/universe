@@ -22,6 +22,7 @@
 		}
 	},
 	"api": {
+		"attributionURL": "https://isp.nexus",
 		"services": {
 			"pip": { "url": "http://pip:4200" },
 			"libpostal": { "url": "http://libpostal:4400" },
@@ -1999,7 +2000,7 @@
 		"whosonfirst": {
 			"datapath": "/data/whosonfirst",
 			"importPostalcodes": true,
-			"countryCode": ["AS", "GU", "VI", "MP", "PR", "UM"],
+			"countryCode": ["AS", "GU", "VI", "MP", "PR", "UM", "US"],
 			"importPlace": "136253057"
 		},
 		"interpolation": {

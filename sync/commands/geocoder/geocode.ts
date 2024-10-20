@@ -9,7 +9,7 @@
 import { ResourceError } from "@isp.nexus/core/errors"
 import { ConsoleLogger } from "@isp.nexus/core/logging"
 import { castToPostalAddressFeature } from "@isp.nexus/mailwoman"
-import { $GoogleGeocoder, printGeoFeatureAsTable } from "@isp.nexus/mailwoman/sdk"
+import { $PeliasGeocoder, printGeoFeatureAsTable } from "@isp.nexus/mailwoman/sdk"
 import { CommandHandler, copyToClipboard } from "@isp.nexus/sdk"
 import { CommandBuilder } from "yargs"
 export const command = "geocode [geocoder-input]"
@@ -28,7 +28,7 @@ export const builder: CommandBuilder<CommandArgs, CommandArgs> = {
 }
 
 export const handler: CommandHandler<CommandArgs> = async (args) => {
-	const geocoder = await $GoogleGeocoder
+	const geocoder = await $PeliasGeocoder
 
 	ConsoleLogger.info(`Geocoding: ${args.geocoderInput}`)
 

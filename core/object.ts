@@ -6,6 +6,7 @@
  *   Utility functions for working with objects.
  */
 
+import { JsonObject } from "type-fest"
 import { isIterable } from "./collections.js"
 import { SetLike } from "./sets.js"
 
@@ -176,4 +177,33 @@ export function tryParsingJSON<T = unknown, F = null>(input: unknown, fallback?:
 	} catch {
 		return (fallback ?? null) as F
 	}
+}
+
+export type FlattenObjectKeys<T extends JsonObject, Key = keyof T> = Key extends string
+	? T[Key] extends JsonObject
+		? `${Key}.${FlattenObjectKeys<T[Key]>}`
+		: `${Key}`
+	: never
+
+/**
+ * Flattens an object into a single-level object with dot-separated keys.
+ */
+export function flattenObject<T extends JsonObject>(
+	obj: T,
+	prefix: string[] = [],
+	current: Record<string, unknown> = {}
+): Record<FlattenObjectKeys<T>, unknown> {
+	prefix = prefix || []
+	current = current || {}
+
+	// Remember kids, null is also an object!
+	if (typeof obj === "object" && obj !== null) {
+		Object.keys(obj).forEach((key) => {
+			;(flattenObject as any)(obj[key] as any, prefix.concat(key), current)
+		})
+	} else {
+		current[prefix.join(".")] = obj
+	}
+
+	return current
 }

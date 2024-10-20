@@ -87,7 +87,7 @@ export interface PostalAddress extends TemporalProperties {
 	 *
 	 * @ignore
 	 */
-	$schema: $PostalAddress["url"]
+	$schema?: $PostalAddress["url"]
 
 	//#region Table Columns
 
@@ -98,7 +98,7 @@ export interface PostalAddress extends TemporalProperties {
 	 * @format uuid
 	 * @title Postal Address ID
 	 */
-	id: PostalAddressID
+	id: PostalAddressID | string
 
 	/**
 	 * The points of contact associated with the postal address, if any.
@@ -333,9 +333,15 @@ export interface PostalAddress extends TemporalProperties {
  */
 export enum PostalAddressAccuracy {
 	/**
-	 * RoofTop accuracy, i.e. the most precise.
+	 * Roof-top accuracy, i.e. the most precise.
 	 */
 	RoofTop = 10,
+
+	/**
+	 * Parcel accuracy, i.e. the address is within a parcel.
+	 */
+	Parcel = 15,
+
 	/**
 	 * Range Interpolated accuracy, i.e. interpolated between two points.
 	 */

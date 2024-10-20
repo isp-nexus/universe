@@ -8,8 +8,7 @@
 
 import { pick } from "@isp.nexus/core"
 import { ConsoleLogger, printJSONAsTable } from "@isp.nexus/core/logging"
-import { PostalAddressPart } from "@isp.nexus/mailwoman"
-import { $GoogleGeocoder } from "@isp.nexus/mailwoman/sdk"
+import { $PeliasGeocoder } from "@isp.nexus/mailwoman/sdk"
 import { CommandHandler, createCLIProgressBar, NexusDataSource, StrictArgKeys } from "@isp.nexus/sdk"
 import { resolve } from "path"
 import { PathBuilder } from "path-ts"
@@ -74,7 +73,7 @@ export const builder: CommandBuilder<CommandArgs, CommandArgs> = {
 
 	"batch-size": {
 		describe: "Number of records to geocode at a time.",
-		default: 50,
+		default: 250,
 		type: "number",
 		alias: ["batch", "b"],
 	},
@@ -83,7 +82,7 @@ export const builder: CommandBuilder<CommandArgs, CommandArgs> = {
 type CommandArgKeys = StrictArgKeys<CommandArgs>
 
 export const handler: CommandHandler<CommandArgs> = async (args) => {
-	const geocoder = await $GoogleGeocoder
+	const geocoder = await $PeliasGeocoder
 
 	const {
 		// ---
@@ -143,7 +142,7 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 
 	const progress = await createCLIProgressBar({
 		displayName: "Geocoding Progress",
-		total: recordCount * 2,
+		total: recordCount,
 	})
 
 	async function* takeGeoRow(): AsyncGenerator<GeoRow[]> {
@@ -162,8 +161,6 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 	}
 
 	for await (const records of takeGeoRow()) {
-		ConsoleLogger.info(`Geocoding ${records.length} records...`)
-
 		await Promise.all(
 			records.map(async (record) => {
 				const idx = record.rowIndexColumnName as number
@@ -193,13 +190,9 @@ export const handler: CommandHandler<CommandArgs> = async (args) => {
 					return null
 				}
 
-				const placeID = postalAddress[PostalAddressPart.GooglePlaceID]
-				const placeDetails = placeID ? await geocoder.placeDetails(placeID) : null
-
 				return {
 					idx,
 					postalAddress,
-					placeDetails,
 				}
 			})
 		)
